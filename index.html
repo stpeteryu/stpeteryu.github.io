@@ -165,8 +165,86 @@
   .nlt strong{font-size:13px;font-weight:700;color:var(--text-dark);display:block;}
   .nlt span{font-size:11px;color:var(--text-light);}
   @media(max-width:768px){.live-grid{grid-template-columns:1fr;}}
+
+  /* ===== PAGE SWITCHING SYSTEM ===== */
+  html, body { height: 100%; }
+  body { display: flex; flex-direction: column; overflow: hidden; }
+  header { flex-shrink: 0; }
+  .pages-wrapper { flex: 1; position: relative; overflow: hidden; }
+  .page {
+    position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+    overflow-y: auto; opacity: 0; visibility: hidden;
+    transition: opacity 0.22s ease, visibility 0.22s ease;
+    -webkit-overflow-scrolling: touch;
+  }
+  .page.active { opacity: 1; visibility: visible; }
+  .page::-webkit-scrollbar { width: 6px; }
+  .page::-webkit-scrollbar-track { background: var(--cream); }
+  .page::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+  /* ===== MOBILE BOTTOM NAV ===== */
+  .mobile-nav { display: none; background: var(--warm-white); border-top: 1px solid var(--border); flex-shrink: 0; }
+  .mobile-nav a {
+    display: flex; flex-direction: column; align-items: center;
+    padding: 7px 4px; font-size: 9px; color: var(--text-light);
+    text-decoration: none; font-weight: 500; flex: 1; gap: 2px; transition: color 0.2s;
+  }
+  .mobile-nav a.active { color: var(--gold); }
+  .mobile-nav a span:first-child { font-size: 17px; }
+  @media (max-width: 768px) { nav { display: none !important; } .mobile-nav { display: flex; } }
+
+  /* ===== NEWS CARDS (home page) ===== */
+  .news-home-section { padding: 48px 24px; background: var(--warm-white); }
+  .news-home-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; max-width: 1100px; margin: 0 auto; }
+  .nh-card { background: white; border: 1px solid var(--border); border-radius: 14px; overflow: hidden; transition: box-shadow 0.2s, transform 0.2s; }
+  .nh-card:hover { box-shadow: 0 6px 24px rgba(184,134,11,0.13); transform: translateY(-2px); }
+  .nh-card a { text-decoration: none; display: flex; flex-direction: column; padding: 22px; min-height: 140px; }
+  .nh-source { font-size: 10px; font-weight: 700; color: var(--gold); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 7px; }
+  .nh-title { font-family: "Noto Serif KR", serif; font-size: 15px; font-weight: 700; color: var(--text-dark); line-height: 1.55; margin-bottom: 7px; flex: 1; }
+  .nh-date { font-size: 11px; color: var(--text-light); margin-bottom: 9px; }
+  .nh-summary { font-size: 13px; color: var(--text-mid); line-height: 1.75; }
+  @media (max-width: 768px) { .news-home-grid { grid-template-columns: 1fr; } }
+
+  /* ===== API LOADING / ERROR ===== */
+  .api-loading { text-align: center; padding: 56px 24px; color: var(--text-light); }
+  .api-spin { font-size: 30px; display: inline-block; animation: apiSpin 1.8s linear infinite; margin-bottom: 14px; }
+  @keyframes apiSpin { to { transform: rotate(360deg); } }
+  .api-loading p { font-size: 14px; line-height: 1.8; }
+  .api-error-box { background: var(--section-bg); border: 1px solid var(--border); border-radius: 12px; padding: 28px; text-align: center; color: var(--text-mid); font-size: 14px; max-width: 500px; margin: 0 auto; }
+  .retry-btn { margin-top: 14px; display: inline-block; background: var(--gold); color: white; padding: 9px 22px; border-radius: 8px; font-size: 13px; cursor: pointer; border: none; font-family: inherit; }
+
+  /* ===== LITURGICAL CALENDAR TAB ===== */
+  .liturgy-page-wrap { max-width: 860px; margin: 0 auto; padding: 48px 24px; }
+  .liturgy-hdr { background: var(--warm-brown); color: white; padding: 22px 28px; border-radius: 16px; margin-bottom: 22px; display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 12px; }
+  .lhdr-left .lhdr-date { font-family: "Noto Serif KR", serif; font-size: 19px; font-weight: 700; color: #FFD700; }
+  .lhdr-left .lhdr-season { font-size: 13px; color: rgba(255,255,255,0.8); margin-top: 4px; display: flex; align-items: center; gap: 8px; }
+  .lhdr-dot { width: 12px; height: 12px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.4); flex-shrink: 0; }
+  .lhdr-refresh { background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); color: white; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-size: 12px; font-family: inherit; transition: background 0.2s; white-space: nowrap; }
+  .lhdr-refresh:hover { background: rgba(255,255,255,0.28); }
+
+  .reading-card { background: white; border: 1px solid var(--border); border-radius: 14px; padding: 26px 28px; margin-bottom: 16px; }
+  .reading-card.gospel-card { border-color: var(--gold-light); background: linear-gradient(160deg, var(--warm-white) 0%, white 100%); }
+  .reading-card.meditation-card { background: var(--warm-brown); border: none; }
+  .rc-label { font-size: 10px; font-weight: 700; color: var(--gold); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 6px; }
+  .reading-card.meditation-card .rc-label { color: #FFD700; }
+  .rc-ref { font-size: 14px; font-weight: 700; color: var(--warm-brown); font-family: "Noto Serif KR", serif; margin-bottom: 14px; }
+  .reading-card.gospel-card .rc-ref { color: var(--gold); }
+  .rc-response { background: var(--light-gold); border-left: 3px solid var(--gold); padding: 9px 14px; border-radius: 0 8px 8px 0; margin-bottom: 14px; font-size: 13px; font-style: italic; color: var(--warm-brown); line-height: 1.6; }
+  .rc-text { font-family: "Noto Serif KR", serif; font-size: 15px; line-height: 2.1; color: var(--text-dark); }
+  .reading-card.gospel-card .rc-text { font-size: 16px; }
+  .reading-card.meditation-card .rc-text { color: rgba(255,255,255,0.9); font-style: italic; line-height: 1.95; }
+  @media (max-width: 768px) {
+    .liturgy-hdr { flex-direction: column; }
+    .lhdr-left .lhdr-date { font-size: 16px; }
+    .reading-card { padding: 20px; }
+    .rc-text { font-size: 14px; }
+  }
+
 </style>
 </head>
+<body>
+
+
 <body>
 
 <!-- HEADER -->
@@ -181,14 +259,30 @@
       </div>
     </div>
     <nav>
-      <a href="#mass" class="active">미사 안내</a>
-      <a href="#sacrament">성사 안내</a>
-      <a href="#priest">신부님</a>
-      <a href="#info">오시는 길</a>
+      <a href="#" data-page="home" class="active">홈</a>
+      <a href="#" data-page="mass">미사 안내</a>
+      <a href="#" data-page="mass">성사 안내</a>
+      <a href="#" data-page="priest">신부님</a>
+      <a href="#" data-page="info">오시는 길</a>
+      <a href="#" data-page="today">전례달력</a>
     </nav>
   </div>
 </header>
 
+
+<!-- MOBILE BOTTOM NAV -->
+<div class="mobile-nav">
+  <a href="#" data-page="home" class="active"><span>⛪</span><span>홈</span></a>
+  <a href="#" data-page="mass"><span>✝</span><span>미사안내</span></a>
+  <a href="#" data-page="priest"><span>👤</span><span>신부님</span></a>
+  <a href="#" data-page="info"><span>📍</span><span>오시는길</span></a>
+  <a href="#" data-page="today"><span>📖</span><span>전례달력</span></a>
+</div>
+
+<div class="pages-wrapper">
+
+<!-- PAGE: HOME -->
+<div class="page active" id="page-home">
 <!-- NOTICE -->
 <div class="notice-bar">
   <span>📢 <strong>사순 제5주일</strong> 3/22(일) 본당 11:00 · 공소 17:30</span>
@@ -209,12 +303,111 @@
     <div class="hero-addr">📍 6 Heath Street, Hamilton, ON L8H 3Y5</div>
     <div class="hero-tel">📞 905-545-3004</div>
     <div class="hero-buttons">
-      <a href="#mass" class="btn-gold">미사 시간 보기</a>
-      <a href="#info" class="btn-ghost">오시는 길</a>
+      <a href="#" data-page="mass" class="btn-gold">미사 시간 보기</a>
+      <a href="#" data-page="info" class="btn-ghost">오시는 길</a>
     </div>
   </div>
 </div>
 
+<!-- 미사 안내 -->
+<!-- 말씀 띠 -->
+<div class="wbar"><div class="wbi">
+  <span class="wbl">✝ 오늘의 복음</span>
+  <span class="wbt" id="WBT"></span>
+  <span class="wbr" id="WBR"></span>
+</div></div>
+
+<!-- 오늘 섹션 -->
+<!-- 가톨릭 소식 (Claude API) -->
+<section class="news-home-section">
+  <div style="max-width:1100px;margin:0 auto;">
+    <div class="section-header">
+      <div class="section-label">CATHOLIC NEWS</div>
+      <div class="section-title">가톨릭 소식</div>
+      <div style="width:40px;height:3px;background:var(--gold);margin:12px auto 0;border-radius:2px;"></div>
+    </div>
+    <div id="homeNewsContainer">
+      <div class="api-loading"><div class="api-spin">✝</div><p>가톨릭 최신 소식을 불러오는 중입니다...</p></div>
+    </div>
+  </div>
+</section>
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div>
+      <h4>✝ 성 유대철 한인성당</h4>
+      <p>St. Peter Yu Roman Catholic Church</p>
+      <p style="margin-top:8px;">📍 6 Heath Street, Hamilton, ON L8H 3Y5</p>
+      <p>📞 905-545-3004</p>
+      <p><a href="http://cafe.daum.net/stpeteryu">cafe.daum.net/stpeteryu</a></p>
+      <p style="margin-top:10px; font-size:11px; color:rgba(232,213,176,0.55);">Roman Catholic Diocese of Hamilton</p>
+    </div>
+    <div>
+      <h4>바로가기</h4>
+      <ul>
+        <li><a href="#mass">미사 안내</a></li>
+        <li><a href="#sacrament">성사 안내</a></li>
+        <li><a href="#priest">신부님 소개</a></li>
+        <li><a href="#info">오시는 길</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>미사 시간 (요약)</h4>
+      <ul>
+        <li>주일 11:00 (본당)</li>
+        <li>주일 17:30 (공소)</li>
+        <li>화요일 20:00</li>
+        <li>수요일 11:00</li>
+        <li>첫째 목요일 19:00</li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    © 2026 성 유대철 한인성당 · St. Peter Yu Roman Catholic Church, Hamilton ON &nbsp;|&nbsp; 나는 부활이요 생명이다 (요한 11,25)
+  </div>
+</footer>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div>
+      <h4>✝ 성 유대철 한인성당</h4>
+      <p>St. Peter Yu Roman Catholic Church</p>
+      <p style="margin-top:8px;">📍 6 Heath Street, Hamilton, ON L8H 3Y5</p>
+      <p>📞 905-545-3004</p>
+      <p><a href="http://cafe.daum.net/stpeteryu">cafe.daum.net/stpeteryu</a></p>
+      <p style="margin-top:10px; font-size:11px; color:rgba(232,213,176,0.55);">Roman Catholic Diocese of Hamilton</p>
+    </div>
+    <div>
+      <h4>바로가기</h4>
+      <ul>
+        <li><a href="#mass">미사 안내</a></li>
+        <li><a href="#sacrament">성사 안내</a></li>
+        <li><a href="#priest">신부님 소개</a></li>
+        <li><a href="#info">오시는 길</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>미사 시간 (요약)</h4>
+      <ul>
+        <li>주일 11:00 (본당)</li>
+        <li>주일 17:30 (공소)</li>
+        <li>화요일 20:00</li>
+        <li>수요일 11:00</li>
+        <li>첫째 목요일 19:00</li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    © 2026 성 유대철 한인성당 · St. Peter Yu Roman Catholic Church, Hamilton ON &nbsp;|&nbsp; 나는 부활이요 생명이다 (요한 11,25)
+  </div>
+</footer>
+
+
+</div>
+
+<!-- PAGE: MASS -->
+<div class="page" id="page-mass">
 <!-- 미사 안내 -->
 <section class="mass-section" id="mass">
   <div class="container">
@@ -327,6 +520,47 @@
 </section>
 
 <!-- 신부님 소개 -->
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div>
+      <h4>✝ 성 유대철 한인성당</h4>
+      <p>St. Peter Yu Roman Catholic Church</p>
+      <p style="margin-top:8px;">📍 6 Heath Street, Hamilton, ON L8H 3Y5</p>
+      <p>📞 905-545-3004</p>
+      <p><a href="http://cafe.daum.net/stpeteryu">cafe.daum.net/stpeteryu</a></p>
+      <p style="margin-top:10px; font-size:11px; color:rgba(232,213,176,0.55);">Roman Catholic Diocese of Hamilton</p>
+    </div>
+    <div>
+      <h4>바로가기</h4>
+      <ul>
+        <li><a href="#mass">미사 안내</a></li>
+        <li><a href="#sacrament">성사 안내</a></li>
+        <li><a href="#priest">신부님 소개</a></li>
+        <li><a href="#info">오시는 길</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>미사 시간 (요약)</h4>
+      <ul>
+        <li>주일 11:00 (본당)</li>
+        <li>주일 17:30 (공소)</li>
+        <li>화요일 20:00</li>
+        <li>수요일 11:00</li>
+        <li>첫째 목요일 19:00</li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    © 2026 성 유대철 한인성당 · St. Peter Yu Roman Catholic Church, Hamilton ON &nbsp;|&nbsp; 나는 부활이요 생명이다 (요한 11,25)
+  </div>
+</footer>
+
+</div>
+
+<!-- PAGE: PRIEST -->
+<div class="page" id="page-priest">
+<!-- 신부님 소개 -->
 <section class="priest-section" id="priest">
   <div class="container">
     <div class="section-header">
@@ -358,6 +592,84 @@
   </div>
 </section>
 
+<!-- 오시는 길 -->
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div>
+      <h4>✝ 성 유대철 한인성당</h4>
+      <p>St. Peter Yu Roman Catholic Church</p>
+      <p style="margin-top:8px;">📍 6 Heath Street, Hamilton, ON L8H 3Y5</p>
+      <p>📞 905-545-3004</p>
+      <p><a href="http://cafe.daum.net/stpeteryu">cafe.daum.net/stpeteryu</a></p>
+      <p style="margin-top:10px; font-size:11px; color:rgba(232,213,176,0.55);">Roman Catholic Diocese of Hamilton</p>
+    </div>
+    <div>
+      <h4>바로가기</h4>
+      <ul>
+        <li><a href="#mass">미사 안내</a></li>
+        <li><a href="#sacrament">성사 안내</a></li>
+        <li><a href="#priest">신부님 소개</a></li>
+        <li><a href="#info">오시는 길</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>미사 시간 (요약)</h4>
+      <ul>
+        <li>주일 11:00 (본당)</li>
+        <li>주일 17:30 (공소)</li>
+        <li>화요일 20:00</li>
+        <li>수요일 11:00</li>
+        <li>첫째 목요일 19:00</li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    © 2026 성 유대철 한인성당 · St. Peter Yu Roman Catholic Church, Hamilton ON &nbsp;|&nbsp; 나는 부활이요 생명이다 (요한 11,25)
+  </div>
+</footer>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div>
+      <h4>✝ 성 유대철 한인성당</h4>
+      <p>St. Peter Yu Roman Catholic Church</p>
+      <p style="margin-top:8px;">📍 6 Heath Street, Hamilton, ON L8H 3Y5</p>
+      <p>📞 905-545-3004</p>
+      <p><a href="http://cafe.daum.net/stpeteryu">cafe.daum.net/stpeteryu</a></p>
+      <p style="margin-top:10px; font-size:11px; color:rgba(232,213,176,0.55);">Roman Catholic Diocese of Hamilton</p>
+    </div>
+    <div>
+      <h4>바로가기</h4>
+      <ul>
+        <li><a href="#mass">미사 안내</a></li>
+        <li><a href="#sacrament">성사 안내</a></li>
+        <li><a href="#priest">신부님 소개</a></li>
+        <li><a href="#info">오시는 길</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>미사 시간 (요약)</h4>
+      <ul>
+        <li>주일 11:00 (본당)</li>
+        <li>주일 17:30 (공소)</li>
+        <li>화요일 20:00</li>
+        <li>수요일 11:00</li>
+        <li>첫째 목요일 19:00</li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    © 2026 성 유대철 한인성당 · St. Peter Yu Roman Catholic Church, Hamilton ON &nbsp;|&nbsp; 나는 부활이요 생명이다 (요한 11,25)
+  </div>
+</footer>
+
+
+</div>
+
+<!-- PAGE: INFO -->
+<div class="page" id="page-info">
 <!-- 오시는 길 -->
 <section class="info-section" id="info">
   <div class="container">
@@ -425,44 +737,6 @@
 
 
 <!-- 말씀 띠 -->
-<div class="wbar"><div class="wbi">
-  <span class="wbl">✝ 오늘의 복음</span>
-  <span class="wbt" id="WBT"></span>
-  <span class="wbr" id="WBR"></span>
-</div></div>
-
-<!-- 오늘 섹션 -->
-<section class="live-section" id="today">
-<div style="max-width:1100px;margin:0 auto;">
-  <div class="section-header">
-    <div class="section-label">TODAY · 매일 자동 업데이트</div>
-    <div class="section-title">오늘의 전례 · 가톨릭 소식</div>
-    <div style="width:40px;height:3px;background:var(--gold);margin:12px auto 0;border-radius:2px;"></div>
-  </div>
-  <div class="live-grid">
-    <div class="lit-card">
-      <span class="lt">✝ Liturgical Calendar · 전례 달력</span>
-      <div class="ld" id="LD"></div>
-      <div class="lsr"><div class="ldot" id="LDOT" style="background:#888;"></div><span class="lsn" id="LSN"></span></div>
-      <div class="lf" id="LF"></div>
-      <hr class="lhr">
-      <div class="lrl">오늘의 독서</div>
-      <div class="lr"><span class="lrk">제1독서</span><span class="lrv" id="R1"></span></div>
-      <div class="lr"><span class="lrk">화답송</span><span class="lrv" id="R2"></span></div>
-      <div class="lr"><span class="lrk">복음</span><span class="lrv" id="R3"></span></div>
-      <div class="lq" id="LQ"></div>
-    </div>
-    <div class="nc">
-      <div class="nh">
-        <span class="nht">✝ 가톨릭 소식</span>
-        <span style="font-size:12px;color:var(--text-light);cursor:pointer;" onclick="loadNews()">↻ 새로고침</span>
-      </div>
-      <div id="NC"></div>
-    </div>
-  </div>
-</div>
-</section>
-
 <!-- FOOTER -->
 <footer>
   <div class="footer-inner">
@@ -499,17 +773,81 @@
   </div>
 </footer>
 
+</div>
+<!-- PAGE: 전례달력 -->
+<div class="page" id="page-today">
+<div class="liturgy-page-wrap">
+
+  <!-- 날짜/전례시기 헤더 -->
+  <div class="liturgy-hdr">
+    <div class="lhdr-left">
+      <div class="lhdr-date" id="LIT_DATE"></div>
+      <div class="lhdr-season">
+        <div class="lhdr-dot" id="LIT_DOT" style="background:#888;"></div>
+        <span id="LIT_SEASON"></span>
+        <span id="LIT_FEAST" style="opacity:0.7;"></span>
+      </div>
+    </div>
+    <button class="lhdr-refresh" onclick="reloadLiturgy()">↻ 새로고침</button>
+  </div>
+
+  <!-- 독서 + 복음 컨테이너 -->
+  <div id="liturgyContent">
+    <div class="api-loading">
+      <div class="api-spin">✝</div>
+      <p>오늘의 미사 전례를 불러오는 중입니다...<br><small style="opacity:0.7;">잠시만 기다려주세요</small></p>
+    </div>
+  </div>
+
+</div>
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div>
+      <h4>✝ 성 유대철 한인성당</h4>
+      <p>St. Peter Yu Roman Catholic Church</p>
+      <p style="margin-top:8px;">📍 6 Heath Street, Hamilton, ON L8H 3Y5</p>
+      <p>📞 905-545-3004</p>
+      <p><a href="http://cafe.daum.net/stpeteryu">cafe.daum.net/stpeteryu</a></p>
+      <p style="margin-top:10px; font-size:11px; color:rgba(232,213,176,0.55);">Roman Catholic Diocese of Hamilton</p>
+    </div>
+    <div>
+      <h4>바로가기</h4>
+      <ul>
+        <li><a href="#mass">미사 안내</a></li>
+        <li><a href="#sacrament">성사 안내</a></li>
+        <li><a href="#priest">신부님 소개</a></li>
+        <li><a href="#info">오시는 길</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>미사 시간 (요약)</h4>
+      <ul>
+        <li>주일 11:00 (본당)</li>
+        <li>주일 17:30 (공소)</li>
+        <li>화요일 20:00</li>
+        <li>수요일 11:00</li>
+        <li>첫째 목요일 19:00</li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    © 2026 성 유대철 한인성당 · St. Peter Yu Roman Catholic Church, Hamilton ON &nbsp;|&nbsp; 나는 부활이요 생명이다 (요한 11,25)
+  </div>
+</footer>
+
+</div>
+
+</div><!-- end pages-wrapper -->
 
 <script>
+// ==================== 전례 시기 계산 (기존) ====================
 (function() {
   var now = new Date();
   var DOW = ['일','월','화','수','목','금','토'];
+  var dateStr = now.getFullYear()+'년 '+(now.getMonth()+1)+'월 '+now.getDate()+'일 ('+DOW[now.getDay()]+'요일)';
 
-  // 1. 날짜 표시
-  document.getElementById('LD').textContent =
-    now.getFullYear()+'년 '+(now.getMonth()+1)+'월 '+now.getDate()+'일 ('+DOW[now.getDay()]+'요일)';
-
-  // 2. 부활절 계산
+  // 부활절 계산
   function easter(Y) {
     var a=Y%19,b=Math.floor(Y/100),c=Y%100,
         d=Math.floor(b/4),e=b%4,f=Math.floor((b+8)/25),
@@ -522,7 +860,6 @@
   }
   function dAdd(dt,n){ return new Date(dt.getFullYear(),dt.getMonth(),dt.getDate()+n); }
 
-  // 3. 전례 시기
   var Y=now.getFullYear(), E=easter(Y);
   var ash=dAdd(E,-46), tri=dAdd(E,-3), pent=dAdd(E,49);
   var adv=new Date(Y,11,25);
@@ -537,76 +874,283 @@
   else if(t>=new Date(Y,11,25).getTime()){sn='성탄 시기';sc='#C9A84C';}
   else if(t<new Date(Y,0,7).getTime()){sn='성탄 시기';sc='#C9A84C';}
   else{sn='연중 시기';sc='#2E7D32';}
-  document.getElementById('LSN').textContent=sn;
-  document.getElementById('LDOT').style.background=sc;
 
-  // 4. 축일
   var F={'1-1':'천주의 성모 마리아 대축일','1-6':'주님 공현 대축일','2-2':'주님 봉헌 축일',
     '3-19':'성 요셉 대축일','3-25':'주님 탄생 예고 대축일','6-24':'세례자 요한 탄생 대축일',
     '6-29':'성 베드로·바오로 사도 대축일','8-15':'성모 승천 대축일','9-8':'성모 탄생 축일',
     '10-7':'묵주기도의 복되신 동정 마리아 기념일','11-1':'모든 성인 대축일','11-2':'위령의 날',
     '12-8':'원죄없이 잉태되신 복되신 동정 마리아 대축일','12-25':'주님 성탄 대축일'};
   var fk=(now.getMonth()+1)+'-'+now.getDate();
-  document.getElementById('LF').textContent=F[fk]||sn+' 주간';
+  var feast = F[fk] || '';
 
-  // 5. 독서
+  // 전례달력 탭 헤더 업데이트
+  var eld = document.getElementById('LIT_DATE');
+  var els = document.getElementById('LIT_SEASON');
+  var eld2 = document.getElementById('LIT_DOT');
+  var elf = document.getElementById('LIT_FEAST');
+  if(eld) eld.textContent = dateStr;
+  if(els) els.textContent = sn;
+  if(eld2) eld2.style.background = sc;
+  if(elf) elf.textContent = feast ? '· ' + feast : '';
+
+  // 말씀 띠 (홈 화면)
   var D=[
-    {r1:'에제키엘서',r2:'시편 23편',r3:'요한 복음',q:'"나는 부활이요 생명이다. 나를 믿는 사람은 죽어도 살 것이다."',ref:'요한 11,25'},
-    {r1:'창세기',r2:'시편 27편',r3:'마르코 복음',q:'"회개하여라. 하늘 나라가 가까이 왔다."',ref:'마르 1,15'},
-    {r1:'이사야서',r2:'시편 34편',r3:'루카 복음',q:'"주님의 영이 나에게 내리셨다. 가난한 이들에게 기쁜 소식을 전하게 하셨다."',ref:'루카 4,18'},
-    {r1:'탈출기',r2:'시편 91편',r3:'마태오 복음',q:'"하늘에 계신 내 아버지의 뜻을 행하는 이라야 하늘 나라에 들어간다."',ref:'마태 7,21'},
-    {r1:'신명기',r2:'시편 100편',r3:'요한 복음',q:'"나는 길이요 진리요 생명이다. 나를 통하지 않고는 아무도 아버지께 갈 수 없다."',ref:'요한 14,6'},
-    {r1:'레위기',r2:'시편 22편',r3:'마르코 복음',q:'"나는 착한 목자다. 착한 목자는 양들을 위하여 목숨을 내놓는다."',ref:'요한 10,11'},
-    {r1:'민수기',r2:'시편 148편',r3:'루카 복음',q:'"주님의 뜻이 하늘에서와 같이 땅에서도 이루어지소서."',ref:'마태 6,10'}
+    {q:'"나는 부활이요 생명이다. 나를 믿는 사람은 죽어도 살 것이다."',ref:'요한 11,25'},
+    {q:'"회개하여라. 하늘 나라가 가까이 왔다."',ref:'마르 1,15'},
+    {q:'"주님의 영이 나에게 내리셨다. 가난한 이들에게 기쁜 소식을 전하게 하셨다."',ref:'루카 4,18'},
+    {q:'"하늘에 계신 내 아버지의 뜻을 행하는 이라야 하늘 나라에 들어간다."',ref:'마태 7,21'},
+    {q:'"나는 길이요 진리요 생명이다. 나를 통하지 않고는 아무도 아버지께 갈 수 없다."',ref:'요한 14,6'},
+    {q:'"나는 착한 목자다. 착한 목자는 양들을 위하여 목숨을 내놓는다."',ref:'요한 10,11'},
+    {q:'"주님의 뜻이 하늘에서와 같이 땅에서도 이루어지소서."',ref:'마태 6,10'}
   ];
-  var dw=now.getDay(), dd=D[dw];
-  document.getElementById('R1').textContent=dd.r1;
-  document.getElementById('R2').textContent=dd.r2;
-  document.getElementById('R3').textContent=dd.r3;
-  document.getElementById('LQ').innerHTML=dd.q+'<span class="lqr">'+dd.ref+'</span>';
-  document.getElementById('WBT').textContent=dd.q;
-  document.getElementById('WBR').textContent=dd.ref;
+  var dd = D[now.getDay()];
+  var wbt = document.getElementById('WBT');
+  var wbr = document.getElementById('WBR');
+  if(wbt) wbt.textContent = dd.q;
+  if(wbr) wbr.textContent = dd.ref;
 })();
 
-// 뉴스: 링크 카드 즉시 표시
-function showLinks() {
-  document.getElementById('NC').innerHTML=
-    '<div class="nlinks">'+
-    '<a class="nlink" href="https://www.vaticannews.va/ko.html" target="_blank" rel="noopener">'+
-      '<span class="nli">🌐</span><div class="nlt"><strong>Vatican News 한국어</strong><span>바티칸 공식 한국어 뉴스</span></div></a>'+
-    '<a class="nlink" href="https://www.catholictimes.org" target="_blank" rel="noopener">'+
-      '<span class="nli">📰</span><div class="nlt"><strong>가톨릭신문</strong><span>한국 가톨릭 주간 신문</span></div></a>'+
-    '<a class="nlink" href="https://www.cbck.or.kr" target="_blank" rel="noopener">'+
-      '<span class="nli">🕊️</span><div class="nlt"><strong>한국 천주교 주교회의</strong><span>교회 공식 소식</span></div></a>'+
-    '<a class="nlink" href="http://cafe.daum.net/stpeteryu" target="_blank" rel="noopener">'+
-      '<span class="nli">⛪</span><div class="nlt"><strong>성 유대철 한인성당 카페</strong><span>본당 공식 카페</span></div></a>'+
-    '</div>';
-}
-showLinks();
 
-async function loadNews() {
+// ==================== 가톨릭 뉴스 (Claude API + RSS fallback) ====================
+async function loadHomeNews() {
+  var container = document.getElementById('homeNewsContainer');
+  if (!container) return;
+
+  // Try RSS first (fast & free)
   try {
-    var r=await Promise.race([
-      fetch('https://api.rss2json.com/v1/api.json?rss_url='+encodeURIComponent('https://www.vaticannews.va/ko.rss.xml')+'&count=6'),
-      new Promise(function(_,rj){setTimeout(function(){rj(new Error('t'))},8000);})
+    var r = await Promise.race([
+      fetch('https://api.rss2json.com/v1/api.json?rss_url=' +
+        encodeURIComponent('https://www.vaticannews.va/ko.rss.xml') + '&count=6'),
+      new Promise(function(_,rj){setTimeout(function(){rj(new Error('t'))},7000);})
     ]);
-    if(!r.ok) throw 0;
-    var data=await r.json();
-    if(data.status!=='ok'||!data.items||!data.items.length) throw 0;
-    var h='';
-    data.items.forEach(function(item){
-      var dt=new Date(item.pubDate),ds=isNaN(dt)?'':((dt.getMonth()+1)+'/'+dt.getDate());
-      var title=(item.title||'').replace(/<[^>]*>/g,'');
-      if(title.length>48) title=title.slice(0,48)+'…';
-      h+='<div class="ni2"><a href="'+item.link+'" target="_blank" rel="noopener">'+
-        '<div class="nc2">Vatican News Korea</div>'+
-        '<div class="nt">'+title+'</div>'+(ds?'<div class="nd">'+ds+'</div>':'')+
+    if (!r.ok) throw 0;
+    var data = await r.json();
+    if (data.status !== 'ok' || !data.items || !data.items.length) throw 0;
+
+    var html = '<div class="news-home-grid">';
+    data.items.slice(0, 6).forEach(function(item) {
+      var dt = new Date(item.pubDate);
+      var ds = isNaN(dt) ? '' : (dt.getFullYear() + '.' + (dt.getMonth()+1) + '.' + dt.getDate());
+      var title = (item.title || '').replace(/<[^>]*>/g, '');
+      // Get summary from description
+      var desc = (item.description || item.content || '').replace(/<[^>]*>/g, '').trim();
+      if (desc.length > 120) desc = desc.slice(0, 120) + '…';
+      html += '<div class="nh-card"><a href="' + item.link + '" target="_blank" rel="noopener">' +
+        '<div class="nh-source">Vatican News 한국어</div>' +
+        '<div class="nh-title">' + title + '</div>' +
+        '<div class="nh-date">' + ds + '</div>' +
+        (desc ? '<div class="nh-summary">' + desc + '</div>' : '') +
         '</a></div>';
     });
-    document.getElementById('NC').innerHTML=h;
-  } catch(e){ showLinks(); }
+    html += '</div>';
+    container.innerHTML = html;
+    return;
+  } catch(e) {}
+
+  // RSS failed → try Claude API with web search
+  try {
+    var today = new Date().toLocaleDateString('ko-KR', {year:'numeric',month:'long',day:'numeric'});
+    var resp = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 3000,
+        tools: [{type: 'web_search_20250305', name: 'web_search'}],
+        messages: [{role:'user', content:
+          '오늘(' + today + ') Vatican News 한국어 사이트(vaticannews.va/ko) 최신 기사 6개를 검색해주세요. ' +
+          'JSON 배열로만 반환 (다른 텍스트 없이): ' +
+          '[{"title":"기사제목","date":"날짜(YYYY.MM.DD)","summary":"2-3문장 요약","url":"전체URL","source":"Vatican News 한국어"}]'
+        }]
+      })
+    });
+    var data = await resp.json();
+    var texts = (data.content||[]).filter(function(b){return b.type==='text';});
+    if (!texts.length) throw new Error('no text');
+    var text = texts[texts.length-1].text;
+    var m = text.match(/\[[\s\S]*?\]/);
+    if (!m) throw new Error('no json');
+    var articles = JSON.parse(m[0]);
+
+    var html = '<div class="news-home-grid">';
+    articles.forEach(function(a) {
+      html += '<div class="nh-card"><a href="' + (a.url||'#') + '" target="_blank" rel="noopener">' +
+        '<div class="nh-source">' + (a.source||'가톨릭 뉴스') + '</div>' +
+        '<div class="nh-title">' + (a.title||'') + '</div>' +
+        '<div class="nh-date">' + (a.date||'') + '</div>' +
+        '<div class="nh-summary">' + (a.summary||'') + '</div>' +
+        '</a></div>';
+    });
+    html += '</div>';
+    container.innerHTML = html;
+
+  } catch(e2) {
+    // Static fallback
+    container.innerHTML = '<div class="news-home-grid">' +
+      '<div class="nh-card"><a href="https://www.vaticannews.va/ko.html" target="_blank" rel="noopener"><div class="nh-source">Vatican News</div><div class="nh-title">바티칸 뉴스 한국어 공식 사이트</div><div class="nh-summary">교황청 및 세계 가톨릭 최신 소식을 전합니다.</div></a></div>' +
+      '<div class="nh-card"><a href="https://www.catholictimes.org" target="_blank" rel="noopener"><div class="nh-source">가톨릭신문</div><div class="nh-title">가톨릭신문</div><div class="nh-summary">한국 가톨릭 주간 신문 – 교회 소식과 사목 정보.</div></a></div>' +
+      '<div class="nh-card"><a href="https://www.cbck.or.kr" target="_blank" rel="noopener"><div class="nh-source">주교회의</div><div class="nh-title">한국 천주교 주교회의</div><div class="nh-summary">교회 공식 소식 및 사목 지침.</div></a></div>' +
+      '<div class="nh-card"><a href="http://cafe.daum.net/stpeteryu" target="_blank" rel="noopener"><div class="nh-source">본당 카페</div><div class="nh-title">성 유대철 한인성당 카페</div><div class="nh-summary">본당 공식 온라인 카페 – 주보 및 공지사항.</div></a></div>' +
+      '</div>';
+  }
 }
-loadNews();
+
+
+// ==================== 매일미사 전례 (Claude API) ====================
+var _liturgyLoaded = false;
+var _liturgyDate = '';
+
+async function loadDailyLiturgy() {
+  var today = new Date().toDateString();
+  if (_liturgyLoaded && _liturgyDate === today) return;
+
+  var container = document.getElementById('liturgyContent');
+  if (!container) return;
+  container.innerHTML = '<div class="api-loading"><div class="api-spin">✝</div>' +
+    '<p>오늘의 미사 전례를 불러오는 중입니다...<br><small style="opacity:0.7;">잠시만 기다려주세요</small></p></div>';
+
+  var dateStr = new Date().toLocaleDateString('ko-KR', {
+    year:'numeric', month:'long', day:'numeric', weekday:'long'
+  });
+
+  try {
+    var resp = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 7000,
+        tools: [{type: 'web_search_20250305', name: 'web_search'}],
+        messages: [{role: 'user', content:
+          '오늘 ' + dateStr + ' 천주교 미사 독서와 복음 전체 본문을 catholic.or.kr 또는 매일미사 사이트에서 검색해주세요. ' +
+          '다음 JSON 형식으로만 반환하세요 (추가 설명 없이):\n' +
+          '{' +
+          '"liturgicalSeason":"전례시기",' +
+          '"feast":"오늘 축일 또는 주간명",' +
+          '"firstReading":{"reference":"제1독서 출처 (예: 에제 37,12-14)","text":"전체 본문"},' +
+          '"psalm":{"reference":"화답송 시편 출처","response":"후렴 문장","text":"시편 본문"},' +
+          '"secondReading":{"reference":"제2독서 출처 (주일만, 없으면 null)","text":"전체 본문 또는 null"},' +
+          '"gospel":{"reference":"복음 출처 (예: 요한 11,1-45)","text":"전체 복음 본문"},' +
+          '"meditation":"오늘 묵상 핵심 2-3문장"' +
+          '}'
+        }]
+      })
+    });
+
+    var data = await resp.json();
+    var texts = (data.content||[]).filter(function(b){return b.type==='text';});
+    if (!texts.length) throw new Error('no text');
+    var text = texts[texts.length-1].text;
+    // Extract JSON object
+    var m = text.match(/\{[\s\S]*\}/);
+    if (!m) throw new Error('no json in: ' + text.slice(0,200));
+    var lit = JSON.parse(m[0]);
+
+    renderLiturgy(lit);
+    _liturgyLoaded = true;
+    _liturgyDate = today;
+
+  } catch(e) {
+    console.error('Liturgy error:', e);
+    container.innerHTML = '<div class="api-error-box">' +
+      '전례 정보를 불러오는 데 실패했습니다.<br>' +
+      '<button class="retry-btn" onclick="reloadLiturgy()">다시 시도</button>' +
+      '</div>';
+  }
+}
+
+function reloadLiturgy() {
+  _liturgyLoaded = false;
+  loadDailyLiturgy();
+}
+
+function renderLiturgy(lit) {
+  var container = document.getElementById('liturgyContent');
+  if (!container) return;
+
+  function esc(s) {
+    if (!s) return '';
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+  function fmtText(s) {
+    if (!s) return '';
+    return esc(s).replace(/\n/g, '<br>');
+  }
+
+  var html = '';
+
+  // 제1독서
+  if (lit.firstReading && lit.firstReading.text) {
+    html += '<div class="reading-card">' +
+      '<div class="rc-label">✝ 제1독서</div>' +
+      '<div class="rc-ref">' + esc(lit.firstReading.reference) + '</div>' +
+      '<div class="rc-text">' + fmtText(lit.firstReading.text) + '</div>' +
+      '</div>';
+  }
+
+  // 화답송
+  if (lit.psalm && lit.psalm.text) {
+    html += '<div class="reading-card">' +
+      '<div class="rc-label">🎵 화답송</div>' +
+      '<div class="rc-ref">' + esc(lit.psalm.reference) + '</div>' +
+      (lit.psalm.response ? '<div class="rc-response">후렴: ' + esc(lit.psalm.response) + '</div>' : '') +
+      '<div class="rc-text">' + fmtText(lit.psalm.text) + '</div>' +
+      '</div>';
+  }
+
+  // 제2독서 (주일)
+  if (lit.secondReading && lit.secondReading.text) {
+    html += '<div class="reading-card">' +
+      '<div class="rc-label">✝ 제2독서</div>' +
+      '<div class="rc-ref">' + esc(lit.secondReading.reference) + '</div>' +
+      '<div class="rc-text">' + fmtText(lit.secondReading.text) + '</div>' +
+      '</div>';
+  }
+
+  // 복음
+  if (lit.gospel && lit.gospel.text) {
+    html += '<div class="reading-card gospel-card">' +
+      '<div class="rc-label">📖 복음</div>' +
+      '<div class="rc-ref">' + esc(lit.gospel.reference) + '</div>' +
+      '<div class="rc-text">' + fmtText(lit.gospel.text) + '</div>' +
+      '</div>';
+  }
+
+  // 묵상
+  if (lit.meditation) {
+    html += '<div class="reading-card meditation-card">' +
+      '<div class="rc-label">💭 오늘의 묵상</div>' +
+      '<div class="rc-text">' + fmtText(lit.meditation) + '</div>' +
+      '</div>';
+  }
+
+  container.innerHTML = html || '<div class="api-error-box">전례 내용을 표시할 수 없습니다.</div>';
+}
+
+
+// ==================== 페이지 전환 ====================
+(function() {
+  function switchPage(pageName) {
+    document.querySelectorAll('.page').forEach(function(p) {
+      p.classList.remove('active');
+    });
+    var target = document.getElementById('page-' + pageName);
+    if (target) { target.classList.add('active'); target.scrollTop = 0; }
+    document.querySelectorAll('[data-page]').forEach(function(a) {
+      a.classList.toggle('active', a.dataset.page === pageName);
+    });
+    window._currentPage = pageName;
+    if (pageName === 'today') loadDailyLiturgy();
+  }
+
+  document.addEventListener('click', function(e) {
+    var link = e.target.closest('[data-page]');
+    if (link) { e.preventDefault(); switchPage(link.dataset.page); }
+  });
+
+  switchPage('home');
+  loadHomeNews();
+})();
 </script>
 </body>
 </html>
