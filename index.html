@@ -118,30 +118,26 @@
   /* ── LIVE SECTION ── */
   .live-section { background: var(--warm-white); padding: 56px 24px; }
   .live-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; max-width: 1100px; margin: 0 auto; }
-
-  .liturgy-card {
-    background: var(--warm-brown); border-radius: 16px; padding: 28px; color: #F5E6C3; position: relative; overflow: hidden;
-  }
+  .liturgy-card { background: var(--warm-brown); border-radius: 16px; padding: 28px; color: #F5E6C3; position: relative; overflow: hidden; }
   .liturgy-card::before { content: "✝"; position: absolute; font-size: 180px; color: rgba(255,255,255,0.04); right: -20px; bottom: -40px; line-height: 1; }
   .lit-tag { font-size: 10px; font-weight: 700; letter-spacing: 2px; color: #FFD700; text-transform: uppercase; margin-bottom: 14px; display: block; }
-  .lit-date { font-family: "Noto Serif KR", serif; font-size: 20px; font-weight: 700; color: #fff; margin-bottom: 6px; }
-  .lit-season-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+  .lit-date { font-family: "Noto Serif KR", serif; font-size: 20px; font-weight: 700; color: #fff; margin-bottom: 8px; }
+  .lit-season-row { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
   .lit-dot { width: 16px; height: 16px; border-radius: 50%; flex-shrink: 0; border: 2px solid rgba(255,255,255,0.3); }
   .lit-season { font-size: 15px; font-weight: 700; color: #FFD700; }
-  .lit-feast { font-size: 13px; color: rgba(255,255,255,0.7); margin-bottom: 20px; min-height: 20px; }
-  .lit-divider { border: none; border-top: 1px solid rgba(255,255,255,0.15); margin: 18px 0; }
+  .lit-feast { font-size: 13px; color: rgba(255,255,255,0.7); margin-bottom: 20px; }
+  .lit-divider { border: none; border-top: 1px solid rgba(255,255,255,0.15); margin: 16px 0; }
   .lit-readings-label { font-size: 10px; font-weight: 700; letter-spacing: 1.5px; color: #FFD700; text-transform: uppercase; margin-bottom: 12px; }
   .lit-row { display: flex; gap: 10px; margin-bottom: 8px; font-size: 13px; }
-  .lit-rl { color: rgba(255,215,0,0.8); font-weight: 700; min-width: 48px; flex-shrink: 0; }
+  .lit-rl { color: rgba(255,215,0,0.8); font-weight: 700; min-width: 52px; flex-shrink: 0; }
   .lit-rv { color: rgba(255,255,255,0.7); line-height: 1.5; }
-  .lit-gospel-quote { font-family: "Noto Serif KR", serif; font-size: 14px; font-style: italic; color: rgba(255,255,255,0.85); line-height: 1.8; margin-top: 18px; padding: 14px 16px; border-left: 3px solid #FFD700; background: rgba(255,255,255,0.06); border-radius: 0 8px 8px 0; }
-  .lit-gospel-ref { font-size: 11px; color: #FFD700; margin-top: 6px; display: block; }
-
+  .lit-quote { font-family: "Noto Serif KR", serif; font-size: 14px; font-style: italic; color: rgba(255,255,255,0.88); line-height: 1.8; margin-top: 18px; padding: 14px 16px; border-left: 3px solid #FFD700; background: rgba(255,255,255,0.06); border-radius: 0 8px 8px 0; }
+  .lit-ref { font-size: 11px; color: #FFD700; margin-top: 6px; display: block; }
   .news-card { background: white; border: 1px solid var(--border); border-radius: 16px; overflow: hidden; }
   .news-head { background: var(--section-bg); padding: 16px 22px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
   .news-head-title { font-family: "Noto Serif KR", serif; font-size: 15px; font-weight: 700; color: var(--warm-brown); }
-  .news-refresh { font-size: 11px; color: var(--text-light); cursor: pointer; }
-  .news-refresh:hover { color: var(--gold); }
+  .news-refresh { font-size: 12px; color: var(--text-light); cursor: pointer; padding: 4px 8px; border-radius: 4px; border: 1px solid var(--border); background: white; }
+  .news-refresh:hover { color: var(--gold); border-color: var(--gold); }
   .news-item { padding: 14px 22px; border-bottom: 1px solid rgba(232,213,176,0.4); transition: background 0.15s; }
   .news-item:last-child { border-bottom: none; }
   .news-item:hover { background: var(--section-bg); }
@@ -149,24 +145,22 @@
   .ni-cat { font-size: 10px; font-weight: 700; letter-spacing: 1px; color: var(--gold); text-transform: uppercase; margin-bottom: 3px; }
   .ni-title { font-size: 13px; font-weight: 500; color: var(--text-dark); line-height: 1.5; }
   .ni-date { font-size: 11px; color: var(--text-light); margin-top: 3px; }
-  .news-error { padding: 20px 22px; }
-  .news-error p { font-size: 13px; color: var(--text-light); margin-bottom: 12px; }
-  .news-link-row { display: flex; flex-direction: column; gap: 10px; }
-  .news-ext-link { display: flex; align-items: center; gap: 10px; padding: 12px 16px; background: var(--section-bg); border-radius: 8px; text-decoration: none; border: 1px solid var(--border); transition: all 0.2s; }
-  .news-ext-link:hover { border-color: var(--gold); background: var(--light-gold); }
-  .nel-icon { font-size: 20px; }
-  .nel-text strong { font-size: 13px; font-weight: 700; color: var(--text-dark); display: block; }
-  .nel-text span { font-size: 11px; color: var(--text-light); }
-
+  .news-links { padding: 16px 22px; display: flex; flex-direction: column; gap: 10px; }
+  .news-ext { display: flex; align-items: center; gap: 12px; padding: 12px 16px; background: var(--section-bg); border-radius: 8px; text-decoration: none; border: 1px solid var(--border); transition: all 0.2s; }
+  .news-ext:hover { border-color: var(--gold); background: var(--light-gold); }
+  .ne-icon { font-size: 22px; flex-shrink: 0; }
+  .ne-text strong { font-size: 13px; font-weight: 700; color: var(--text-dark); display: block; margin-bottom: 1px; }
+  .ne-text span { font-size: 11px; color: var(--text-light); }
+  .news-status { padding: 12px 22px; font-size: 12px; color: var(--text-light); border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 8px; }
+  .news-dot { width: 8px; height: 8px; border-radius: 50%; background: #ccc; flex-shrink: 0; }
+  .news-dot.live { background: #4CAF50; animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.4;} }
   .word-bar { background: var(--light-gold); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 13px 24px; }
   .word-bar-inner { max-width: 1100px; margin: 0 auto; display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
   .wb-label { font-size: 10px; font-weight: 700; letter-spacing: 2px; color: var(--gold); text-transform: uppercase; white-space: nowrap; flex-shrink: 0; }
   .wb-text { font-family: "Noto Serif KR", serif; font-size: 14px; color: var(--warm-brown); font-style: italic; }
   .wb-ref { font-size: 12px; color: var(--text-light); white-space: nowrap; flex-shrink: 0; }
-
-  @media (max-width: 768px) {
-    .live-grid { grid-template-columns: 1fr; }
-  }
+  @media (max-width: 768px) { .live-grid { grid-template-columns: 1fr; } }
 
   @media (max-width: 768px) {
     nav { display: none; }
@@ -451,40 +445,37 @@
 <section class="live-section" id="today">
   <div style="max-width:1100px;margin:0 auto;">
     <div class="section-header">
-      <div class="section-label">TODAY · 매일 업데이트</div>
+      <div class="section-label">TODAY · 매일 자동 업데이트</div>
       <div class="section-title">오늘의 전례 · 가톨릭 소식</div>
-      <div class="divider"></div>
+      <div style="width:40px;height:3px;background:var(--gold);margin:12px auto 0;border-radius:2px;"></div>
     </div>
     <div class="live-grid">
-
-      <!-- 오늘의 전례 (JS로 계산) -->
       <div class="liturgy-card">
         <span class="lit-tag">✝ Liturgical Calendar · 전례 달력</span>
-        <div class="lit-date" id="lit-date"></div>
+        <div class="lit-date" id="lit-date">날짜</div>
         <div class="lit-season-row">
-          <div class="lit-dot" id="lit-dot"></div>
-          <span class="lit-season" id="lit-season"></span>
+          <div class="lit-dot" id="lit-dot" style="background:#888;"></div>
+          <span class="lit-season" id="lit-season">시기</span>
         </div>
         <div class="lit-feast" id="lit-feast"></div>
         <hr class="lit-divider">
         <div class="lit-readings-label">오늘의 독서</div>
-        <div class="lit-row"><span class="lit-rl">제1독서</span><span class="lit-rv" id="r1"></span></div>
-        <div class="lit-row"><span class="lit-rl">화답송</span><span class="lit-rv" id="r2"></span></div>
-        <div class="lit-row"><span class="lit-rl">복음</span><span class="lit-rv" id="r3"></span></div>
-        <div class="lit-gospel-quote" id="gospel-quote"></div>
+        <div class="lit-row"><span class="lit-rl">제1독서</span><span class="lit-rv" id="r1">—</span></div>
+        <div class="lit-row"><span class="lit-rl">화답송</span><span class="lit-rv" id="r2">—</span></div>
+        <div class="lit-row"><span class="lit-rl">복음</span><span class="lit-rv" id="r3">—</span></div>
+        <div class="lit-quote" id="lit-quote"></div>
       </div>
-
-      <!-- 가톨릭 소식 -->
       <div class="news-card">
         <div class="news-head">
           <span class="news-head-title">✝ 가톨릭 소식</span>
-          <span class="news-refresh" onclick="loadNews()">↻ 새로고침</span>
+          <button class="news-refresh" onclick="loadNews()">↻ 새로고침</button>
         </div>
-        <div id="news-container">
-          <!-- JS로 채워짐 -->
+        <div class="news-status">
+          <div class="news-dot" id="news-dot"></div>
+          <span id="news-status-text">뉴스를 불러오는 중...</span>
         </div>
+        <div id="news-container"></div>
       </div>
-
     </div>
   </div>
 </section>
