@@ -58,7 +58,7 @@ main{max-width:900px;margin:0 auto;padding:0 5% 80px}
 .htv{font-family:'EB Garamond',serif;font-style:italic;font-size:.95rem;color:rgba(255,255,255,.85)}
 
 /* QUICK CARDS — SVG icon style */
-.qgrid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin:24px 0}
+.qgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:24px 0}
 @media(max-width:520px){.qgrid{grid-template-columns:repeat(3,1fr)}}
 .qcard{background:var(--wh);border:1px solid rgba(200,180,160,.5);border-radius:8px;padding:18px 8px;text-align:center;cursor:pointer;transition:box-shadow .2s,border-color .2s,transform .2s;display:flex;flex-direction:column;align-items:center;gap:8px;box-shadow:0 2px 8px rgba(107,31,42,.07),0 1px 2px rgba(0,0,0,.05)}
 .qcard:hover{border-color:var(--p);box-shadow:0 8px 24px rgba(107,31,42,.14),0 2px 6px rgba(0,0,0,.08);transform:translateY(-3px)}
@@ -131,7 +131,7 @@ main{max-width:900px;margin:0 auto;padding:0 5% 80px}
 .priest-info .priest-name{font-size:1.08rem;font-weight:700;color:var(--p);margin:10px 0 3px}
 .priest-info .priest-title{font-size:.78rem;color:var(--tx3);margin-bottom:8px;letter-spacing:.04em}
 .priest-info p{font-size:.83rem;color:var(--tx2);line-height:1.75}
-@media(max-width:480px){.priest-card{flex-direction:column}.priest-img{width:100%;height:180px}}
+@media(max-width:480px){.priest-card{flex-direction:column;align-items:center}.priest-img{width:100%;max-width:200px;height:auto;aspect-ratio:9/11;object-position:top}}
 
 /* GROUPS */
 .gcard{background:var(--wh);border:1px solid var(--bd);border-radius:4px;padding:20px;margin-bottom:11px;display:flex;gap:16px;align-items:flex-start;transition:box-shadow .2s,border-color .2s}
@@ -168,6 +168,13 @@ main{max-width:900px;margin:0 auto;padding:0 5% 80px}
 .btn{display:inline-block;background:var(--p);color:#fff;font-family:'Noto Serif KR',serif;font-size:.85rem;font-weight:600;letter-spacing:.05em;padding:11px 24px;border-radius:3px;text-decoration:none;transition:background .2s,transform .15s}
 .btn:hover{background:var(--pd);transform:translateY(-1px)}
 
+/* JUBO */
+.jubo-item{display:flex;align-items:center;gap:12px;background:var(--wh);border:1px solid var(--bd);border-radius:4px;padding:13px 17px;text-decoration:none;color:var(--tx);transition:box-shadow .2s,border-color .2s,transform .15s}
+.jubo-item:hover{border-color:var(--p);box-shadow:0 4px 14px var(--sh);transform:translateY(-1px)}
+.ji-date{font-family:'EB Garamond',serif;font-size:.95rem;color:var(--gold);min-width:78px;flex-shrink:0}
+.ji-title{flex:1;font-size:.85rem;font-weight:600;color:var(--tx)}
+.ji-arr{font-size:.82rem;color:var(--p);flex-shrink:0}
+
 /* FOOTER */
 footer{background:var(--pd);color:rgba(255,255,255,.52);text-align:center;padding:24px 5%;font-size:.75rem;line-height:2}
 footer strong{color:rgba(255,255,255,.85)}
@@ -196,7 +203,7 @@ footer a{color:var(--glt);text-decoration:none}
     <button          data-p="about"   onclick="go('about')">성당 소개</button>
     <button          data-p="groups"  onclick="go('groups')">단체 소개</button>
     <button          data-p="contact" onclick="go('contact')">연락처 · 오시는 길</button>
-    <button          data-p="cafe"    onclick="go('cafe')">다음카페</button>
+    <button          data-p="jubo"    onclick="go('jubo')">주보</button>
   </nav>
 </header>
 
@@ -207,12 +214,10 @@ footer a{color:var(--glt);text-decoration:none}
   <div class="hero">
     <img src="hero-bg.jpg" alt="성당 내부" class="hero-img">
     <div class="hero-over">
-      <h2>캐나다 해밀턴 성 유대철 한인성당</h2>
+      <h2>해밀턴 성 유대철 한인성당</h2>
       <h3>St. Peter Yu Roman Catholic Church</h3>
-      <p class="hadr">해밀턴 교구 · Diocese of Hamilton · 6 Heath St. Hamilton ON L8H 5Y5</p>
       <div class="htheme">
-        <span class="hty">2026 사목지침 · 선포와 나눔의 해</span>
-        <span class="htv">"너희는 세상의 빛이다." — 마태 5,14</span>
+        <span class="hty" style="font-size:1.05rem;letter-spacing:.08em">2026 사목지침 · 선포와 나눔의 해</span>
       </div>
     </div>
   </div>
@@ -235,9 +240,13 @@ footer a{color:var(--glt);text-decoration:none}
       <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
       <span>오시는 길</span>
     </div>
-    <div class="qcard" onclick="go('cafe')">
+    <div class="qcard" onclick="window.open('http://cafe.daum.net/stpeteryu','_blank')">
       <svg viewBox="0 0 24 24"><path d="M17 8h2a2 2 0 010 4h-2"/><path d="M3 8h14v9a4 4 0 01-4 4H7a4 4 0 01-4-4V8z"/><path d="M6 2v3M10 2v3M14 2v3"/></svg>
       <span>다음카페</span>
+    </div>
+    <div class="qcard" onclick="go('jubo')">
+      <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+      <span>주보</span>
     </div>
   </div>
 
@@ -385,14 +394,7 @@ footer a{color:var(--glt);text-decoration:none}
     <p>성 유대철 한인성당의 신심 단체와 봉사 단체들을 소개합니다.</p>
   </div>
 
-  <div class="gcard">
-    <div class="gic"><svg viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></div>
-    <div class="ginfo">
-      <h3>성가대</h3>
-      <p>주일 미사와 각종 전례에서 아름다운 성가로 하느님께 영광을 드립니다. 새로운 단원을 언제나 환영합니다.</p>
-    </div>
-  </div>
-
+  <!-- 1. 레지오 마리애 -->
   <div class="gcard">
     <div class="gic"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
     <div class="ginfo">
@@ -409,31 +411,36 @@ footer a{color:var(--glt);text-decoration:none}
     </div>
   </div>
 
+  <!-- 2. 바뇌 성모 기도회 -->
+  <div class="gcard">
+    <div class="gic"><svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg></div>
+    <div class="ginfo">
+      <h3>바뇌 성모 기도회</h3>
+      <p>성모님께 대한 신심을 바탕으로 함께 기도하는 모임입니다.</p>
+      <p class="ct">매월 1·3주 토요일 10:00</p>
+    </div>
+  </div>
+
+  <!-- 3. 성모회 -->
+  <div class="gcard">
+    <div class="gic"><svg viewBox="0 0 24 24"><path d="M12 2l2 7h7l-5.5 4 2 7L12 16l-5.5 4 2-7L3 9h7z"/></svg></div>
+    <div class="ginfo">
+      <h3>성모회</h3>
+      <p>성모님의 전구를 통해 신앙을 키우고 본당 공동체를 위해 봉사하는 여성 신심 단체입니다.</p>
+    </div>
+  </div>
+
+  <!-- 4. 꾸르실료 · 울뜨레야 -->
   <div class="gcard">
     <div class="gic"><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div>
     <div class="ginfo">
       <h3>꾸르실료 · 울뜨레야</h3>
       <p>꾸르실료 운동을 통해 신앙 쇄신을 이어갑니다.</p>
-      <p class="ct">울뜨레야: 매월 첫 목요일 성시간 후 · 바뇌 성모 기도회: 매월 1·3주 토요일 10:00</p>
+      <p class="ct">울뜨레야: 매월 첫 목요일 성시간 후</p>
     </div>
   </div>
 
-  <div class="gcard">
-    <div class="gic"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></div>
-    <div class="ginfo">
-      <h3>행사분과</h3>
-      <p>본당의 각종 행사와 축제를 기획·진행합니다. 부활절, 성탄절 등 대형 행사를 담당합니다.</p>
-    </div>
-  </div>
-
-  <div class="gcard">
-    <div class="gic"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg></div>
-    <div class="ginfo">
-      <h3>주일학교 · 자모회</h3>
-      <p>어린이들이 신앙을 배우고 자라는 공간입니다. 주일 미사 중 운영됩니다.</p>
-    </div>
-  </div>
-
+  <!-- 5. 가톨릭 성서 모임 -->
   <div class="gcard">
     <div class="gic"><svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg></div>
     <div class="ginfo">
@@ -443,6 +450,34 @@ footer a{color:var(--glt);text-decoration:none}
     </div>
   </div>
 
+  <!-- 6. 주일학교 · 자모회 -->
+  <div class="gcard">
+    <div class="gic"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg></div>
+    <div class="ginfo">
+      <h3>주일학교 · 자모회</h3>
+      <p>어린이들이 신앙을 배우고 자라는 공간입니다. 주일 미사 중 운영됩니다.</p>
+    </div>
+  </div>
+
+  <!-- 7. 전례분과 · 복사단 -->
+  <div class="gcard">
+    <div class="gic"><svg viewBox="0 0 24 24"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/><circle cx="12" cy="12" r="3"/></svg></div>
+    <div class="ginfo">
+      <h3>전례분과 · 복사단</h3>
+      <p>미사 전례 봉사를 담당합니다. 해설, 독서, 복사, 봉헌 봉사자를 모집합니다.</p>
+    </div>
+  </div>
+
+  <!-- 8. 성가대 -->
+  <div class="gcard">
+    <div class="gic"><svg viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></div>
+    <div class="ginfo">
+      <h3>성가대</h3>
+      <p>주일 미사와 각종 전례에서 아름다운 성가로 하느님께 영광을 드립니다. 새로운 단원을 언제나 환영합니다.</p>
+    </div>
+  </div>
+
+  <!-- 9. 시설분과 -->
   <div class="gcard">
     <div class="gic"><svg viewBox="0 0 24 24"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg></div>
     <div class="ginfo">
@@ -452,11 +487,12 @@ footer a{color:var(--glt);text-decoration:none}
     </div>
   </div>
 
+  <!-- 10. 행사분과 -->
   <div class="gcard">
-    <div class="gic"><svg viewBox="0 0 24 24"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/><circle cx="12" cy="12" r="3"/></svg></div>
+    <div class="gic"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></div>
     <div class="ginfo">
-      <h3>전례분과 · 복사단</h3>
-      <p>미사 전례 봉사를 담당합니다. 해설, 독서, 복사, 봉헌 봉사자를 모집합니다.</p>
+      <h3>행사분과</h3>
+      <p>본당의 각종 행사와 축제를 기획·진행합니다. 부활절, 성탄절 등 대형 행사를 담당합니다.</p>
     </div>
   </div>
 </section>
@@ -507,22 +543,26 @@ footer a{color:var(--glt);text-decoration:none}
   </div>
 </section>
 
-<!-- CAFE -->
-<section class="pg" id="pg-cafe">
+<!-- JUBO -->
+<section class="pg" id="pg-jubo">
   <div class="ph">
-    <div class="lbl">Community Online</div>
-    <h1>다음카페</h1>
-    <p>온라인 교우 공동체 공간입니다.</p>
+    <div class="lbl">Weekly Bulletin</div>
+    <h1>주보</h1>
+    <p>이번 주 주보와 최근 목록입니다. 매주 자동으로 업데이트됩니다.</p>
   </div>
-  <div class="cafec">
-    <div class="cfl">
-      <svg viewBox="0 0 24 24"><path d="M17 8h2a2 2 0 010 4h-2"/><path d="M3 8h14v9a4 4 0 01-4 4H7a4 4 0 01-4-4V8z"/><path d="M6 2v3M10 2v3M14 2v3"/></svg>
-    </div>
-    <h3>대철 주보 다음카페</h3>
-    <p>공지사항, 미사 일정, 행사 안내, 교우 소식 등을<br>다음카페에서 확인하실 수 있습니다.<br>가입 후 다양한 소식을 함께 나눠요.</p>
-    <a class="btn" href="http://cafe.daum.net/stpeteryu" target="_blank">다음카페 바로가기 →</a>
+
+  <!-- 이번 주 주보 (JS 자동 생성) -->
+  <div id="jubo-current" style="margin-bottom:16px"></div>
+
+  <!-- 최근 주보 목록 (JS 자동 생성) -->
+  <div id="jubo-list" style="display:grid;gap:9px"></div>
+
+  <div class="nbox" style="border-radius:8px;margin-top:16px">
+    <h4>📋 주보 게시판 전체 보기</h4>
+    <p><a href="https://cafe.daum.net/stpeteryu/JqAw" target="_blank">→ 다음카페 주보 게시판 바로가기</a></p>
   </div>
 </section>
+
 
 </main>
 
@@ -545,13 +585,129 @@ function go(id) {
 }
 window.addEventListener('hashchange', function() {
   var h = location.hash.replace('#','') || 'home';
-  if (['home','mass','about','groups','contact','cafe'].indexOf(h) >= 0) go(h);
+  if (['home','mass','about','groups','contact','jubo'].indexOf(h) >= 0) go(h);
 });
 (function(){
   var h = location.hash.replace('#','') || 'home';
-  if (['home','mass','about','groups','contact','cafe'].indexOf(h) >= 0) go(h);
+  if (['home','mass','about','groups','contact','jubo'].indexOf(h) >= 0) go(h);
 })();
 document.getElementById('yr').textContent = new Date().getFullYear();
+
+// ── 주보 자동 로더 ─────────────────────────────────────
+(function() {
+  // 앵커: 게시글 911 = 2026-04-05 (부활 대축일 주일)
+  var ANCHOR_POST = 911;
+  var ANCHOR_MS   = new Date(2026, 3, 5).getTime(); // 3 = April (0-indexed)
+  var WEEK_MS     = 7 * 24 * 3600 * 1000;
+  var BASE_URL    = 'https://cafe.daum.net/stpeteryu/JqAw/';
+
+  // 전례력 이름표 2025–2027
+  var T = {
+    '2025-11-30':'대림 제1주일','2025-12-07':'대림 제2주일',
+    '2025-12-14':'대림 제3주일','2025-12-21':'대림 제4주일',
+    '2025-12-25':'성탄 대축일','2025-12-28':'성가정 축일',
+    '2026-01-01':'천주의 성모 마리아 대축일',
+    '2026-01-04':'주님 공현 대축일',
+    '2026-01-11':'주님 세례 축일',
+    '2026-01-18':'연중 제2주일','2026-01-25':'연중 제3주일',
+    '2026-02-01':'연중 제4주일','2026-02-08':'연중 제5주일',
+    '2026-02-15':'설날 특전 미사',
+    '2026-02-22':'사순 제1주일','2026-03-01':'사순 제2주일',
+    '2026-03-08':'사순 제3주일','2026-03-15':'사순 제4주일',
+    '2026-03-22':'사순 제5주일',
+    '2026-03-29':'주님 수난 성지 주일',
+    '2026-04-05':'주님 부활 대축일',
+    '2026-04-12':'부활 제2주일','2026-04-19':'부활 제3주일',
+    '2026-04-26':'부활 제4주일','2026-05-03':'부활 제5주일',
+    '2026-05-10':'부활 제6주일',
+    '2026-05-17':'주님 승천 대축일',
+    '2026-05-24':'성령 강림 대축일',
+    '2026-05-31':'삼위일체 대축일',
+    '2026-06-07':'주님의 몸과 피 대축일',
+    '2026-06-14':'연중 제11주일','2026-06-21':'연중 제12주일',
+    '2026-06-28':'연중 제13주일','2026-07-05':'연중 제14주일',
+    '2026-07-12':'연중 제15주일','2026-07-19':'연중 제16주일',
+    '2026-07-26':'연중 제17주일','2026-08-02':'연중 제18주일',
+    '2026-08-09':'연중 제19주일','2026-08-16':'연중 제20주일',
+    '2026-08-23':'연중 제21주일','2026-08-30':'연중 제22주일',
+    '2026-09-06':'연중 제23주일','2026-09-13':'연중 제24주일',
+    '2026-09-20':'연중 제25주일','2026-09-27':'연중 제26주일',
+    '2026-10-04':'연중 제27주일','2026-10-11':'연중 제28주일',
+    '2026-10-18':'연중 제29주일 (전교 주일)',
+    '2026-10-25':'연중 제30주일',
+    '2026-11-01':'모든 성인 대축일',
+    '2026-11-08':'연중 제32주일','2026-11-15':'연중 제33주일',
+    '2026-11-22':'온 누리의 임금이신 우리 주 예수 그리스도 왕 대축일',
+    '2026-11-29':'대림 제1주일','2026-12-06':'대림 제2주일',
+    '2026-12-13':'대림 제3주일','2026-12-20':'대림 제4주일',
+    '2026-12-27':'성가정 축일',
+    '2027-01-03':'주님 공현 대축일','2027-01-10':'주님 세례 축일',
+    '2027-01-17':'연중 제2주일','2027-01-24':'연중 제3주일'
+  };
+
+  function pad(n){ return n<10?'0'+n:''+n; }
+  function key(d){ return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate()); }
+  function fmt(d){ return d.getFullYear()+'.'+pad(d.getMonth()+1)+'.'+pad(d.getDate()); }
+
+  function postToSunday(p) {
+    var d = new Date(ANCHOR_MS + (p - ANCHOR_POST) * WEEK_MS);
+    return d;
+  }
+  function sundayToPost(d) {
+    return ANCHOR_POST + Math.round((d.getTime() - ANCHOR_MS) / WEEK_MS);
+  }
+  function getTitle(sunday) {
+    return T[key(sunday)] || (sunday.getFullYear()+'년 '+( sunday.getMonth()+1)+'월 '+sunday.getDate()+'일 주일');
+  }
+
+  // 현재 기준 주일: 토요일이면 다음 주일로
+  var now = new Date();
+  var dow = now.getDay(); // 0=일, 6=토
+  var thisSunday = new Date(now);
+  thisSunday.setDate(now.getDate() + (dow === 6 ? 1 : -dow));
+  thisSunday.setHours(0,0,0,0);
+
+  var curPost = sundayToPost(thisSunday);
+
+  // ① 이번 주 주보 (강조 카드)
+  var curEl = document.getElementById('jubo-current');
+  if (curEl) {
+    curEl.innerHTML =
+      '<a href="'+BASE_URL+curPost+'" target="_blank" style="'+
+      'display:flex;align-items:center;gap:16px;background:var(--p);border-radius:8px;'+
+      'padding:20px 22px;text-decoration:none;color:#fff;'+
+      'box-shadow:0 4px 16px rgba(107,31,42,.25);transition:opacity .2s"'+
+      ' onmouseover="this.style.opacity=\'.85\'" onmouseout="this.style.opacity=\'1\'">'+
+      '<svg viewBox="0 0 24 24" style="width:34px;height:34px;stroke:var(--glt);fill:none;stroke-width:1.5;flex-shrink:0;stroke-linecap:round;stroke-linejoin:round">'+
+      '<path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>'+
+      '<polyline points="14 2 14 8 20 8"/>'+
+      '<line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/>'+
+      '</svg>'+
+      '<div style="flex:1">'+
+      '<div style="font-size:.7rem;letter-spacing:.12em;color:rgba(255,255,255,.55);margin-bottom:4px">이번 주 주보</div>'+
+      '<div style="font-size:1.08rem;font-weight:700;line-height:1.3;margin-bottom:3px">'+getTitle(thisSunday)+'</div>'+
+      '<div style="font-family:\'EB Garamond\',serif;font-size:.92rem;color:rgba(255,255,255,.65)">'+fmt(thisSunday)+' · 제'+curPost+'호</div>'+
+      '</div>'+
+      '<svg viewBox="0 0 24 24" style="width:20px;height:20px;stroke:rgba(255,255,255,.45);fill:none;stroke-width:2;flex-shrink:0;stroke-linecap:round;stroke-linejoin:round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>'+
+      '</a>';
+  }
+
+  // ② 최근 10주 목록
+  var listEl = document.getElementById('jubo-list');
+  if (listEl) {
+    var html = '<div style="font-size:.72rem;font-weight:600;color:var(--tx3);letter-spacing:.1em;padding:0 2px 8px;border-bottom:1px solid var(--bd);margin-bottom:2px">최근 주보</div>';
+    for (var i = 1; i <= 10; i++) {
+      var p = curPost - i;
+      var sun = postToSunday(p);
+      html += '<a class="jubo-item" href="'+BASE_URL+p+'" target="_blank">'+
+        '<span class="ji-date">'+fmt(sun)+'</span>'+
+        '<span class="ji-title">'+getTitle(sun)+'</span>'+
+        '<span class="ji-arr">→</span></a>';
+    }
+    listEl.innerHTML = html;
+  }
+})();
+
 
 // ── 바티칸뉴스 한국어 최신 뉴스 로딩 ───────────────
 (function loadNews() {
