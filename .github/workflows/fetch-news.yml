@@ -1,0 +1,87 @@
+name: Fetch Catholic News
+
+on:
+  schedule:
+    - cron: '0 * * * *'   # 매시간 정각 자동 실행
+  workflow_dispatch:       # GitHub에서 수동 실행도 가능
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write      # news.json 커밋 권한
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Fetch Vatican News RSS and save as news.json
+        run: |
+          python3 - <<'EOF'
+          import urllib.request, xml.etree.ElementTree as ET, json, re
+          from datetime import datetime
+
+          url = 'https://www.vaticannews.va/ko.rss.xml'
+          headers = {'User-Agent': 'Mozilla/5.0 (compatible; ParishBot/1.0)'}
+
+          req = urllib.request.Request(url, headers=headers)
+          with urllib.request.urlopen(req, timeout=15) as resp:
+              raw = resp.read()
+
+          root = ET.fromstring(raw)
+          ns = {'media': 'http://search.yahoo.com/mrss/'}
+          items = root.findall('.//item')
+          results = []
+
+          for item in items[:3]:
+              title = item.findtext('title', '').strip()
+              link  = item.findtext('link',  '').strip()
+              pub   = item.findtext('pubDate', '').strip()
+              img   = ''
+
+              # 이미지: enclosure
+              enc = item.find('enclosure')
+              if enc is not None and 'image' in (enc.get('type') or ''):
+                  img = enc.get('url', '')
+
+              # 이미지: media:thumbnail / media:content
+              if not img:
+                  for tag in ('thumbnail', 'content'):
+                      el = item.find(f'media:{tag}', ns)
+                      if el is not None:
+                          img = el.get('url', '')
+                          break
+
+              # 이미지: description 내 <img src="...">
+              if not img:
+                  desc = item.findtext('description', '')
+                  m = re.search(r'<img[^>]+src=["\']([^"\']+)["\']', desc)
+                  if m:
+                      img = m.group(1)
+
+              # 날짜 포맷
+              if pub:
+                  try:
+                      d = datetime.strptime(pub[:25], '%a, %d %b %Y %H:%M:%S')
+                      pub = d.strftime('%Y.%m.%d')
+                  except Exception:
+                      pass
+
+              if title:
+                  results.append({'title': title, 'link': link, 'date': pub, 'img': img})
+
+          with open('news.json', 'w', encoding='utf-8') as f:
+              json.dump(results, f, ensure_ascii=False, indent=2)
+
+          print(f"저장 완료: {len(results)}개 기사")
+          for r in results:
+              print(f"  - {r['title'][:50]}")
+          EOF
+
+      - name: Commit news.json
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add news.json
+          git diff --cached --quiet || git commit -m "chore: update news.json [$(date -u '+%Y-%m-%d %H:%M UTC')]"
+          git push
