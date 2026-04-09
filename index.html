@@ -255,7 +255,7 @@ footer a{color:var(--glt);text-decoration:none}
     <div class="news-box">
       <div class="news-head">
         <h4>가톨릭 뉴스</h4>
-        <a href="https://news.google.com/search?q=가톨릭&hl=ko&gl=KR" target="_blank">더보기 →</a>
+        <a href="https://www.vaticannews.va/ko.html" target="_blank">더보기 →</a>
       </div>
       <div class="news-grid" id="news-grid">
         <!-- JS로 채워짐, 실패시 아래 기본값 표시 -->
@@ -553,34 +553,39 @@ window.addEventListener('hashchange', function() {
 })();
 document.getElementById('yr').textContent = new Date().getFullYear();
 
-// ── 가톨릭 뉴스 로딩 (Google News RSS) ───────────────
+// ── 바티칸뉴스 한국어 최신 뉴스 로딩 ───────────────
 (function loadNews() {
-  var rssUrl = 'https://news.google.com/rss/search?q=가톨릭&hl=ko&gl=KR&ceid=KR:ko';
+  var rssUrl = 'https://www.vaticannews.va/ko.rss.xml';
   var proxyUrl = 'https://api.allorigins.win/get?url=' + encodeURIComponent(rssUrl);
 
-  function fmtDate(s) {
-    if (!s) return '';
-    var d = new Date(s);
-    if (isNaN(d)) return '';
-    return d.getFullYear() + '.' + String(d.getMonth()+1).padStart(2,'0') + '.' + String(d.getDate()).padStart(2,'0');
-  }
-
-  var ph = '<div class="news-thumb-ph"><svg viewBox="0 0 24 24" style="width:28px;height:28px;stroke:#b0a090;fill:none;stroke-width:1.3;opacity:.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>';
-
   function parseRSS(xml) {
-    var doc = new DOMParser().parseFromString(xml, 'text/xml');
+    var parser = new DOMParser();
+    var doc = parser.parseFromString(xml, 'text/xml');
     var items = doc.querySelectorAll('item');
     var results = [];
     items.forEach(function(item) {
       if (results.length >= 3) return;
-      var title   = (item.querySelector('title')   || {}).textContent || '';
-      var link    = (item.querySelector('link')    || {}).textContent || '#';
-      var pubDate = (item.querySelector('pubDate') || {}).textContent || '';
-      // 구글뉴스는 source 태그에 출처 있음
-      var source  = item.querySelector('source') ? item.querySelector('source').textContent : '';
-      title = title.trim();
-      link  = link.trim();
-      if (title) results.push({ title: title, link: link, date: fmtDate(pubDate), source: source });
+      var title   = item.querySelector('title')   ? item.querySelector('title').textContent.trim()   : '';
+      var link    = item.querySelector('link')    ? item.querySelector('link').textContent.trim()    : '#';
+      var pubDate = item.querySelector('pubDate') ? item.querySelector('pubDate').textContent.trim() : '';
+      var imgUrl  = '';
+      // 이미지: enclosure 또는 media:thumbnail 또는 description 내 img 태그
+      var enclosure = item.querySelector('enclosure');
+      if (enclosure && /image/.test(enclosure.getAttribute('type') || '')) imgUrl = enclosure.getAttribute('url');
+      if (!imgUrl) {
+        var mt = item.getElementsByTagNameNS('*','thumbnail')[0] || item.getElementsByTagNameNS('*','content')[0];
+        if (mt) imgUrl = mt.getAttribute('url');
+      }
+      if (!imgUrl) {
+        var desc = item.querySelector('description') ? item.querySelector('description').textContent : '';
+        var m = desc.match(/<img[^>]+src=["']([^"']+)["']/i);
+        if (m) imgUrl = m[1];
+      }
+      if (pubDate) {
+        var d = new Date(pubDate);
+        if (!isNaN(d)) pubDate = d.getFullYear() + '.' + String(d.getMonth()+1).padStart(2,'0') + '.' + String(d.getDate()).padStart(2,'0');
+      }
+      if (title) results.push({ title: title, link: link, date: pubDate, img: imgUrl });
     });
     return results;
   }
@@ -589,24 +594,22 @@ document.getElementById('yr').textContent = new Date().getFullYear();
     var grid = document.getElementById('news-grid');
     if (!grid || !items.length) return;
     grid.innerHTML = items.map(function(it) {
-      var safeLink = it.link.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
+      var thumb = it.img
+        ? '<img src="' + it.img + '" class="news-thumb" alt="" loading="lazy" onerror="this.style.display=\'none\';this.nextSibling.style.display=\'flex\'">'
+          + '<div class="news-thumb-ph" style="display:none"><svg viewBox="0 0 24 24" style="width:28px;height:28px;stroke:#b0a090;fill:none;stroke-width:1.3;opacity:.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>'
+        : '<div class="news-thumb-ph"><svg viewBox="0 0 24 24" style="width:28px;height:28px;stroke:#b0a090;fill:none;stroke-width:1.3;opacity:.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>';
+      var safeLink = (it.link || '').replace(/\\/g,'\\\\').replace(/'/g,"\\'");
       return '<div class="news-item" onclick="window.open(\'' + safeLink + '\',\'_blank\')">'
-        + ph
-        + '<div class="news-body">'
-        + '<p class="ntitle">' + it.title + '</p>'
-        + '<p class="ndate">' + (it.source || '') + (it.date ? ' · ' + it.date : '') + '</p>'
-        + '</div></div>';
+        + thumb
+        + '<div class="news-body"><p class="ntitle">' + it.title + '</p>'
+        + (it.date ? '<p class="ndate">' + it.date + '</p>' : '') + '</div></div>';
     }).join('');
   }
 
-  fetch(proxyUrl)
-    .then(function(r) { return r.text(); })
-    .then(function(text) {
-      try { text = JSON.parse(text).contents || text; } catch(e) {}
-      if (!text || text.indexOf('<item') === -1) return;
-      renderNews(parseRSS(text));
-    })
-    .catch(function() {});
+  fetch(proxyUrl, { cache: 'default' })
+    .then(function(r){ return r.json(); })
+    .then(function(data){ renderNews(parseRSS(data.contents)); })
+    .catch(function(){}); // 실패시 placeholder 유지
 })();
 </script>
 </body>
