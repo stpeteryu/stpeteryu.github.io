@@ -709,43 +709,8 @@ document.getElementById('yr').textContent = new Date().getFullYear();
 })();
 
 
-// ── 바티칸뉴스 한국어 최신 뉴스 로딩 ───────────────
+// ── 가톨릭 뉴스 로딩 (news.json — GitHub Actions 자동 생성) ──
 (function loadNews() {
-  var rssUrl   = 'https://www.vaticannews.va/ko.rss.xml';
-  var CACHE_KEY = 'vn_cache';
-  var CACHE_TTL = 3 * 3600 * 1000; // 3시간
-
-  function parseRSS(xml) {
-    var parser = new DOMParser();
-    var doc = parser.parseFromString(xml, 'text/xml');
-    var items = doc.querySelectorAll('item');
-    var results = [];
-    items.forEach(function(item) {
-      if (results.length >= 3) return;
-      var title   = item.querySelector('title')   ? item.querySelector('title').textContent.trim()   : '';
-      var link    = item.querySelector('link')    ? item.querySelector('link').textContent.trim()    : '#';
-      var pubDate = item.querySelector('pubDate') ? item.querySelector('pubDate').textContent.trim() : '';
-      var imgUrl  = '';
-      var enclosure = item.querySelector('enclosure');
-      if (enclosure && /image/.test(enclosure.getAttribute('type') || '')) imgUrl = enclosure.getAttribute('url');
-      if (!imgUrl) {
-        var mt = item.getElementsByTagNameNS('*','thumbnail')[0] || item.getElementsByTagNameNS('*','content')[0];
-        if (mt) imgUrl = mt.getAttribute('url');
-      }
-      if (!imgUrl) {
-        var desc = item.querySelector('description') ? item.querySelector('description').textContent : '';
-        var m = desc.match(/<img[^>]+src=["']([^"']+)["']/i);
-        if (m) imgUrl = m[1];
-      }
-      if (pubDate) {
-        var d = new Date(pubDate);
-        if (!isNaN(d)) pubDate = d.getFullYear() + '.' + String(d.getMonth()+1).padStart(2,'0') + '.' + String(d.getDate()).padStart(2,'0');
-      }
-      if (title) results.push({ title: title, link: link, date: pubDate, img: imgUrl });
-    });
-    return results;
-  }
-
   function renderNews(items) {
     var grid = document.getElementById('news-grid');
     if (!grid || !items.length) return;
@@ -762,36 +727,10 @@ document.getElementById('yr').textContent = new Date().getFullYear();
     }).join('');
   }
 
-  // ① 캐시 먼저 즉시 표시
-  try {
-    var cached = JSON.parse(localStorage.getItem(CACHE_KEY));
-    if (cached && cached.ts && (Date.now() - cached.ts < CACHE_TTL) && cached.items.length) {
-      renderNews(cached.items);
-    }
-  } catch(e) {}
-
-  // ② 백그라운드에서 새 데이터 fetch (corsproxy.io가 allorigins보다 빠름)
-  var proxies = [
-    'https://corsproxy.io/?' + encodeURIComponent(rssUrl),
-    'https://api.allorigins.win/get?url=' + encodeURIComponent(rssUrl)
-  ];
-  var done = false;
-
-  proxies.forEach(function(url) {
-    fetch(url, { cache: 'no-store' })
-      .then(function(r) { return r.json(); })
-      .then(function(data) {
-        if (done) return;
-        var xml = data.contents || data;
-        if (typeof xml !== 'string') return;
-        var items = parseRSS(xml);
-        if (!items.length) return;
-        done = true;
-        renderNews(items);
-        try { localStorage.setItem(CACHE_KEY, JSON.stringify({ ts: Date.now(), items: items })); } catch(e) {}
-      })
-      .catch(function(){});
-  });
+  fetch('news.json?v=' + Date.now())
+    .then(function(r) { return r.json(); })
+    .then(function(data) { renderNews(data); })
+    .catch(function() {}); // news.json 없으면 스켈레톤 유지
 })();
 </script>
 </body>
