@@ -85,13 +85,22 @@ main{max-width:900px;margin:0 auto;padding:0 5% 80px}
 @media(max-width:700px){.news-grid{grid-template-columns:1fr}}
 .news-item{cursor:pointer;border-radius:6px;overflow:hidden;border:1px solid var(--bd);background:var(--bg);transition:box-shadow .2s,transform .2s}
 .news-item:hover{box-shadow:0 4px 14px rgba(0,0,0,.1);transform:translateY(-2px)}
-.news-thumb{width:100%;aspect-ratio:4/3;object-fit:cover;display:block;background:var(--bg2)}
-.news-thumb-ph{width:100%;aspect-ratio:4/3;background:linear-gradient(135deg,var(--bg2),var(--bd));display:flex;align-items:center;justify-content:center}
+.news-thumb{width:100%;aspect-ratio:2/1;object-fit:cover;display:block;background:var(--bg2)}
+.news-thumb-ph{width:100%;aspect-ratio:2/1;background:linear-gradient(135deg,var(--bg2),var(--bd));display:flex;align-items:center;justify-content:center}
 .news-thumb-ph svg{width:28px;height:28px;stroke:var(--tx3);fill:none;stroke-width:1.3;opacity:.5}
 .news-body{padding:9px 10px}
 .news-body .ntitle{font-size:.76rem;font-weight:600;color:var(--tx);line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .news-body .ndate{font-size:.68rem;color:var(--tx3);margin-top:4px}
 #news-status{font-size:.75rem;color:var(--tx3);text-align:center;padding:8px 0;display:none}
+/* 스켈레톤 */
+@keyframes sk{0%,100%{opacity:.45}50%{opacity:.9}}
+.news-skel{border-radius:6px;overflow:hidden;border:1px solid var(--bd);background:var(--bg)}
+.ns-img{width:100%;aspect-ratio:2/1;background:var(--bg2);animation:sk 1.4s ease-in-out infinite}
+.ns-t{height:11px;border-radius:3px;background:var(--bd);margin:10px 10px 6px;animation:sk 1.4s ease-in-out infinite .1s}
+.ns-d{height:9px;border-radius:3px;background:var(--bg2);margin:0 10px 12px;width:55%;animation:sk 1.4s ease-in-out infinite .2s}
+/* 뉴스 로드 후 fade-in */
+@keyframes nfi{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+.news-item{animation:nfi .35s ease both}
 
 /* CAFE WIDGET */
 .cafe-widget{background:var(--wh);border:1px solid var(--bd);border-radius:8px;padding:20px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.05)}
@@ -267,19 +276,10 @@ footer a{color:var(--glt);text-decoration:none}
         <a href="https://www.vaticannews.va/ko.html" target="_blank">더보기 →</a>
       </div>
       <div class="news-grid" id="news-grid">
-        <!-- JS로 채워짐, 실패시 아래 기본값 표시 -->
-        <div class="news-item" onclick="window.open('http://cafe.daum.net/stpeteryu','_blank')">
-          <div class="news-thumb-ph"><svg viewBox="0 0 24 24"><path d="M3 9.5V21h18V9.5"/><path d="M1 10l11-8 11 8"/></svg></div>
-          <div class="news-body"><p class="ntitle">성당 소식 및 공지사항</p><p class="ndate">다음카페에서 확인하세요</p></div>
-        </div>
-        <div class="news-item" onclick="window.open('http://cafe.daum.net/stpeteryu','_blank')">
-          <div class="news-thumb-ph"><svg viewBox="0 0 24 24"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4"/><circle cx="12" cy="12" r="3"/></svg></div>
-          <div class="news-body"><p class="ntitle">미사 및 전례 안내</p><p class="ndate">매주 업데이트</p></div>
-        </div>
-        <div class="news-item" onclick="window.open('http://cafe.daum.net/stpeteryu','_blank')">
-          <div class="news-thumb-ph"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div>
-          <div class="news-body"><p class="ntitle">단체 및 행사 소식</p><p class="ndate">카페에서 자세히 보기</p></div>
-        </div>
+        <!-- 스켈레톤 로딩 -->
+        <div class="news-skel"><div class="ns-img"></div><div class="ns-t"></div><div class="ns-d"></div></div>
+        <div class="news-skel"><div class="ns-img"></div><div class="ns-t"></div><div class="ns-d"></div></div>
+        <div class="news-skel"><div class="ns-img"></div><div class="ns-t"></div><div class="ns-d"></div></div>
       </div>
       <div id="news-status"></div>
     </div>
@@ -352,8 +352,8 @@ footer a{color:var(--glt);text-decoration:none}
 
   <div class="ablk">
     <h3>2026 사목지침</h3>
-    <p><strong style="color:var(--p)">"선포와 나눔의 해"</strong><br><br>
-    2026년 '선포와 나눔의 해'를 맞아, 우리 공동체는 복음의 기쁨을 이웃에게 전하고 신앙의 유산을 가족과 나누고자 합니다. 일상 속 말씀 묵상과 따뜻한 환대, 충실한 모임 참여를 통해 세상에 그리스도의 향기를 전하는 여정에 여러분을 초대합니다</p>
+    <p><strong style="color:var(--p)">"너희는 세상의 빛이다." (마태 5,14)</strong><br><br>
+    선포와 나눔의 해인 2026년, 저희 공동체는 세상의 빛과 소금으로서 이웃과 함께하는 신앙을 실천합니다. "본당 공동체를 위하여" 밤 9시 주모경을 함께 바칩니다.</p>
   </div>
 
   <div class="ablk">
@@ -430,7 +430,7 @@ footer a{color:var(--glt);text-decoration:none}
     </div>
   </div>
 
-  <!-- 4. 울뜨레야 -->
+  <!-- 4. 꾸르실료 · 울뜨레야 -->
   <div class="gcard">
     <div class="gic"><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div>
     <div class="ginfo">
@@ -518,7 +518,7 @@ footer a{color:var(--glt);text-decoration:none}
     <div class="ccard">
       <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
       <h4>이메일</h4>
-      <p><a href="/cdn-cgi/l/email-protection#72010602170617000b071a131f1b1e061d1c321a131f1b1e061d1c161b1d111701175c111d1f" style="font-size:.74rem;word-break:break-all"><span class="__cf_email__" data-cfemail="dfacabafbaabbaada6aab7beb2b6b3abb0b19fb7beb2b6b3abb0b1bbb6b0bcbaacbaf1bcb0b2">stpeteryuhamilton@hamiltondiocese.com</span></a></p>
+      <p><a href="/cdn-cgi/l/email-protection#72010602170617000b071a131f1b1e061d1c321a131f1b1e061d1c161b1d111701175c111d1f" style="font-size:.74rem;word-break:break-all"><span class="__cf_email__" data-cfemail="dfacabafbaabbaada6aab7beb2b6b3abb0b19fb7beb2b6b3abb0b1bbb6b0bcbaacbaf1bcb0b2">[email&#160;protected]</span></a></p>
     </div>
     <div class="ccard">
       <svg viewBox="0 0 24 24"><path d="M17 8h2a2 2 0 010 4h-2"/><path d="M3 8h14v9a4 4 0 01-4 4H7a4 4 0 01-4-4V8z"/><path d="M6 2v3M10 2v3M14 2v3"/></svg>
@@ -749,13 +749,13 @@ document.getElementById('yr').textContent = new Date().getFullYear();
   function renderNews(items) {
     var grid = document.getElementById('news-grid');
     if (!grid || !items.length) return;
-    grid.innerHTML = items.map(function(it) {
+    grid.innerHTML = items.map(function(it, i) {
       var thumb = it.img
         ? '<img src="' + it.img + '" class="news-thumb" alt="" loading="lazy" onerror="this.style.display=\'none\';this.nextSibling.style.display=\'flex\'">'
           + '<div class="news-thumb-ph" style="display:none"><svg viewBox="0 0 24 24" style="width:28px;height:28px;stroke:#b0a090;fill:none;stroke-width:1.3;opacity:.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>'
         : '<div class="news-thumb-ph"><svg viewBox="0 0 24 24" style="width:28px;height:28px;stroke:#b0a090;fill:none;stroke-width:1.3;opacity:.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>';
       var safeLink = (it.link || '').replace(/\\/g,'\\\\').replace(/'/g,"\\'");
-      return '<div class="news-item" onclick="window.open(\'' + safeLink + '\',\'_blank\')">'
+      return '<div class="news-item" style="animation-delay:' + (i * 80) + 'ms" onclick="window.open(\'' + safeLink + '\',\'_blank\')">'
         + thumb
         + '<div class="news-body"><p class="ntitle">' + it.title + '</p>'
         + (it.date ? '<p class="ndate">' + it.date + '</p>' : '') + '</div></div>';
