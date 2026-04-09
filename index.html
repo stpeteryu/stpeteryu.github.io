@@ -711,8 +711,9 @@ document.getElementById('yr').textContent = new Date().getFullYear();
 
 // ── 바티칸뉴스 한국어 최신 뉴스 로딩 ───────────────
 (function loadNews() {
-  var rssUrl = 'https://www.vaticannews.va/ko.rss.xml';
-  var proxyUrl = 'https://api.allorigins.win/get?url=' + encodeURIComponent(rssUrl);
+  var rssUrl   = 'https://www.vaticannews.va/ko.rss.xml';
+  var CACHE_KEY = 'vn_cache';
+  var CACHE_TTL = 3 * 3600 * 1000; // 3시간
 
   function parseRSS(xml) {
     var parser = new DOMParser();
@@ -725,7 +726,6 @@ document.getElementById('yr').textContent = new Date().getFullYear();
       var link    = item.querySelector('link')    ? item.querySelector('link').textContent.trim()    : '#';
       var pubDate = item.querySelector('pubDate') ? item.querySelector('pubDate').textContent.trim() : '';
       var imgUrl  = '';
-      // 이미지: enclosure 또는 media:thumbnail 또는 description 내 img 태그
       var enclosure = item.querySelector('enclosure');
       if (enclosure && /image/.test(enclosure.getAttribute('type') || '')) imgUrl = enclosure.getAttribute('url');
       if (!imgUrl) {
@@ -762,10 +762,36 @@ document.getElementById('yr').textContent = new Date().getFullYear();
     }).join('');
   }
 
-  fetch(proxyUrl, { cache: 'default' })
-    .then(function(r){ return r.json(); })
-    .then(function(data){ renderNews(parseRSS(data.contents)); })
-    .catch(function(){}); // 실패시 placeholder 유지
+  // ① 캐시 먼저 즉시 표시
+  try {
+    var cached = JSON.parse(localStorage.getItem(CACHE_KEY));
+    if (cached && cached.ts && (Date.now() - cached.ts < CACHE_TTL) && cached.items.length) {
+      renderNews(cached.items);
+    }
+  } catch(e) {}
+
+  // ② 백그라운드에서 새 데이터 fetch (corsproxy.io가 allorigins보다 빠름)
+  var proxies = [
+    'https://corsproxy.io/?' + encodeURIComponent(rssUrl),
+    'https://api.allorigins.win/get?url=' + encodeURIComponent(rssUrl)
+  ];
+  var done = false;
+
+  proxies.forEach(function(url) {
+    fetch(url, { cache: 'no-store' })
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        if (done) return;
+        var xml = data.contents || data;
+        if (typeof xml !== 'string') return;
+        var items = parseRSS(xml);
+        if (!items.length) return;
+        done = true;
+        renderNews(items);
+        try { localStorage.setItem(CACHE_KEY, JSON.stringify({ ts: Date.now(), items: items })); } catch(e) {}
+      })
+      .catch(function(){});
+  });
 })();
 </script>
 </body>
