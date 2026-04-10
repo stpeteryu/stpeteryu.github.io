@@ -919,48 +919,22 @@ footer a:hover{color:var(--accent)}
         <p id="dm-date-label">매일 캐나다 동부 시간 기준으로 자동 업데이트됩니다.</p>
       </div>
 
-      <!-- 전례일 배너 -->
-      <div id="dm-banner" style="display:none;
-        background:var(--primary);border-radius:20px;padding:22px 28px;
-        margin-bottom:22px;box-shadow:var(--shadow-lg);
-        display:flex;align-items:center;gap:18px">
-        <div style="font-size:2rem;flex-shrink:0">✝</div>
-        <div>
-          <div id="dm-color" style="font-family:'Cormorant Garamond',serif;font-size:.85rem;
-            color:rgba(198,168,107,.8);letter-spacing:.1em;margin-bottom:4px"></div>
-          <div id="dm-day" style="font-family:'Noto Serif KR',serif;font-size:1.25rem;
-            font-weight:900;color:#fff;line-height:1.3"></div>
-        </div>
-        <a id="dm-source" href="https://missa.cbck.or.kr/DailyMissa" target="_blank"
-          style="margin-left:auto;flex-shrink:0;font-size:.8rem;color:rgba(198,168,107,.7);
-          font-weight:700;white-space:nowrap">주교회의 원문 →</a>
+      <div style="position:relative;border-radius:20px;overflow:hidden;
+        border:1px solid var(--line);box-shadow:var(--shadow-lg)">
+        <iframe
+          id="dm-iframe"
+          src=""
+          width="100%"
+          height="900"
+          style="display:block;border:0;background:var(--surface)"
+          title="오늘의 매일미사">
+        </iframe>
       </div>
 
-      <!-- 스켈레톤 -->
-      <div id="dm-skel" style="display:grid;gap:14px">
-        <div style="background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:28px;box-shadow:var(--shadow)">
-          <div style="height:12px;width:35%;background:var(--surface-2);border-radius:6px;margin-bottom:18px;animation:sk 1.5s ease-in-out infinite"></div>
-          <div style="height:10px;width:95%;background:var(--surface-2);border-radius:6px;margin-bottom:8px;animation:sk 1.5s ease-in-out infinite .05s"></div>
-          <div style="height:10px;width:88%;background:var(--surface-2);border-radius:6px;margin-bottom:8px;animation:sk 1.5s ease-in-out infinite .1s"></div>
-          <div style="height:10px;width:72%;background:var(--surface-2);border-radius:6px;animation:sk 1.5s ease-in-out infinite .15s"></div>
-        </div>
-        <div style="background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:28px;box-shadow:var(--shadow)">
-          <div style="height:12px;width:35%;background:var(--surface-2);border-radius:6px;margin-bottom:18px;animation:sk 1.5s ease-in-out infinite .2s"></div>
-          <div style="height:10px;width:95%;background:var(--surface-2);border-radius:6px;margin-bottom:8px;animation:sk 1.5s ease-in-out infinite .25s"></div>
-          <div style="height:10px;width:80%;background:var(--surface-2);border-radius:6px;animation:sk 1.5s ease-in-out infinite .3s"></div>
-        </div>
-      </div>
-
-      <!-- 말씀 카드들 -->
-      <div id="dm-content" style="display:none;"></div>
-
-      <!-- 오류 -->
-      <div id="dm-error" style="display:none;padding:28px;background:var(--surface);
-        border:1px solid var(--line);border-radius:20px;text-align:center;color:var(--text-3)">
-        <div style="font-size:2rem;margin-bottom:12px">📖</div>
-        <p style="font-size:.95rem;margin-bottom:16px">오늘의 말씀을 아직 불러오지 못했습니다.<br>잠시 후 다시 확인해 주세요.</p>
-        <a class="btn btn-dark" href="https://missa.cbck.or.kr/DailyMissa" target="_blank">
-          주교회의 매일미사 바로가기
+      <div style="margin-top:14px;text-align:center">
+        <a id="dm-link" href="https://missa.cbck.or.kr/DailyMissa" target="_blank"
+          style="font-size:.88rem;color:var(--accent-dk);font-weight:700">
+          한국천주교주교회의 매일미사 새 창에서 열기 →
         </a>
       </div>
 
@@ -1209,11 +1183,14 @@ document.getElementById('yr').textContent = new Date().getFullYear();
 let dmLoaded = false;
 function loadDailyMass() {
   if (dmLoaded) return;
+  dmLoaded = true;
 
+  // 캐나다 동부 시간 기준 오늘 날짜 → YYYYMMDD
   const today = new Date().toLocaleDateString('en-CA', {
     timeZone: 'America/Toronto',
     year: 'numeric', month: '2-digit', day: '2-digit'
-  });
+  }); // "2026-04-10"
+  const dateUrl = today.replace(/-/g, ''); // "20260410"
 
   // 날짜 라벨
   const d = new Date(today + 'T12:00:00');
@@ -1221,67 +1198,15 @@ function loadDailyMass() {
   if (label) label.textContent =
     d.getFullYear() + '년 ' + (d.getMonth()+1) + '월 ' + d.getDate() + '일 · 캐나다 동부 시간 기준';
 
-  function hideSkel(){ const s=document.getElementById('dm-skel'); if(s) s.style.display='none'; }
-  function showError(){ hideSkel(); const e=document.getElementById('dm-error'); if(e) e.style.display='block'; }
+  const url = 'https://missa.cbck.or.kr/DailyMissa/' + dateUrl;
 
-  function makeCard(label, ref, subtitle, text, dark=false) {
-    const bg   = dark ? 'background:var(--primary)' : 'background:var(--surface);border:1px solid var(--line)';
-    const clr  = dark ? 'color:rgba(198,168,107,.8)' : 'color:var(--accent-dk)';
-    const refC = dark ? 'color:#fff' : 'color:var(--primary)';
-    const subC = dark ? 'color:var(--accent);font-family:\'Noto Serif KR\',serif;font-weight:600;font-size:1.05rem;' : 'color:var(--text-2);font-style:italic';
-    const txtC = dark ? 'color:rgba(255,255,255,.75)' : 'color:var(--text-2)';
-    return `
-      <div style="${bg};border-radius:20px;padding:26px 28px;box-shadow:var(--shadow)">
-        <div style="font-family:'Cormorant Garamond',serif;font-size:.88rem;
-          letter-spacing:.12em;text-transform:uppercase;margin-bottom:8px;${clr}">${label}</div>
-        <div style="font-family:'Noto Serif KR',serif;font-weight:700;font-size:1.05rem;
-          margin-bottom:${subtitle?'10px':'14px'};${refC}">${ref}</div>
-        ${subtitle ? `<div style="margin-bottom:14px;line-height:1.7;${subC}">"${subtitle}"</div>` : ''}
-        <p style="font-size:.93rem;line-height:2;margin:0;${txtC}">${text}</p>
-      </div>`;
-  }
+  // iframe src 설정
+  const iframe = document.getElementById('dm-iframe');
+  if (iframe) iframe.src = url;
 
-  function render(data) {
-    hideSkel();
-
-    // 전례일 배너
-    const banner = document.getElementById('dm-banner');
-    if (banner) {
-      banner.style.display = 'flex';
-      const colorEl = document.getElementById('dm-color');
-      const dayEl   = document.getElementById('dm-day');
-      const srcEl   = document.getElementById('dm-source');
-      if (colorEl) colorEl.textContent = data.liturgical_color ? '전례색 · ' + data.liturgical_color : '';
-      if (dayEl)   dayEl.textContent   = data.liturgical_day || '';
-      if (srcEl && data.source_url) srcEl.href = data.source_url;
-    }
-
-    const cards = [];
-    if (data.first_reading)  cards.push(makeCard('제1독서',  data.first_reading.ref,  data.first_reading.subtitle,  data.first_reading.text));
-    if (data.psalm)          cards.push(makeCard('화답송',   data.psalm.ref,           data.psalm.antiphon,          ''));
-    if (data.second_reading) cards.push(makeCard('제2독서',  data.second_reading.ref, data.second_reading.subtitle, data.second_reading.text));
-    if (data.gospel)         cards.push(makeCard('복음',     data.gospel.ref,          data.gospel.key_verse,        data.gospel.text, true));
-    if (data.reflection) {
-      cards.push(`
-        <div style="background:var(--surface-2);border-radius:20px;padding:26px 28px">
-          <div style="font-family:'Cormorant Garamond',serif;font-size:.88rem;
-            color:var(--accent-dk);letter-spacing:.12em;text-transform:uppercase;margin-bottom:12px">오늘의 묵상</div>
-          <p style="font-size:.93rem;color:var(--text-2);line-height:2.1;margin:0">${data.reflection}</p>
-        </div>`);
-    }
-
-    const el = document.getElementById('dm-content');
-    if (el) {
-      el.innerHTML = `<div style="display:grid;gap:14px">${cards.join('')}</div>`;
-      el.style.display = 'block';
-    }
-    dmLoaded = true;
-  }
-
-  fetch('daily-mass.json?v=' + today)
-    .then(r => { if (!r.ok) throw new Error(); return r.json(); })
-    .then(data => { if (data.date === today) render(data); else showError(); })
-    .catch(() => showError());
+  // 새 창 열기 링크도 업데이트
+  const link = document.getElementById('dm-link');
+  if (link) link.href = url;
 }
 
 (function loadNews() {
