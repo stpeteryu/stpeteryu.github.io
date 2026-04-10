@@ -112,8 +112,9 @@ nav button.on{background:var(--primary);color:#fff}
   margin-bottom:12px;letter-spacing:-.01em;
 }
 .hero-content p{
-  font-size:.97rem;color:rgba(255,255,255,.82);
-  max-width:50ch;line-height:1.8;
+  font-size:1.35rem;color:rgba(255,255,255,.9);
+  max-width:50ch;line-height:1.75;
+  font-family:'Noto Serif KR',serif;font-weight:600;
 }
 .hero-actions{display:flex;gap:11px;flex-wrap:wrap;margin-top:24px}
 .btn{
@@ -483,8 +484,7 @@ footer a:hover{color:var(--accent)}
       <article class="hero-main">
         <div class="hero-content">
           <div class="eyebrow">✦ &nbsp;2026 사목지침 · 선포와 나눔의 해</div>
-          <h1>해밀턴<br>성 유대철<br>한인성당</h1>
-          <p>"너희는 세상의 빛이다." (마태 5,14)</p>
+          <p id="hero-quote">"너희는 세상의 빛이다." (마태 5,14)</p>
           <div class="hero-actions">
             <button class="btn btn-gold" onclick="go('mass')">미사 시간 확인</button>
             <button class="btn btn-ghost" onclick="go('contact')">오시는 길</button>
@@ -558,6 +558,39 @@ footer a:hover{color:var(--accent)}
           <div class="quick-icon">☕</div>
           <h3>다음카페</h3>
           <p>공지사항·소식·교우 소통 공간 바로가기</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 오늘의 말씀 -->
+  <div style="padding:28px 0 0">
+    <div class="container">
+      <div class="sec-head">
+        <div>
+          <h2>오늘의 말씀</h2>
+          <p id="mass-date-label">매일 캐나다 현지 시간 기준으로 업데이트됩니다</p>
+        </div>
+        <a class="sec-link" href="https://www.catholic.or.kr/liturgy/daily.asp" target="_blank">가톨릭 굿뉴스 →</a>
+      </div>
+
+      <div id="daily-mass-wrap">
+        <!-- 로딩 스켈레톤 -->
+        <div id="daily-mass-skel" style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+          <div style="background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:24px;box-shadow:var(--shadow)">
+            <div style="height:12px;width:40%;background:var(--surface-2);border-radius:6px;margin-bottom:14px;animation:sk 1.5s ease-in-out infinite"></div>
+            <div style="height:10px;width:90%;background:var(--surface-2);border-radius:6px;margin-bottom:8px;animation:sk 1.5s ease-in-out infinite .1s"></div>
+            <div style="height:10px;width:75%;background:var(--surface-2);border-radius:6px;animation:sk 1.5s ease-in-out infinite .2s"></div>
+          </div>
+          <div style="background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:24px;box-shadow:var(--shadow)">
+            <div style="height:12px;width:40%;background:var(--surface-2);border-radius:6px;margin-bottom:14px;animation:sk 1.5s ease-in-out infinite"></div>
+            <div style="height:10px;width:90%;background:var(--surface-2);border-radius:6px;margin-bottom:8px;animation:sk 1.5s ease-in-out infinite .1s"></div>
+            <div style="height:10px;width:75%;background:var(--surface-2);border-radius:6px;animation:sk 1.5s ease-in-out infinite .2s"></div>
+          </div>
+        </div>
+        <div id="daily-mass-content" style="display:none"></div>
+        <div id="daily-mass-error" style="display:none;padding:20px;background:var(--surface);border:1px solid var(--line);border-radius:16px;color:var(--text-3);font-size:.9rem;text-align:center">
+          오늘의 말씀을 불러오지 못했습니다. 잠시 후 다시 시도해 주세요.
         </div>
       </div>
     </div>
@@ -856,7 +889,7 @@ footer a:hover{color:var(--accent)}
 
         <div class="map-card">
           <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2904.3!2d-79.8254!3d43.2453!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x882c9b1234567890%3A0x1234!2s6+Heath+St%2C+Hamilton%2C+ON+L8H+5Y5!5e0!3m2!1sko!2sca!4v1"
+            src="https://maps.google.com/maps?q=6+Heath+St,+Hamilton,+ON+L8H+5Y5,+Canada&output=embed&z=16"
             width="100%" height="260"
             style="border:0;border-radius:14px;display:block"
             allowfullscreen="" loading="lazy"
@@ -1047,7 +1080,172 @@ document.getElementById('yr').textContent = new Date().getFullYear();
   }
 })();
 
-// ── 가톨릭 뉴스 로딩 ──────────────────────────────────
+// ── 주일 말씀 자동 업데이트 ──────────────────────────────
+(function() {
+  // 2025-2026 전례력 Year A 주일 말씀
+  const Q = {
+    // 대림
+    '2025-11-30': ['"깨어 있어라." (마태 24,42)',            '대림 제1주일'],
+    '2025-12-07': ['"주님의 길을 곧게 하여라." (마태 3,3)',    '대림 제2주일'],
+    '2025-12-14': ['"오실 분이 선생님이십니까?" (마태 11,3)', '대림 제3주일'],
+    '2025-12-21': ['"은총이 가득한 이여, 기뻐하여라." (루카 1,28)', '대림 제4주일'],
+    // 성탄·주님공현
+    '2025-12-25': ['"말씀이 사람이 되시어 우리 가운데 사셨다." (요한 1,14)', '성탄 대축일'],
+    '2025-12-28': ['"아기는 자라면서 튼튼해지고 지혜가 충만해졌다." (루카 2,40)', '성가정 축일'],
+    '2026-01-01': ['"마리아는 이 모든 일을 마음속에 간직하였다." (루카 2,19)', '천주의 성모 마리아 대축일'],
+    '2026-01-04': ['"우리는 동방에서 그분의 별을 보고 그분께 경배하러 왔습니다." (마태 2,2)', '주님 공현 대축일'],
+    '2026-01-11': ['"이는 내가 사랑하는 아들, 내 마음에 드는 아들이다." (마태 3,17)', '주님 세례 축일'],
+    // 연중
+    '2026-01-18': ['"당신이 머무시는 곳을 보여 주십시오." (요한 1,38)', '연중 제2주일'],
+    '2026-01-25': ['"회개하여라. 하늘 나라가 가까이 왔다." (마태 4,17)', '연중 제3주일'],
+    '2026-02-01': ['"행복하여라, 마음이 가난한 사람들!" (마태 5,3)', '연중 제4주일'],
+    '2026-02-08': ['"너희는 세상의 빛이다." (마태 5,14)', '연중 제5주일'],
+    '2026-02-15': ['"나는 율법을 완성하러 왔다." (마태 5,17)', '연중 제6주일'],
+    // 설날
+    '2026-02-15': ['"너희는 먼저 하느님의 나라를 찾아라." (마태 6,33)', '설날 특전 미사'],
+    // 사순
+    '2026-02-22': ['"사람은 빵만으로 살지 않는다." (마태 4,4)', '사순 제1주일'],
+    '2026-03-01': ['"이는 내가 사랑하는 아들이니 너희는 그의 말을 들어라." (마태 17,5)', '사순 제2주일'],
+    '2026-03-08': ['"이 물을 마시는 사람은 다시 목마를 것이다." (요한 4,13)', '사순 제3주일'],
+    '2026-03-15': ['"나는 세상의 빛이다." (요한 9,5)', '사순 제4주일'],
+    '2026-03-22': ['"나는 부활이요 생명이다." (요한 11,25)', '사순 제5주일'],
+    '2026-03-29': ['"주님의 이름으로 오시는 분은 복되시어라!" (마태 21,9)', '주님 수난 성지 주일'],
+    // 부활
+    '2026-04-05': ['"그분께서는 여기 계시지 않는다. 말씀하신 대로 되살아나셨다." (마태 28,6)', '주님 부활 대축일'],
+    '2026-04-12': ['"너희에게 평화가 있어라." (요한 20,19)', '부활 제2주일'],
+    '2026-04-19': ['"그들의 눈이 열려 예수님을 알아보았다." (루카 24,31)', '부활 제3주일'],
+    '2026-04-26': ['"나는 양들이 생명을 얻고 풍요롭게 하려고 왔다." (요한 10,10)', '부활 제4주일'],
+    '2026-05-03': ['"나는 길이요 진리요 생명이다." (요한 14,6)', '부활 제5주일'],
+    '2026-05-10': ['"나는 너희를 고아로 내버려 두지 않겠다." (요한 14,18)', '부활 제6주일'],
+    '2026-05-17': ['"나는 세상 끝날까지 언제나 너희와 함께 있겠다." (마태 28,20)', '주님 승천 대축일'],
+    '2026-05-24': ['"성령을 받아라." (요한 20,22)', '성령 강림 대축일'],
+    '2026-05-31': ['"하느님은 세상을 너무나 사랑하신 나머지 외아들을 내주셨다." (요한 3,16)', '삼위일체 대축일'],
+    '2026-06-07': ['"나는 하늘에서 내려온 살아 있는 빵이다." (요한 6,51)', '주님의 몸과 피 대축일'],
+    // 연중 후반
+    '2026-06-14': ['"무서워하지 마라, 두려워하지 마라." (마태 10,26)', '연중 제11주일'],
+    '2026-06-21': ['"참새 두 마리가 한 닢에 팔리지 않느냐? 그러나 그것들 가운데 하나도 너희 아버지의 뜻 없이는 땅에 떨어지지 않는다." (마태 10,29)', '연중 제12주일'],
+    '2026-06-28': ['"누구든지 내 이름으로 이 작은 이들 가운데 하나에게 냉수 한 잔이라도 주는 사람은 자기 상을 잃지 않을 것이다." (마태 10,42)', '연중 제13주일'],
+    '2026-07-05': ['"고생하며 무거운 짐을 진 너희는 모두 나에게 오너라." (마태 11,28)', '연중 제14주일'],
+    '2026-07-12': ['"들어라, 씨 뿌리는 사람이 씨를 뿌리러 나갔다." (마태 13,3)', '연중 제15주일'],
+    '2026-07-19': ['"좋은 씨를 밭에 뿌리는 이는 사람의 아들이다." (마태 13,37)', '연중 제16주일'],
+    '2026-07-26': ['"하늘 나라는 밭에 숨겨진 보물과 같다." (마태 13,44)', '연중 제17주일'],
+    '2026-08-02': ['"너희가 먹을 것을 주어라." (마태 14,16)', '연중 제18주일'],
+    '2026-08-09': ['"믿음이 적은 자야, 왜 의심하였느냐?" (마태 14,31)', '연중 제19주일'],
+    '2026-08-16': ['"주님, 저에게도 자비를 베풀어 주십시오." (마태 15,22)', '연중 제20주일'],
+    '2026-08-23': ['"너는 베드로이다. 나는 이 반석 위에 내 교회를 세울 것이다." (마태 16,18)', '연중 제21주일'],
+    '2026-08-30': ['"누구든지 내 뒤를 따라오려면 자신을 버리고 제 십자가를 지고 나를 따라야 한다." (마태 16,24)', '연중 제22주일'],
+    '2026-09-06': ['"형제가 너에게 죄를 지으면 가서 그 사람과 단둘이 말하여라." (마태 18,15)', '연중 제23주일'],
+    '2026-09-13': ['"일흔 번씩 일곱 번이라도 용서해야 한다." (마태 18,22)', '연중 제24주일'],
+    '2026-09-20': ['"내가 선한데 당신은 왜 시기하오?" (마태 20,15)', '연중 제25주일'],
+    '2026-09-27': ['"세리와 창녀들이 너희보다 먼저 하느님의 나라에 들어간다." (마태 21,31)', '연중 제26주일'],
+    '2026-10-04': ['"임금님 앞에 차려진 혼인 잔치에 오십시오." (마태 22,4)', '연중 제27주일'],
+    '2026-10-11': ['"하느님의 것은 하느님께 돌려라." (마태 22,21)', '연중 제28주일'],
+    '2026-10-18': ['"네 마음을 다하고 네 목숨을 다하고 네 정신을 다하여 주 너의 하느님을 사랑해야 한다." (마태 22,37)', '연중 제29주일'],
+    '2026-10-25': ['"네 이웃을 너 자신처럼 사랑해야 한다." (마태 22,39)', '연중 제30주일'],
+    '2026-11-01': ['"행복하여라, 마음이 깨끗한 사람들!" (마태 5,8)', '모든 성인 대축일'],
+    '2026-11-08': ['"지혜로운 이들은 자기 그릇에 기름을 담아 등과 함께 가져갔다." (마태 25,4)', '연중 제32주일'],
+    '2026-11-15': ['"잘하였다, 착하고 성실한 종아!" (마태 25,21)', '연중 제33주일'],
+    '2026-11-22': ['"내가 진실로 너희에게 말한다. 너희가 내 형제들인 이 가장 작은 이들 가운데 한 사람에게 해 준 것이 바로 나에게 해 준 것이다." (마태 25,40)', '온 누리의 임금이신 예수 그리스도 왕 대축일'],
+    // 대림 2026–2027 Year B
+    '2026-11-29': ['"깨어 있어라." (마르 13,37)', '대림 제1주일'],
+    '2026-12-06': ['"주님의 길을 곧게 하여라." (마르 1,3)', '대림 제2주일'],
+    '2026-12-13': ['"나는 그분의 신발 끈을 풀어 드리기에도 합당하지 않다." (요한 1,27)', '대림 제3주일'],
+    '2026-12-20': ['"주님의 말씀이 이루어지리라." (루카 1,45)', '대림 제4주일'],
+    '2026-12-27': ['"아기는 자라면서 지혜가 충만해졌다." (루카 2,40)', '성가정 축일'],
+    '2027-01-03': ['"우리는 그분의 영광을 보았다." (요한 1,14)', '주님 공현 대축일'],
+    '2027-01-10': ['"너는 내 사랑하는 아들이다." (마르 1,11)', '주님 세례 축일'],
+    '2027-01-17': ['"보라, 하느님의 어린양이시다!" (요한 1,36)', '연중 제2주일'],
+    '2027-01-24': ['"하느님의 나라가 가까이 왔다." (마르 1,15)', '연중 제3주일'],
+  };
+
+  function pad(n){ return n<10?'0'+n:''+n }
+  function key(d){ return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate()) }
+
+  const now = new Date();
+  const dow = now.getDay();
+  const thisSunday = new Date(now);
+  thisSunday.setDate(now.getDate() + (dow === 6 ? 1 : -dow));
+  thisSunday.setHours(0,0,0,0);
+
+  const el = document.getElementById('hero-quote');
+  if (!el) return;
+
+  const entry = Q[key(thisSunday)];
+  if (entry) {
+    el.innerHTML = `<span style="font-size:.78rem;letter-spacing:.1em;color:rgba(255,255,255,.55);display:block;margin-bottom:6px;font-family:'Cormorant Garamond',serif;font-style:italic">${entry[1]}</span>${entry[0]}`;
+  }
+})();
+// ── 오늘의 말씀 로딩 ──────────────────────────────────
+(function loadDailyMass() {
+  const today = new Date().toLocaleDateString('en-CA', {
+    timeZone: 'America/Toronto',
+    year: 'numeric', month: '2-digit', day: '2-digit'
+  });
+
+  const labelEl = document.getElementById('mass-date-label');
+  if (labelEl) {
+    const d = new Date(today + 'T12:00:00');
+    labelEl.textContent = d.getFullYear() + '년 ' + (d.getMonth()+1) + '월 ' + d.getDate() + '일 · 캐나다 동부 시간 기준';
+  }
+
+  function hideSkel(){ const s=document.getElementById('daily-mass-skel'); if(s) s.style.display='none'; }
+  function showError(){ hideSkel(); const e=document.getElementById('daily-mass-error'); if(e) e.style.display='block'; }
+
+  function render(data) {
+    hideSkel();
+    const el = document.getElementById('daily-mass-content');
+    if (!el) return;
+
+    const cards = [];
+
+    if (data.first_reading) {
+      cards.push(`
+        <div style="background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:24px;box-shadow:var(--shadow)">
+          <div style="font-family:'Cormorant Garamond',serif;font-size:.85rem;color:var(--accent-dk);letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px">제1독서</div>
+          <div style="font-family:'Noto Serif KR',serif;font-weight:700;font-size:1rem;color:var(--primary);margin-bottom:12px">${data.first_reading.ref}</div>
+          <p style="font-size:.9rem;color:var(--text-2);line-height:1.9;margin:0">${data.first_reading.text}</p>
+        </div>`);
+    }
+
+    if (data.gospel) {
+      cards.push(`
+        <div style="background:var(--primary);border-radius:20px;padding:24px;box-shadow:var(--shadow-lg)">
+          <div style="font-family:'Cormorant Garamond',serif;font-size:.85rem;color:rgba(198,168,107,.8);letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px">복음</div>
+          <div style="font-family:'Noto Serif KR',serif;font-weight:700;font-size:1rem;color:#fff;margin-bottom:12px">${data.gospel.ref}</div>
+          ${data.gospel.key_verse ? `<div style="font-family:'Noto Serif KR',serif;font-size:1.05rem;color:var(--accent);line-height:1.7;margin-bottom:12px;font-weight:600">"${data.gospel.key_verse}"</div>` : ''}
+          <p style="font-size:.88rem;color:rgba(255,255,255,.72);line-height:1.9;margin:0">${data.gospel.text}</p>
+        </div>`);
+    }
+
+    if (data.psalm) {
+      cards.push(`
+        <div style="background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:24px;box-shadow:var(--shadow)">
+          <div style="font-family:'Cormorant Garamond',serif;font-size:.85rem;color:var(--accent-dk);letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px">화답송</div>
+          <div style="font-family:'Noto Serif KR',serif;font-weight:700;font-size:1rem;color:var(--primary);margin-bottom:12px">${data.psalm.ref}</div>
+          <p style="font-size:.9rem;color:var(--text-2);line-height:1.9;margin:0">${data.psalm.text}</p>
+        </div>`);
+    }
+
+    if (data.second_reading) {
+      cards.push(`
+        <div style="background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:24px;box-shadow:var(--shadow)">
+          <div style="font-family:'Cormorant Garamond',serif;font-size:.85rem;color:var(--accent-dk);letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px">제2독서</div>
+          <div style="font-family:'Noto Serif KR',serif;font-weight:700;font-size:1rem;color:var(--primary);margin-bottom:12px">${data.second_reading.ref}</div>
+          <p style="font-size:.9rem;color:var(--text-2);line-height:1.9;margin:0">${data.second_reading.text}</p>
+        </div>`);
+    }
+
+    const cols = cards.length >= 3 ? 'repeat(2,1fr)' : '1fr 1fr';
+    el.innerHTML = `<div style="display:grid;grid-template-columns:${cols};gap:14px">${cards.join('')}</div>`;
+    el.style.display = 'block';
+  }
+
+  fetch('daily-mass.json?v=' + today)
+    .then(r => { if (!r.ok) throw new Error(); return r.json(); })
+    .then(data => { if (data.date === today) render(data); else showError(); })
+    .catch(() => showError());
+})();
+
 (function loadNews() {
   function renderNews(items) {
     const grid = document.getElementById('news-grid');
