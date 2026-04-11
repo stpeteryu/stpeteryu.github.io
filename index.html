@@ -1240,5 +1240,90 @@ function loadDailyMass() {
     .catch(() => {});
 })();
 </script>
+
+<!-- ✝ 성당 챗봇 위젯 -->
+<style>
+  #chat-fab {
+    position: fixed;
+    bottom: 28px; right: 28px;
+    width: 58px; height: 58px;
+    border-radius: 50%;
+    background: #1a2744;
+    border: none; cursor: pointer;
+    box-shadow: 0 4px 20px rgba(26,39,68,0.35);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 9999;
+    transition: transform 0.2s, background 0.2s;
+  }
+  #chat-fab:hover { transform: scale(1.08); background: #c6a86b; }
+  #chat-fab svg { width: 26px; height: 26px; fill: white; }
+  #chat-fab .fab-badge {
+    position: absolute; top: 2px; right: 2px;
+    width: 14px; height: 14px;
+    background: #e53935; border-radius: 50%;
+    border: 2px solid white;
+    animation: fabBlink 2s infinite;
+  }
+  @keyframes fabBlink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+  #chat-modal {
+    display: none;
+    position: fixed;
+    bottom: 100px; right: 28px;
+    width: 370px; height: 580px;
+    border-radius: 20px; overflow: hidden;
+    box-shadow: 0 8px 40px rgba(26,39,68,0.25);
+    z-index: 9998;
+    animation: chatPopUp 0.25s ease;
+  }
+  #chat-modal.open { display: block; }
+  @keyframes chatPopUp {
+    from { opacity:0; transform: translateY(20px) scale(0.95); }
+    to   { opacity:1; transform: translateY(0) scale(1); }
+  }
+  #chat-modal iframe { width:100%; height:100%; border:none; }
+  @media (max-width: 480px) {
+    #chat-modal { bottom:0; right:0; width:100%; height:100%; border-radius:0; }
+    #chat-fab { bottom:20px; right:20px; }
+  }
+</style>
+
+<button id="chat-fab" onclick="toggleChatBot()" title="성당 안내 챗봇">
+  <div class="fab-badge"></div>
+  <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-2 10H6V10h12v2zm0-3H6V7h12v2z"/></svg>
+</button>
+
+<div id="chat-modal">
+  <iframe id="chat-iframe" src="" title="성당 안내 챗봇"></iframe>
+</div>
+
+<script>
+  let _chatOpen = false;
+  function toggleChatBot() {
+    const modal = document.getElementById('chat-modal');
+    const iframe = document.getElementById('chat-iframe');
+    const badge = document.querySelector('#chat-fab .fab-badge');
+    _chatOpen = !_chatOpen;
+    if (_chatOpen) {
+      if (!iframe.getAttribute('data-loaded')) {
+        iframe.src = 'parish_chatbot.html';
+        iframe.setAttribute('data-loaded','1');
+      }
+      modal.classList.add('open');
+      if (badge) badge.style.display = 'none';
+    } else {
+      modal.classList.remove('open');
+    }
+  }
+  document.addEventListener('click', function(e) {
+    const modal = document.getElementById('chat-modal');
+    const fab = document.getElementById('chat-fab');
+    if (_chatOpen && !modal.contains(e.target) && !fab.contains(e.target)) {
+      modal.classList.remove('open');
+      _chatOpen = false;
+    }
+  });
+</script>
+<!-- ✝ 챗봇 위젯 끝 -->
+
 </body>
 </html>
