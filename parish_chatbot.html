@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>성 유대철 한인성당 안내 챗봇</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;600&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1a2744;
+    --navy-light: #243056;
+    --gold: #c9a84c;
+    --gold-light: #e8c97a;
+    --cream: #f8f5ef;
+    --cream-dark: #ede8df;
+    --text: #2c2c2c;
+    --text-light: #6b6b6b;
+    --white: #ffffff;
+    --shadow: 0 4px 24px rgba(26,39,68,0.13);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background: var(--cream);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+
+  /* 배경 패턴 */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 20% 20%, rgba(201,168,76,0.08) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 80%, rgba(26,39,68,0.06) 0%, transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 480px;
+  }
+
+  /* 헤더 */
+  .header {
+    background: var(--navy);
+    border-radius: 20px 20px 0 0;
+    padding: 24px 24px 20px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .header::before {
+    content: '';
+    position: absolute;
+    top: -30px; right: -30px;
+    width: 120px; height: 120px;
+    border-radius: 50%;
+    background: rgba(201,168,76,0.1);
+  }
+
+  .header::after {
+    content: '';
+    position: absolute;
+    bottom: -20px; left: -20px;
+    width: 80px; height: 80px;
+    border-radius: 50%;
+    background: rgba(201,168,76,0.07);
+  }
+
+  .cross-icon {
+    font-size: 22px;
+    margin-bottom: 6px;
+    display: block;
+    color: var(--gold);
+    letter-spacing: 4px;
+  }
+
+  .header h1 {
+    font-family: 'Noto Serif KR', serif;
+    color: var(--white);
+    font-size: 17px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    line-height: 1.4;
+  }
+
+  .header p {
+    color: var(--gold-light);
+    font-size: 12px;
+    margin-top: 5px;
+    font-weight: 300;
+    letter-spacing: 1px;
+  }
+
+  .status-dot {
+    display: inline-block;
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: #4caf82;
+    margin-right: 5px;
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+
+
+  /* 채팅창 */
+  .chat-window {
+    background: var(--white);
+    height: 420px;
+    overflow-y: auto;
+    padding: 20px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    scroll-behavior: smooth;
+  }
+
+  .chat-window::-webkit-scrollbar { width: 4px; }
+  .chat-window::-webkit-scrollbar-track { background: transparent; }
+  .chat-window::-webkit-scrollbar-thumb { background: var(--cream-dark); border-radius: 4px; }
+
+  /* 메시지 */
+  .msg {
+    display: flex;
+    gap: 10px;
+    animation: fadeUp 0.3s ease;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .msg.user { flex-direction: row-reverse; }
+
+  .avatar {
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+  }
+
+  .avatar.bot {
+    background: var(--navy);
+    color: var(--gold);
+    font-size: 13px;
+  }
+
+  .avatar.user {
+    background: var(--cream-dark);
+    color: var(--text-light);
+  }
+
+  .bubble {
+    max-width: 78%;
+    padding: 11px 15px;
+    border-radius: 16px;
+    font-size: 14px;
+    line-height: 1.65;
+    color: var(--text);
+  }
+
+  .msg.bot .bubble {
+    background: var(--cream);
+    border-bottom-left-radius: 4px;
+    border: 1px solid var(--cream-dark);
+  }
+
+  .msg.user .bubble {
+    background: var(--navy);
+    color: var(--white);
+    border-bottom-right-radius: 4px;
+  }
+
+  /* 빠른 질문 버튼 */
+  .quick-btns {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    padding: 12px 16px;
+    background: var(--cream);
+    border-top: 1px solid var(--cream-dark);
+  }
+
+  .quick-btn {
+    background: var(--white);
+    border: 1.5px solid var(--cream-dark);
+    border-radius: 20px;
+    padding: 5px 13px;
+    font-size: 12px;
+    font-family: 'Noto Sans KR', sans-serif;
+    color: var(--text-light);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .quick-btn:hover {
+    border-color: var(--gold);
+    color: var(--navy);
+    background: #fffbf0;
+  }
+
+  /* 입력창 */
+  .input-area {
+    background: var(--white);
+    border-radius: 0 0 20px 20px;
+    padding: 14px 16px;
+    display: flex;
+    gap: 10px;
+    align-items: flex-end;
+    border-top: 1px solid var(--cream-dark);
+    box-shadow: var(--shadow);
+  }
+
+  .input-area textarea {
+    flex: 1;
+    border: 1.5px solid var(--cream-dark);
+    border-radius: 12px;
+    padding: 10px 14px;
+    font-size: 14px;
+    font-family: 'Noto Sans KR', sans-serif;
+    color: var(--text);
+    resize: none;
+    outline: none;
+    transition: border-color 0.2s;
+    max-height: 100px;
+    min-height: 42px;
+    line-height: 1.5;
+    background: var(--cream);
+  }
+
+  .input-area textarea:focus { border-color: var(--gold); }
+  .input-area textarea::placeholder { color: #bbb; }
+
+  .send-btn {
+    width: 42px; height: 42px;
+    border-radius: 12px;
+    background: var(--navy);
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: all 0.2s;
+  }
+
+  .send-btn:hover { background: var(--gold); }
+  .send-btn:disabled { background: var(--cream-dark); cursor: not-allowed; }
+
+  .send-btn svg { width: 18px; height: 18px; fill: white; }
+
+  /* 로딩 */
+  .typing {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    padding: 4px 0;
+  }
+
+  .typing span {
+    width: 7px; height: 7px;
+    background: var(--gold);
+    border-radius: 50%;
+    animation: bounce 1.2s infinite;
+  }
+
+  .typing span:nth-child(2) { animation-delay: 0.2s; }
+  .typing span:nth-child(3) { animation-delay: 0.4s; }
+
+  @keyframes bounce {
+    0%, 80%, 100% { transform: translateY(0); opacity: 0.5; }
+    40% { transform: translateY(-6px); opacity: 1; }
+  }
+
+  /* 푸터 */
+  .footer {
+    text-align: center;
+    margin-top: 12px;
+    font-size: 11px;
+    color: var(--text-light);
+    opacity: 0.7;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="header">
+    <span class="cross-icon">✝</span>
+    <h1>성 유대철 한인성당</h1>
+    <p><span class="status-dot"></span>St. Peter Yu Korean Catholic Church · Hamilton</p>
+  </div>
+
+  <div class="chat-window" id="chatWindow">
+    <div class="msg bot">
+      <div class="avatar bot">✝</div>
+      <div class="bubble">
+        안녕하세요! 성 유대철 한인성당 안내 챗봇입니다. 🙏<br><br>
+        미사 시간, 행사 일정, 새 신자 안내, 신앙 관련 질문 등 무엇이든 물어보세요.
+      </div>
+    </div>
+  </div>
+
+  <div class="quick-btns">
+    <button class="quick-btn" onclick="sendQuick('미사 시간이 언제예요?')">⛪ 미사 시간</button>
+    <button class="quick-btn" onclick="sendQuick('새 신자 등록은 어떻게 해요?')">🙏 새 신자 안내</button>
+    <button class="quick-btn" onclick="sendQuick('가까운 행사가 있나요?')">📅 행사 일정</button>
+    <button class="quick-btn" onclick="sendQuick('고해성사는 어떻게 받나요?')">✝ 신앙 Q&A</button>
+  </div>
+
+  <div class="input-area">
+    <textarea id="userInput" placeholder="질문을 입력하세요..." rows="1"
+      onkeydown="handleKey(event)" oninput="autoResize(this)"></textarea>
+    <button class="send-btn" id="sendBtn" onclick="sendMessage()">
+      <svg viewBox="0 0 24 24"><path d="M2 21l21-9L2 3v7l15 2-15 2v7z"/></svg>
+    </button>
+  </div>
+</div>
+
+<div class="footer">응답은 AI가 생성합니다. 중요한 사항은 성당에 직접 확인하세요.</div>
+
+<script>
+  // ↓↓↓ 여기에 Groq API 키를 넣으세요 ↓↓↓
+  const apiKey = 'YOUR_GROQ_API_KEY';
+  // ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑
+
+  let isLoading = false;
+  const chatWindow = document.getElementById('chatWindow');
+
+  // 성당 시스템 프롬프트
+  const SYSTEM_PROMPT = `당신은 성 유대철 한인성당(St. Peter Yu Roman Catholic Church, Hamilton, Ontario, Canada)의 친절한 안내 챗봇입니다.
+
+=== 성당 기본 정보 ===
+- 정식 명칭: 성 유대철 한인성당 (St. Peter Yu Roman Catholic Church)
+- 주소: 6 Heath St., Hamilton, ON L8H 5Y5, Canada
+- 전화: (905) 545-3004
+- 소속: 해밀턴 교구 (Diocese of Hamilton)
+- 다음카페: cafe.daum.net/stpeteryu
+- 홈페이지: stpeteryu.github.io
+- 2026년 사목지침: "선포와 나눔의 해" — "너희는 세상의 빛이다." (마태 5,14)
+- 매일 밤 9시 "본당 공동체를 위하여" 주모경 바치기 운동 진행 중
+
+=== 주임 사제 ===
+- 김대하 요한 사도 신부 (주임신부)
+
+=== 본당 임원 ===
+- 본당회장: 권병학 요한 사도
+
+=== 미사 시간 ===
+주일 미사:
+- 오전 11:00 — 본당 (한국어)
+- 오후 5:30 — 공소 미사 (나이아가라, 한국어)
+
+평일 미사:
+- 매주 화요일 오후 8:00
+- 매주 수요일 오전 11:00
+- 매월 첫 목요일 오후 7:00 (성시간 포함)
+
+특별 미사·기도회:
+- 매월 첫 토요일 오전 11:00 — 성모 신심 미사 및 십자가의 길
+- 매월 첫 목요일 오후 7:00 — 성시간 (미사 중)
+
+※ 미사 시간은 교회 사정에 따라 변경될 수 있으며, 변경 사항은 주보 및 다음카페에 공지됩니다.
+
+=== 성사 일정 ===
+- 고해성사: 미사 전·후
+- 견진성사: 2년에 1회
+- 유아세례: 매월 마지막 주일
+- 혼인성사: 6개월 전 면담 필요
+- 병자성사: 병환 중·임종 전 연락 시 방문
+
+=== 교리 ===
+- 예비자 교리: 별도 공지
+- 견진 교리: 별도 공지
+
+=== 신심 단체 ===
+레지오 마리애 — 쁘레시디움:
+- 자비의 모후 Cu: 매월 2주 미사 후
+- 샛별 Pr.: 매주 주일 9:30
+- 평화의 모후 Pr.: 매주 화요일 18:30
+- 천상의 어머니 Pr.: 매주 수요일 9:30
+- 사도들의 모후 Pr.: 매주 화요일 18:30
+- 사랑하올 어머니 Pr.: 매주 화요일 18:30
+
+기타 단체:
+- 바뇨 성모 기도회: 매월 1·3주 토요일 10:00
+- 성모회, 꾸르실료·울뜨레야 (울뜨레야: 매월 첫 목요일 성시간 후)
+- 가톨릭 성서 모임 (화상, 매주 1회) — 문의: 이상은 엘리사벳 (289) 933-0242
+- 주일학교·자모회, 전례분과·복사단, 성가대, 시설분과, 행사분과
+
+=== 오시는 길 ===
+- 자가용: Google Maps에서 "6 Heath St. Hamilton ON" 검색, 주차장 이용 가능
+- 버스: Hamilton HSR 이용 (hsr.ca 참조)
+
+=== 주보성인 ===
+성 유대철 베드로 (1826–1839): 조선의 천주교 순교자, 한국 천주교 역사상 가장 어린 나이에 순교한 복자. 축일: 3월 21일
+
+=== 언어 규칙 (매우 중요) ===
+- 반드시 한국어로만 답변하세요
+- 한자, 중국어, 일본어 문자를 절대 사용하지 마세요
+- 영어는 고유명사(성당 이름, 주소 등)에만 최소한으로 사용하세요
+- 자연스럽고 정확한 한국어 문장으로만 작성하세요
+
+=== 안내 원칙 ===
+- 친절하고 따뜻한 가톨릭 공동체 분위기를 유지하세요
+- 미사 시간 변경 등 최신 정보는 주보나 다음카페 또는 전화(905-545-3004)로 확인 권장
+- 신앙, 성사, 전례, 기도 등 가톨릭 관련 질문에 성실히 답변하세요
+- 성당과 무관한 질문은 정중히 성당 관련 주제로 안내하세요`;
+
+function autoResize(el) {
+    el.style.height = 'auto';
+    el.style.height = Math.min(el.scrollHeight, 100) + 'px';
+  }
+
+  function handleKey(e) {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      sendMessage();
+    }
+  }
+
+  function sendQuick(text) {
+    document.getElementById('userInput').value = text;
+    sendMessage();
+  }
+
+  function addMessage(role, text) {
+    const msg = document.createElement('div');
+    msg.className = `msg ${role}`;
+    msg.innerHTML = `
+      <div class="avatar ${role}">${role === 'bot' ? '✝' : '👤'}</div>
+      <div class="bubble">${text.replace(/\n/g, '<br>')}</div>
+    `;
+    chatWindow.appendChild(msg);
+    chatWindow.scrollTop = chatWindow.scrollHeight;
+    return msg;
+  }
+
+  function addTyping() {
+    const msg = document.createElement('div');
+    msg.className = 'msg bot';
+    msg.id = 'typingMsg';
+    msg.innerHTML = `
+      <div class="avatar bot">✝</div>
+      <div class="bubble"><div class="typing"><span></span><span></span><span></span></div></div>
+    `;
+    chatWindow.appendChild(msg);
+    chatWindow.scrollTop = chatWindow.scrollHeight;
+  }
+
+  function removeTyping() {
+    const t = document.getElementById('typingMsg');
+    if (t) t.remove();
+  }
+
+  // 대화 기록 저장
+  const history = [];
+
+  async function sendMessage() {
+    if (isLoading) return;
+
+    const input = document.getElementById('userInput');
+    const text = input.value.trim();
+    if (!text) return;
+
+    input.value = '';
+    input.style.height = 'auto';
+    isLoading = true;
+    document.getElementById('sendBtn').disabled = true;
+
+    addMessage('user', text);
+    history.push({ role: 'user', content: text });
+
+    addTyping();
+
+    try {
+      const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${apiKey}`
+        },
+        body: JSON.stringify({
+          model: 'llama-3.3-70b-versatile',
+          messages: [
+            { role: 'system', content: SYSTEM_PROMPT },
+            ...history
+          ],
+          max_tokens: 800,
+          temperature: 0.7
+        })
+      });
+
+      const data = await response.json();
+
+      if (data.error) {
+        removeTyping();
+        addMessage('bot', `오류가 발생했습니다: ${data.error.message}`);
+        history.pop();
+      } else {
+        const raw = data.choices[0].message.content;
+        // 한자(중국어) 문자 자동 제거 — 한국어·영어·숫자·기호만 남김
+        const reply = raw.replace(/[\u4E00-\u9FFF\u3400-\u4DBF\uF900-\uFAFF]/g, '')
+                         .replace(/\s{2,}/g, ' ').trim();
+        removeTyping();
+        addMessage('bot', reply);
+        history.push({ role: 'assistant', content: reply });
+        // 대화 기록 너무 길어지면 앞부분 정리
+        if (history.length > 20) history.splice(0, 2);
+      }
+    } catch (e) {
+      removeTyping();
+      addMessage('bot', '연결에 문제가 생겼습니다. 인터넷 연결을 확인하고 다시 시도해주세요.');
+      history.pop();
+    }
+
+    isLoading = false;
+    document.getElementById('sendBtn').disabled = false;
+    input.focus();
+  }
+</script>
+</body>
+</html>
