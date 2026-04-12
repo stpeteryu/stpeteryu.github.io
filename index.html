@@ -575,22 +575,32 @@ header{
 
 /* 공지사항 전체 페이지 */
 .notice-page-row{
-  padding:13px 20px;border-top:1px solid var(--surface-2);
+  padding:10px 16px;border-top:1px solid var(--surface-2);
   cursor:pointer;transition:background .15s;
 }
 .notice-page-row:first-child{border-top:0}
 .notice-page-row:hover{background:var(--surface-2)}
 .notice-page-meta{
-  display:flex;align-items:center;gap:8px;margin-bottom:4px;
+  display:flex;align-items:center;gap:6px;
 }
 .notice-page-title{
-  font-size:.95rem;font-weight:700;color:var(--text);
+  font-size:.88rem;font-weight:700;color:var(--text);
+  flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0;
 }
 .notice-page-body{
-  display:none;padding:12px 0 4px;
-  font-size:.88rem;color:var(--text-2);line-height:1.9;
+  display:none;padding:10px 0 4px;
+  font-size:.85rem;color:var(--text-2);line-height:1.85;
   white-space:pre-wrap;border-top:1px solid var(--surface-2);
-  margin-top:10px;
+  margin-top:8px;
+}
+/* 메인 공지 인라인 펼침 */
+.notice-inline-body{
+  display:none;
+  padding:8px 14px 10px;
+  font-size:.84rem;color:var(--text-2);line-height:1.85;
+  white-space:pre-wrap;
+  border-top:1px solid var(--surface-2);
+  background:var(--surface-2);
 }
 
 /* ─── FOOTER ─── */
@@ -1301,16 +1311,28 @@ function renderNoticeHero() {
   const el = document.getElementById('notice-hero-list');
   if (!el) return;
   if (!noticeData || !noticeData.length) {
-    el.innerHTML = `<div style="padding:18px;text-align:center;color:var(--text-3);font-size:.85rem">등록된 공지사항이 없습니다.</div>`;
+    el.innerHTML = `<div style="padding:16px;text-align:center;color:var(--text-3);font-size:.85rem">등록된 공지사항이 없습니다.</div>`;
     return;
   }
-  el.innerHTML = noticeData.slice(0, 7).map(n => `
-    <div class="notice-row" onclick="go('notice');closeNav()">
-      ${n.important ? `<span class="notice-badge-imp">중요</span>` : ''}
-      <span class="notice-date-sm">${n.date}</span>
-      <span class="notice-title-sm">${n.title}</span>
-      <span class="notice-arr">›</span>
+  el.innerHTML = noticeData.slice(0, 4).map((n, i) => `
+    <div>
+      <div class="notice-row" onclick="toggleHeroNotice(${i})">
+        ${n.important ? `<span class="notice-badge-imp">중요</span>` : ''}
+        <span class="notice-date-sm">${n.date}</span>
+        <span class="notice-title-sm">${n.title}</span>
+        <span id="harr-${i}" class="notice-arr">›</span>
+      </div>
+      ${n.content ? `<div class="notice-inline-body" id="hbody-${i}">${n.content}</div>` : ''}
     </div>`).join('');
+}
+
+function toggleHeroNotice(i) {
+  const body  = document.getElementById('hbody-' + i);
+  const arrow = document.getElementById('harr-' + i);
+  if (!body) return;
+  const open = body.style.display !== 'block';
+  body.style.display    = open ? 'block' : 'none';
+  if (arrow) arrow.textContent = open ? '↓' : '›';
 }
 
 function renderNoticePage() {
@@ -1327,11 +1349,9 @@ function renderNoticePage() {
     <div class="notice-page-row" onclick="toggleNoticeBody(${i})">
       <div class="notice-page-meta">
         ${n.important ? `<span class="notice-badge-imp">중요</span>` : ''}
-        <span style="font-family:'Cormorant Garamond',serif;font-size:.85rem;color:var(--text-3)">${n.date}</span>
-      </div>
-      <div style="display:flex;align-items:center;gap:8px">
+        <span style="font-family:'Cormorant Garamond',serif;font-size:.82rem;color:var(--text-3);flex-shrink:0;min-width:58px">${n.date}</span>
         <span class="notice-page-title">${n.title}</span>
-        ${n.content ? `<span id="narr-${i}" style="font-size:.75rem;color:var(--text-3);margin-left:auto;flex-shrink:0">▼</span>` : ''}
+        ${n.content ? `<span id="narr-${i}" style="font-size:.72rem;color:var(--text-3);flex-shrink:0;margin-left:4px">▼</span>` : ''}
       </div>
       ${n.content ? `<div class="notice-page-body" id="nbody-${i}">${n.content}</div>` : ''}
     </div>`).join('');
