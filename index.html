@@ -86,7 +86,7 @@ header{
   position:absolute;top:calc(100% + 8px);left:0;
   background:var(--surface);border:1px solid var(--line);
   border-radius:18px;box-shadow:var(--shadow-lg);
-  padding:8px;min-width:160px;
+  padding:8px 12px 8px 8px;min-width:180px;
   display:none;z-index:200;
   animation:fade .18s ease;
 }
@@ -95,14 +95,19 @@ header{
   display:flex;align-items:center;gap:10px;width:100%;
   background:none;border:none;cursor:pointer;
   font-family:'Noto Sans KR',sans-serif;
-  padding:11px 14px;border-radius:12px;
+  padding:11px 18px 11px 14px;border-radius:12px;
   color:var(--text);font-weight:700;font-size:.9rem;
   transition:background .15s;text-align:left;white-space:nowrap;
 }
 .nav-dropdown button:hover{background:var(--surface-2)}
 .nav-dropdown button.on{background:var(--primary);color:#fff}
 .nav-dropdown hr{border:none;border-top:1px solid var(--line);margin:4px 8px}
-.nav-wrap{position:relative;flex-shrink:0;margin-left:auto}
+.nav-wrap{position:relative;flex-shrink:0;margin-left:auto;align-self:stretch;display:flex;align-items:center}
+
+@media(max-width:600px){
+  .header-inner{align-items:flex-start;padding-top:14px;padding-bottom:14px;min-height:0}
+  .nav-wrap{align-self:flex-start}
+}
 
 /* ───── PAGES ───── */
 .pg{display:none}
