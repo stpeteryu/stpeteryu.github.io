@@ -1388,6 +1388,7 @@ function loadDailyMass() {
     if (_chatOpen && !modal.contains(e.target) && !fab.contains(e.target)) {
       modal.classList.remove('open');
       _chatOpen = false;
+      fab.style.display = 'flex';
     }
   });
 </script>
