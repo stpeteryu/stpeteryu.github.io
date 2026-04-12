@@ -20,7 +20,7 @@
   --primary:   #232323;
   --accent:    #c6a86b;
   --accent-dk: #9a7a42;
-  --shadow:    0 8px 24px rgba(35,35,35,.08);
+  --gold-chip: #e8c97a;
   --shadow-lg: 0 16px 40px rgba(35,35,35,.12);
   --r:         20px;
   --max:       1100px;
@@ -49,7 +49,7 @@ header{
   min-height:72px;display:flex;align-items:center;
   justify-content:space-between;gap:16px;
 }
-.brand{display:flex;align-items:center;gap:13px;min-width:0}
+.brand{display:flex;align-items:center;gap:13px;min-width:0;flex:1}
 .cross-badge{
   width:42px;height:42px;border-radius:50%;
   display:grid;place-items:center;flex-shrink:0;
@@ -69,8 +69,9 @@ header{
 /* hamburger menu */
 .menu-btn{
   display:flex;align-items:center;gap:7px;
-  background:var(--primary);color:#fff;
-  border:none;cursor:pointer;
+  background:linear-gradient(135deg,#2c3e6b,#1a2744);
+  color:#e8c97a;
+  border:1px solid rgba(201,168,76,0.3);cursor:pointer;
   font-family:'Noto Sans KR',sans-serif;
   padding:10px 18px;border-radius:999px;
   font-weight:700;font-size:.9rem;
@@ -78,11 +79,11 @@ header{
   transition:background .18s,transform .18s;
   white-space:nowrap;
 }
-.menu-btn:hover{background:#3a3a3a;transform:translateY(-1px)}
-.menu-btn svg{width:18px;height:18px;fill:none;stroke:#fff;stroke-width:2.5;stroke-linecap:round;flex-shrink:0}
+.menu-btn:hover{background:linear-gradient(135deg,#c9a84c,#a07830);color:#fff;transform:translateY(-1px)}
+.menu-btn svg{width:18px;height:18px;fill:none;stroke:#e8c97a;stroke-width:2.5;stroke-linecap:round;flex-shrink:0}
 
 .nav-dropdown{
-  position:absolute;top:calc(100% + 8px);right:0;
+  position:absolute;top:calc(100% + 8px);left:0;
   background:var(--surface);border:1px solid var(--line);
   border-radius:18px;box-shadow:var(--shadow-lg);
   padding:8px;min-width:160px;
@@ -101,7 +102,7 @@ header{
 .nav-dropdown button:hover{background:var(--surface-2)}
 .nav-dropdown button.on{background:var(--primary);color:#fff}
 .nav-dropdown hr{border:none;border-top:1px solid var(--line);margin:4px 8px}
-.nav-wrap{position:relative}
+.nav-wrap{position:relative;flex-shrink:0;margin-left:auto}
 
 /* ───── PAGES ───── */
 .pg{display:none}
@@ -192,14 +193,16 @@ header{
 /* notice chip */
 .notice-chip{
   padding:18px 20px;
-  background:var(--primary);border-radius:16px;
+  background:linear-gradient(135deg,#2c3e6b,#1a2744);
+  border-radius:16px;
   box-shadow:var(--shadow);
+  border:1px solid rgba(201,168,76,0.25);
 }
 .notice-chip strong{
-  display:block;color:#fff;font-size:.95rem;
+  display:block;color:var(--gold-chip);font-size:.95rem;
   font-weight:700;margin-bottom:5px;
 }
-.notice-chip span{color:rgba(255,255,255,.72);font-size:.88rem;line-height:1.7}
+.notice-chip span{color:rgba(255,255,255,.78);font-size:.88rem;line-height:1.7}
 
 /* quick grid */
 .quick-section{padding:6px 0 0}
@@ -491,14 +494,14 @@ footer a:hover{color:var(--accent)}
         메뉴
       </button>
       <nav class="nav-dropdown" id="navDropdown">
-        <button class="on" data-p="home"      onclick="go('home');closeNav()">🏠 홈</button>
-        <button          data-p="mass"      onclick="go('mass');closeNav()">⛪ 미사 시간</button>
-        <button          data-p="about"     onclick="go('about');closeNav()">✝ 성당 소개</button>
-        <button          data-p="groups"    onclick="go('groups');closeNav()">🙏 단체</button>
+        <button class="on" data-p="home"      onclick="go('home');closeNav()">홈</button>
+        <button          data-p="mass"      onclick="go('mass');closeNav()">미사 시간</button>
+        <button          data-p="about"     onclick="go('about');closeNav()">성당 소개</button>
+        <button          data-p="groups"    onclick="go('groups');closeNav()">단체</button>
         <hr>
-        <button          data-p="contact"   onclick="go('contact');closeNav()">📍 연락처</button>
-        <button          data-p="jubo"      onclick="go('jubo');closeNav()">📄 주보</button>
-        <button          data-p="dailymass" onclick="go('dailymass');closeNav()">📖 매일미사</button>
+        <button          data-p="contact"   onclick="go('contact');closeNav()">연락처</button>
+        <button          data-p="jubo"      onclick="go('jubo');closeNav()">주보</button>
+        <button          data-p="dailymass" onclick="go('dailymass');closeNav()">매일미사</button>
       </nav>
     </div>
   </div>
@@ -1330,6 +1333,18 @@ function loadDailyMass() {
     to   { opacity:1; transform: translateY(0) scale(1); }
   }
   #chat-modal iframe { width:100%; height:100%; border:none; }
+  #chat-close {
+    position: absolute;
+    top: 12px; right: 12px;
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    background: rgba(26,39,68,0.75);
+    border: none; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    z-index: 10000;
+    color: white; font-size: 16px; line-height: 1;
+  }
+  #chat-close:hover { background: #e53935; }
   @media (max-width: 480px) {
     #chat-modal { bottom:0; right:0; width:100%; height:100%; border-radius:0; }
     #chat-fab { bottom:20px; right:20px; }
@@ -1343,6 +1358,7 @@ function loadDailyMass() {
 </button>
 
 <div id="chat-modal">
+  <button id="chat-close" onclick="toggleChatBot()" title="닫기">✕</button>
   <iframe id="chat-iframe" src="" title="성당 안내 챗봇"></iframe>
 </div>
 
@@ -1360,8 +1376,10 @@ function loadDailyMass() {
       }
       modal.classList.add('open');
       if (badge) badge.style.display = 'none';
+      document.getElementById('chat-fab').style.display = 'none';
     } else {
       modal.classList.remove('open');
+      document.getElementById('chat-fab').style.display = 'flex';
     }
   }
   document.addEventListener('click', function(e) {
