@@ -105,8 +105,11 @@ header{
 .nav-wrap{position:relative;flex-shrink:0;margin-left:auto;align-self:stretch;display:flex;align-items:center}
 
 @media(max-width:600px){
-  .header-inner{align-items:flex-start;padding-top:14px;padding-bottom:14px;min-height:0}
-  .nav-wrap{align-self:flex-start}
+  .header-inner{align-items:center;min-height:60px}
+  .nav-wrap{align-self:center}
+  .menu-btn{padding:8px 12px;font-size:.82rem}
+  .menu-btn .menu-text{display:none}
+  .menu-btn{padding:9px 12px}
 }
 
 /* ───── PAGES ───── */
@@ -496,7 +499,7 @@ footer a:hover{color:var(--accent)}
     <div class="nav-wrap" id="navWrap">
       <button class="menu-btn" onclick="toggleNav()" id="menuBtn">
         <svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
-        메뉴
+        <span class="menu-text">메뉴</span>
       </button>
       <nav class="nav-dropdown" id="navDropdown">
         <button class="on" data-p="home"      onclick="go('home');closeNav()">홈</button>
