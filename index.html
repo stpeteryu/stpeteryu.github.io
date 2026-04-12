@@ -187,11 +187,11 @@ header{
   position:absolute;inset:0;
   width:100%;height:100%;
   object-fit:cover;
-  opacity:.75;
+  opacity:.85;
 }
 .hero-overlay{
   position:absolute;inset:0;
-  background:linear-gradient(180deg,rgba(20,18,15,.15) 0%,rgba(20,18,15,.55) 60%,rgba(20,18,15,.82) 100%);
+  background:linear-gradient(180deg,rgba(20,18,15,.08) 0%,rgba(20,18,15,.35) 55%,rgba(20,18,15,.65) 100%);
 }
 .hero-content{
   padding:28px 36px 36px;color:#fff;max-width:660px;
@@ -200,7 +200,7 @@ header{
   position:relative;z-index:1;
 }
 .hero-top{padding-top:4px}
-.hero-bottom{}
+.hero-bottom{margin-top:auto;padding-top:20px}
 .eyebrow{
   display:inline-flex;align-items:center;gap:8px;
   padding:7px 14px;border-radius:999px;margin-bottom:0;
@@ -679,7 +679,8 @@ footer a:hover{color:var(--accent)}
 
       <!-- 왼쪽: 메인 히어로 -->
       <article class="hero-main">
-        <video class="hero-video" autoplay loop muted playsinline poster="hero-bg.jpg">
+        <video id="hero-vid" class="hero-video" autoplay loop muted playsinline
+          onerror="this.style.display='none';document.querySelector('.hero-main').style.background='linear-gradient(180deg,rgba(20,18,15,.1),rgba(20,18,15,.76)),url(hero-bg.jpg) center/cover no-repeat'">
           <source src="hero-video.mp4" type="video/mp4">
         </video>
         <div class="hero-overlay"></div>
@@ -1193,7 +1194,10 @@ footer a:hover{color:var(--accent)}
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
 <script>
 // ── 탭 네비게이션 ──
-function go(id) {
+const PAGES = ['home','notice','mass','about','groups','contact','jubo','dailymass'];
+
+function go(id, pushHistory) {
+  if (!PAGES.includes(id)) id = 'home';
   document.querySelectorAll('.pg').forEach(p => p.classList.remove('on'));
   document.querySelectorAll('.nav-panel-items button').forEach(b => b.classList.remove('on'));
   const pg  = document.getElementById('pg-' + id);
@@ -1203,7 +1207,16 @@ function go(id) {
   window.scrollTo({ top: 0, behavior: 'smooth' });
   if (id === 'dailymass') loadDailyMass();
   if (id === 'notice')    loadNotice(true);
+  // 6: 뒤로가기 처리 — 히스토리에 상태 추가
+  if (pushHistory !== false) {
+    history.pushState({ page: id }, '', '#' + id);
+  }
 }
+// 뒤로가기/앞으로가기 버튼 처리
+window.addEventListener('popstate', function(e) {
+  const id = (e.state && e.state.page) || 'home';
+  go(id, false);
+});
 function toggleNav() {
   document.getElementById('navPanel').classList.toggle('open');
   document.getElementById('navOverlay').classList.toggle('open');
@@ -1215,15 +1228,24 @@ function closeNav() {
 document.addEventListener('keydown', function(e) {
   if (e.key === 'Escape') closeNav();
 });
-window.addEventListener('hashchange', () => {
-  const h = location.hash.replace('#','') || 'home';
-  if (['home','notice','mass','about','groups','contact','jubo','dailymass'].includes(h)) go(h);
-});
+// 초기 진입
 (function(){
   const h = location.hash.replace('#','') || 'home';
-  if (['home','notice','mass','about','groups','contact','jubo','dailymass'].includes(h)) go(h);
+  const id = PAGES.includes(h) ? h : 'home';
+  // 첫 진입 시 현재 상태를 히스토리에 교체
+  history.replaceState({ page: id }, '', '#' + id);
+  go(id, false);
 })();
 document.getElementById('yr').textContent = new Date().getFullYear();
+
+// 2: 영상 0.8배속
+(function(){
+  const v = document.getElementById('hero-vid');
+  if (!v) return;
+  function setSpeed(){ v.playbackRate = 0.8; }
+  setSpeed();
+  v.addEventListener('play', setSpeed);
+})();
 
 // ── 공지사항 (구글 시트) ──────────────────────────────
 const SHEET_ID  = '1WR0cRUKikGKejZrRwrs6C7GlH2ibqj26MrCcuiLz3Uw';
@@ -1591,7 +1613,7 @@ function loadDailyMass() {
 <style>
   #chat-fab {
     position: fixed;
-    bottom: 80px; right: 24px;
+    bottom: 140px; right: 24px;
     height: 52px;
     padding: 0 20px 0 16px;
     border-radius: 999px;
@@ -1621,7 +1643,7 @@ function loadDailyMass() {
   #chat-modal {
     display: none;
     position: fixed;
-    bottom: 148px; right: 24px;
+    bottom: 208px; right: 24px;
     width: 370px; height: 680px;
     border-radius: 20px; overflow: hidden;
     box-shadow: 0 8px 40px rgba(26,39,68,0.25);
