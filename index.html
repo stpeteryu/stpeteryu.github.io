@@ -20,7 +20,7 @@
   --primary:   #232323;
   --accent:    #c6a86b;
   --accent-dk: #9a7a42;
-  --gold-chip: #e8c97a;
+  --shadow:    0 8px 24px rgba(35,35,35,.08);
   --shadow-lg: 0 16px 40px rgba(35,35,35,.12);
   --r:         20px;
   --max:       1100px;
@@ -46,123 +46,37 @@ header{
   border-bottom:1px solid rgba(35,35,35,.07);
 }
 .header-inner{
-  min-height:64px;display:flex;align-items:center;
-  justify-content:space-between;gap:12px;
-  flex-wrap:nowrap;
+  min-height:72px;display:flex;align-items:center;
+  justify-content:space-between;gap:16px;
 }
-.brand{display:flex;align-items:center;gap:10px;min-width:0;flex:1;overflow:hidden}
+.brand{display:flex;align-items:center;gap:13px;min-width:0}
 .cross-badge{
-  width:38px;height:38px;border-radius:50%;
+  width:42px;height:42px;border-radius:50%;
   display:grid;place-items:center;flex-shrink:0;
   background:var(--surface);border:1px solid var(--line);
-  color:var(--accent-dk);font-size:1rem;
+  color:var(--accent-dk);font-size:1.1rem;
   box-shadow:var(--shadow);
 }
 .brand-kor{
   font-family:'Noto Serif KR',serif;font-weight:900;
-  font-size:.9rem;line-height:1.3;display:block;
-  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  font-size:.98rem;line-height:1.35;display:block;
 }
 .brand-eng{
-  font-family:'Cormorant Garamond',serif;font-size:.75rem;
+  font-family:'Cormorant Garamond',serif;font-size:.82rem;
   color:var(--accent-dk);letter-spacing:.07em;display:block;
-  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
 }
 
-.nav-wrap{flex-shrink:0;margin-left:auto}
-.menu-btn{
-  display:flex;align-items:center;justify-content:center;
-  background:none;border:none;cursor:pointer;
-  padding:6px;
-  transition:opacity .18s;
-  flex-shrink:0;
-  width:40px;height:40px;
-}
-.menu-btn:hover{opacity:0.7}
-.menu-btn svg{width:24px;height:24px;fill:none;stroke:var(--primary);stroke-width:2.2;stroke-linecap:round}
-
-/* 슬라이드 메뉴 오버레이 */
-.nav-overlay{
-  display:none;
-  position:fixed;inset:0;
-  background:rgba(0,0,0,0.35);
-  z-index:500;
-  animation:overlayIn .25s ease;
-}
-.nav-overlay.open{display:block}
-@keyframes overlayIn{from{opacity:0}to{opacity:1}}
-
-/* 슬라이드 패널 */
-.nav-panel{
-  position:fixed;top:0;right:0;bottom:0;
-  width:min(320px,85vw);
-  background:var(--surface);
-  z-index:501;
-  transform:translateX(100%);
-  transition:transform .28s cubic-bezier(.4,0,.2,1);
-  display:flex;flex-direction:column;
-  box-shadow:-4px 0 24px rgba(0,0,0,0.15);
-}
-.nav-panel.open{transform:translateX(0)}
-
-.nav-panel-head{
-  display:flex;align-items:center;justify-content:space-between;
-  padding:20px 24px;
-  border-bottom:1px solid var(--line);
-}
-.nav-panel-logo{
-  display:flex;align-items:center;gap:10px;
-}
-.nav-panel-logo .cross-badge-sm{
-  width:36px;height:36px;border-radius:50%;
-  display:grid;place-items:center;
-  background:var(--surface-2);border:1px solid var(--line);
-  color:var(--accent-dk);font-size:.95rem;
-}
-.nav-panel-logo span{
-  font-family:'Noto Serif KR',serif;font-weight:900;
-  font-size:.9rem;color:var(--text);
-}
-.nav-close-btn{
-  background:none;border:none;cursor:pointer;
-  width:36px;height:36px;
-  display:flex;align-items:center;justify-content:center;
-  border-radius:50%;
-  transition:background .15s;
-  font-size:1.2rem;color:var(--text-2);
-}
-.nav-close-btn:hover{background:var(--surface-2)}
-
-.nav-panel-items{
-  flex:1;overflow-y:auto;
-  padding:16px 0;
-}
-.nav-panel-items button{
-  display:block;width:100%;
+/* pill nav */
+nav{display:flex;align-items:center;gap:4px;flex-wrap:wrap;justify-content:flex-end}
+nav button{
   background:none;border:none;cursor:pointer;
   font-family:'Noto Sans KR',sans-serif;
-  font-size:1.15rem;font-weight:700;
-  color:var(--text);
-  padding:18px 28px;
-  text-align:left;
-  transition:background .15s,color .15s;
-  border-left:3px solid transparent;
+  padding:8px 14px;border-radius:999px;
+  color:var(--text-2);font-weight:700;font-size:.88rem;
+  transition:background .18s,color .18s;white-space:nowrap;
 }
-.nav-panel-items button:hover{
-  background:var(--surface-2);
-  border-left-color:var(--accent);
-  color:var(--accent-dk);
-}
-.nav-panel-items button.on{
-  background:var(--surface-2);
-  border-left-color:var(--accent-dk);
-  color:var(--accent-dk);
-}
-.nav-panel-items hr{
-  border:none;border-top:1px solid var(--line);
-  margin:8px 24px;
-}
-.nav-wrap{flex-shrink:0;margin-left:auto}
+nav button:hover{background:var(--surface);color:var(--text)}
+nav button.on{background:var(--primary);color:#fff}
 
 /* ───── PAGES ───── */
 .pg{display:none}
@@ -253,16 +167,14 @@ header{
 /* notice chip */
 .notice-chip{
   padding:18px 20px;
-  background:linear-gradient(135deg,#2c3e6b,#1a2744);
-  border-radius:16px;
+  background:var(--primary);border-radius:16px;
   box-shadow:var(--shadow);
-  border:1px solid rgba(201,168,76,0.25);
 }
 .notice-chip strong{
-  display:block;color:var(--gold-chip);font-size:.95rem;
+  display:block;color:#fff;font-size:.95rem;
   font-weight:700;margin-bottom:5px;
 }
-.notice-chip span{color:rgba(255,255,255,.78);font-size:.88rem;line-height:1.7}
+.notice-chip span{color:rgba(255,255,255,.72);font-size:.88rem;line-height:1.7}
 
 /* quick grid */
 .quick-section{padding:6px 0 0}
@@ -520,7 +432,9 @@ footer a:hover{color:var(--accent)}
   .contact-grid{grid-template-columns:1fr}
 }
 @media(max-width:760px){
-  .header-inner{flex-direction:row;align-items:center;padding:0}
+  .header-inner{flex-direction:column;align-items:flex-start;padding:12px 0}
+  nav{width:100%;overflow-x:auto;flex-wrap:nowrap;padding-bottom:2px;justify-content:flex-start}
+  nav::-webkit-scrollbar{display:none}
   .quick-grid{grid-template-columns:repeat(2,1fr)}
   .news-grid{grid-template-columns:1fr 1fr}
   .hero-content{padding:26px 28px}
@@ -546,35 +460,16 @@ footer a:hover{color:var(--accent)}
         <span class="brand-eng">St. Peter Yu Roman Catholic Church · Hamilton</span>
       </div>
     </a>
-    <div class="nav-wrap" id="navWrap">
-      <button class="menu-btn" onclick="toggleNav()" id="menuBtn" title="메뉴">
-        <svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
-      </button>
-    </div>
-  </div>
-</header>
-
-<!-- 슬라이드 메뉴 -->
-<div class="nav-overlay" id="navOverlay" onclick="closeNav()"></div>
-<div class="nav-panel" id="navPanel">
-  <div class="nav-panel-head">
-    <div class="nav-panel-logo">
-      <div class="cross-badge-sm">✝</div>
-      <span>성 유대철 한인성당</span>
-    </div>
-    <button class="nav-close-btn" onclick="closeNav()">✕</button>
-  </div>
-  <div class="nav-panel-items">
-    <button class="on" data-p="home"      onclick="go('home');closeNav()">홈</button>
-    <button          data-p="mass"      onclick="go('mass');closeNav()">미사 시간</button>
-    <button          data-p="about"     onclick="go('about');closeNav()">성당 소개</button>
-    <button          data-p="groups"    onclick="go('groups');closeNav()">단체</button>
-    <hr>
-    <button          data-p="contact"   onclick="go('contact');closeNav()">연락처</button>
-    <button          data-p="jubo"      onclick="go('jubo');closeNav()">주보</button>
-    <button          data-p="dailymass" onclick="go('dailymass');closeNav()">매일미사</button>
-  </div>
-</div>
+    <nav id="nav">
+      <button class="on" data-p="home"    onclick="go('home')">홈</button>
+      <button          data-p="notice"  onclick="go('notice')">공지사항</button>
+      <button          data-p="mass"    onclick="go('mass')">미사 시간</button>
+      <button          data-p="about"   onclick="go('about')">성당 소개</button>
+      <button          data-p="groups"  onclick="go('groups')">단체</button>
+      <button          data-p="contact" onclick="go('contact')">연락처</button>
+      <button          data-p="jubo"    onclick="go('jubo')">주보</button>
+      <button          data-p="dailymass" onclick="go('dailymass')">매일미사</button>
+    </nav>
   </div>
 </header>
 
@@ -668,6 +563,38 @@ footer a:hover{color:var(--accent)}
           <h3>다음카페</h3>
           <p>공지사항·소식·교우 소통 공간 바로가기</p>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 공지사항 미리보기 -->
+  <div style="padding:28px 0 0">
+    <div class="container">
+      <div class="sec-head">
+        <div>
+          <h2>공지사항</h2>
+          <p>성당 최신 소식과 안내입니다</p>
+        </div>
+        <a class="sec-link" onclick="go('notice')" style="cursor:pointer">전체보기 →</a>
+      </div>
+      <div id="notice-preview">
+        <!-- 스켈레톤 -->
+        <div id="notice-preview-skel" style="display:flex;flex-direction:column;gap:1px;
+          background:var(--surface);border:1px solid var(--line);border-radius:20px;overflow:hidden;box-shadow:var(--shadow)">
+          <div style="padding:20px 22px;background:var(--surface)">
+            <div style="height:10px;width:25%;background:var(--surface-2);border-radius:4px;margin-bottom:10px;animation:sk 1.5s ease-in-out infinite"></div>
+            <div style="height:12px;width:70%;background:var(--surface-2);border-radius:4px;animation:sk 1.5s ease-in-out infinite .1s"></div>
+          </div>
+          <div style="padding:20px 22px;background:var(--surface);border-top:1px solid var(--surface-2)">
+            <div style="height:10px;width:20%;background:var(--surface-2);border-radius:4px;margin-bottom:10px;animation:sk 1.5s ease-in-out infinite .1s"></div>
+            <div style="height:12px;width:55%;background:var(--surface-2);border-radius:4px;animation:sk 1.5s ease-in-out infinite .2s"></div>
+          </div>
+          <div style="padding:20px 22px;background:var(--surface);border-top:1px solid var(--surface-2)">
+            <div style="height:10px;width:22%;background:var(--surface-2);border-radius:4px;margin-bottom:10px;animation:sk 1.5s ease-in-out infinite .2s"></div>
+            <div style="height:12px;width:60%;background:var(--surface-2);border-radius:4px;animation:sk 1.5s ease-in-out infinite .3s"></div>
+          </div>
+        </div>
+        <div id="notice-preview-content" style="display:none"></div>
       </div>
     </div>
   </div>
@@ -1016,6 +943,52 @@ footer a:hover{color:var(--accent)}
 </section>
 
 <!-- ═══════════════════════════════════════
+     공지사항
+════════════════════════════════════════ -->
+<section class="pg" id="pg-notice">
+  <div class="pg-wrap">
+    <div class="container">
+      <div class="pg-header">
+        <div class="pg-eyebrow">Notice</div>
+        <h1>공지사항</h1>
+        <p>성당 최신 소식과 안내입니다.</p>
+      </div>
+
+      <!-- 스켈레톤 -->
+      <div id="notice-skel" style="display:flex;flex-direction:column;gap:12px">
+        <div style="background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:26px;box-shadow:var(--shadow)">
+          <div style="height:10px;width:20%;background:var(--surface-2);border-radius:4px;margin-bottom:12px;animation:sk 1.5s ease-in-out infinite"></div>
+          <div style="height:14px;width:60%;background:var(--surface-2);border-radius:4px;margin-bottom:10px;animation:sk 1.5s ease-in-out infinite .1s"></div>
+          <div style="height:10px;width:90%;background:var(--surface-2);border-radius:4px;animation:sk 1.5s ease-in-out infinite .2s"></div>
+        </div>
+        <div style="background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:26px;box-shadow:var(--shadow)">
+          <div style="height:10px;width:18%;background:var(--surface-2);border-radius:4px;margin-bottom:12px;animation:sk 1.5s ease-in-out infinite .1s"></div>
+          <div style="height:14px;width:50%;background:var(--surface-2);border-radius:4px;margin-bottom:10px;animation:sk 1.5s ease-in-out infinite .2s"></div>
+          <div style="height:10px;width:80%;background:var(--surface-2);border-radius:4px;animation:sk 1.5s ease-in-out infinite .3s"></div>
+        </div>
+      </div>
+
+      <!-- 공지 목록 -->
+      <div id="notice-list" style="display:none;"></div>
+
+      <!-- 비어있을 때 -->
+      <div id="notice-empty" style="display:none;padding:40px 28px;background:var(--surface);
+        border:1px solid var(--line);border-radius:20px;text-align:center;color:var(--text-3)">
+        <div style="font-size:2rem;margin-bottom:12px">📋</div>
+        <p style="font-size:.95rem">등록된 공지사항이 없습니다.</p>
+      </div>
+
+      <!-- 오류 -->
+      <div id="notice-error" style="display:none;padding:40px 28px;background:var(--surface);
+        border:1px solid var(--line);border-radius:20px;text-align:center;color:var(--text-3)">
+        <div style="font-size:2rem;margin-bottom:12px">⚠️</div>
+        <p style="font-size:.95rem">공지사항을 불러오지 못했습니다.<br>잠시 후 다시 시도해 주세요.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
      매일미사
 ════════════════════════════════════════ -->
 <section class="pg" id="pg-dailymass">
@@ -1067,34 +1040,160 @@ footer a:hover{color:var(--accent)}
 // ── 탭 네비게이션 ──
 function go(id) {
   document.querySelectorAll('.pg').forEach(p => p.classList.remove('on'));
-  document.querySelectorAll('.nav-panel-items button').forEach(b => b.classList.remove('on'));
+  document.querySelectorAll('nav button').forEach(b => b.classList.remove('on'));
   const pg  = document.getElementById('pg-' + id);
-  const btn = document.querySelector('.nav-panel-items button[data-p="' + id + '"]');
+  const btn = document.querySelector('nav button[data-p="' + id + '"]');
   if (pg)  pg.classList.add('on');
   if (btn) btn.classList.add('on');
   window.scrollTo({ top: 0, behavior: 'smooth' });
   if (id === 'dailymass') loadDailyMass();
+  if (id === 'notice')    loadNotice();
 }
-function toggleNav() {
-  document.getElementById('navPanel').classList.toggle('open');
-  document.getElementById('navOverlay').classList.toggle('open');
-}
-function closeNav() {
-  document.getElementById('navPanel').classList.remove('open');
-  document.getElementById('navOverlay').classList.remove('open');
-}
-document.addEventListener('keydown', function(e) {
-  if (e.key === 'Escape') closeNav();
-});
 window.addEventListener('hashchange', () => {
   const h = location.hash.replace('#','') || 'home';
-  if (['home','mass','about','groups','contact','jubo','dailymass'].includes(h)) go(h);
+  if (['home','notice','mass','about','groups','contact','jubo','dailymass'].includes(h)) go(h);
 });
 (function(){
   const h = location.hash.replace('#','') || 'home';
-  if (['home','mass','about','groups','contact','jubo','dailymass'].includes(h)) go(h);
+  if (['home','notice','mass','about','groups','contact','jubo','dailymass'].includes(h)) go(h);
 })();
 document.getElementById('yr').textContent = new Date().getFullYear();
+
+// ── 공지사항 로딩 (구글 시트) ─────────────────────────
+const SHEET_ID = '1WR0cRUKikGKejZrRwrs6C7GlH2ibqj26MrCcuiLz3Uw';
+const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json`;
+
+let noticeLoaded = false;
+let noticeData   = [];
+
+function loadNotice() {
+  if (noticeLoaded) return;
+
+  fetch(SHEET_URL)
+    .then(r => r.text())
+    .then(text => {
+      // 구글 시트 gviz 응답에서 JSON 추출
+      const json = JSON.parse(text.match(/google\.visualization\.Query\.setResponse\(([\s\S]*)\)/)[1]);
+      const rows = json.table.rows || [];
+
+      noticeData = rows
+        .filter(r => r.c && r.c[0] && r.c[1]) // 날짜·제목 있는 행만
+        .map(r => ({
+          date:      r.c[0]?.v ? formatDate(r.c[0].v) : '',
+          title:     r.c[1]?.v || '',
+          content:   r.c[2]?.v || '',
+          important: r.c[3]?.v === '예' || r.c[3]?.v === 'Y' || r.c[3]?.v === 'y',
+        }))
+        .reverse(); // 최신순
+
+      noticeLoaded = true;
+      renderNoticeList();
+      renderNoticePreview();
+    })
+    .catch(() => {
+      hide('notice-skel');
+      show('notice-error');
+    });
+}
+
+function formatDate(v) {
+  // 구글 시트 날짜는 "Date(2026,3,12)" 형태 또는 문자열
+  if (typeof v === 'string' && v.startsWith('Date(')) {
+    const [y, m, d] = v.slice(5,-1).split(',').map(Number);
+    return `${y}.${String(m+1).padStart(2,'0')}.${String(d).padStart(2,'0')}`;
+  }
+  return String(v);
+}
+
+function show(id){ const e=document.getElementById(id); if(e) e.style.display='block'; }
+function hide(id){ const e=document.getElementById(id); if(e) e.style.display='none'; }
+
+function renderNoticeList() {
+  hide('notice-skel');
+  const el = document.getElementById('notice-list');
+  if (!el) return;
+
+  if (!noticeData.length) { show('notice-empty'); return; }
+
+  el.innerHTML = noticeData.map((n, i) => `
+    <div style="background:var(--surface);border:1px solid var(--line);
+      border-radius:20px;margin-bottom:12px;box-shadow:var(--shadow);overflow:hidden">
+      <div onclick="toggleNotice(${i})" style="padding:22px 26px;cursor:pointer;
+        display:flex;align-items:center;gap:14px;
+        transition:background .18s" onmouseover="this.style.background='var(--surface-2)'"
+        onmouseout="this.style.background='transparent'">
+        <div style="flex:1;min-width:0">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+            ${n.important ? `<span style="background:var(--primary);color:#fff;
+              font-size:.68rem;font-weight:700;padding:2px 9px;border-radius:999px">중요</span>` : ''}
+            <span style="font-family:'Cormorant Garamond',serif;font-size:.88rem;
+              color:var(--accent-dk)">${n.date}</span>
+          </div>
+          <div style="font-size:1rem;font-weight:700;color:var(--text);
+            white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${n.title}</div>
+        </div>
+        <span id="arrow-${i}" style="color:var(--text-3);font-size:.85rem;
+          flex-shrink:0;transition:transform .2s">▼</span>
+      </div>
+      <div id="notice-body-${i}" style="display:none;padding:0 26px 22px;
+        border-top:1px solid var(--surface-2)">
+        <p style="font-size:.93rem;color:var(--text-2);line-height:2;
+          margin-top:18px;white-space:pre-wrap">${n.content}</p>
+      </div>
+    </div>`).join('');
+
+  el.style.display = 'block';
+}
+
+function toggleNotice(i) {
+  const body  = document.getElementById('notice-body-' + i);
+  const arrow = document.getElementById('arrow-' + i);
+  if (!body) return;
+  const open = body.style.display === 'none';
+  body.style.display  = open ? 'block' : 'none';
+  arrow.style.transform = open ? 'rotate(180deg)' : '';
+}
+
+function renderNoticePreview() {
+  const skelEl    = document.getElementById('notice-preview-skel');
+  const contentEl = document.getElementById('notice-preview-content');
+  if (!skelEl || !contentEl) return;
+
+  skelEl.style.display = 'none';
+
+  const preview = noticeData.slice(0, 3);
+  if (!preview.length) {
+    contentEl.innerHTML = `<div style="padding:24px;background:var(--surface);
+      border:1px solid var(--line);border-radius:20px;color:var(--text-3);
+      font-size:.9rem;text-align:center">등록된 공지사항이 없습니다.</div>`;
+    contentEl.style.display = 'block';
+    return;
+  }
+
+  contentEl.innerHTML = `
+    <div style="background:var(--surface);border:1px solid var(--line);
+      border-radius:20px;overflow:hidden;box-shadow:var(--shadow)">
+      ${preview.map((n, i) => `
+        <div onclick="go('notice')" style="padding:18px 22px;cursor:pointer;
+          ${i > 0 ? 'border-top:1px solid var(--surface-2);' : ''}
+          transition:background .18s" onmouseover="this.style.background='var(--surface-2)'"
+          onmouseout="this.style.background='transparent'">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:5px">
+            ${n.important ? `<span style="background:var(--primary);color:#fff;
+              font-size:.65rem;font-weight:700;padding:1px 8px;border-radius:999px">중요</span>` : ''}
+            <span style="font-family:'Cormorant Garamond',serif;font-size:.84rem;
+              color:var(--accent-dk)">${n.date}</span>
+          </div>
+          <div style="font-size:.95rem;font-weight:700;color:var(--text)">${n.title}</div>
+          ${n.content ? `<div style="font-size:.85rem;color:var(--text-3);margin-top:4px;
+            white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${n.content}</div>` : ''}
+        </div>`).join('')}
+    </div>`;
+  contentEl.style.display = 'block';
+}
+
+// 홈 로드 시 공지 미리보기도 함께 로딩
+loadNotice();
 
 // ── 주보 자동 로더 ──────────────────────────────────────
 (function() {
@@ -1357,114 +1456,5 @@ function loadDailyMass() {
     .catch(() => {});
 })();
 </script>
-
-<!-- ✝ 성당 챗봇 위젯 -->
-<style>
-  #chat-fab {
-    position: fixed;
-    bottom: 28px; right: 28px;
-    height: 52px;
-    padding: 0 20px 0 16px;
-    border-radius: 999px;
-    background: #1a2744;
-    border: none; cursor: pointer;
-    box-shadow: 0 4px 20px rgba(26,39,68,0.4);
-    display: flex; align-items: center; gap: 9px;
-    z-index: 9999;
-    transition: transform 0.2s, background 0.2s, box-shadow 0.2s;
-    white-space: nowrap;
-  }
-  #chat-fab:hover { transform: translateY(-2px); background: #c6a86b; box-shadow: 0 6px 24px rgba(198,168,107,0.45); }
-  #chat-fab svg { width: 22px; height: 22px; fill: white; flex-shrink:0; }
-  #chat-fab .fab-label {
-    font-family: 'Noto Sans KR', sans-serif;
-    font-size: 14px; font-weight: 700;
-    color: white; letter-spacing: 0.02em;
-  }
-  #chat-fab .fab-badge {
-    position: absolute; top: -2px; right: -2px;
-    width: 14px; height: 14px;
-    background: #e53935; border-radius: 50%;
-    border: 2px solid white;
-    animation: fabBlink 2s infinite;
-  }
-  @keyframes fabBlink { 0%,100%{opacity:1} 50%{opacity:0.3} }
-  #chat-modal {
-    display: none;
-    position: fixed;
-    bottom: 100px; right: 28px;
-    width: 370px; height: 580px;
-    border-radius: 20px; overflow: hidden;
-    box-shadow: 0 8px 40px rgba(26,39,68,0.25);
-    z-index: 9998;
-    animation: chatPopUp 0.25s ease;
-  }
-  #chat-modal.open { display: block; }
-  @keyframes chatPopUp {
-    from { opacity:0; transform: translateY(20px) scale(0.95); }
-    to   { opacity:1; transform: translateY(0) scale(1); }
-  }
-  #chat-modal iframe { width:100%; height:100%; border:none; }
-  #chat-close {
-    position: absolute;
-    top: 12px; right: 12px;
-    width: 32px; height: 32px;
-    border-radius: 50%;
-    background: rgba(26,39,68,0.75);
-    border: none; cursor: pointer;
-    display: flex; align-items: center; justify-content: center;
-    z-index: 10000;
-    color: white; font-size: 16px; line-height: 1;
-  }
-  #chat-close:hover { background: #e53935; }
-  @media (max-width: 480px) {
-    #chat-modal { bottom:0; right:0; width:100%; height:100%; border-radius:0; }
-    #chat-fab { bottom:20px; right:20px; }
-  }
-</style>
-
-<button id="chat-fab" onclick="toggleChatBot()" title="AI 도우미">
-  <div class="fab-badge"></div>
-  <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-2 10H6V10h12v2zm0-3H6V7h12v2z"/></svg>
-  <span class="fab-label">AI 도우미</span>
-</button>
-
-<div id="chat-modal">
-  <button id="chat-close" onclick="toggleChatBot()" title="닫기">✕</button>
-  <iframe id="chat-iframe" src="" title="성당 안내 챗봇"></iframe>
-</div>
-
-<script>
-  let _chatOpen = false;
-  function toggleChatBot() {
-    const modal = document.getElementById('chat-modal');
-    const iframe = document.getElementById('chat-iframe');
-    const badge = document.querySelector('#chat-fab .fab-badge');
-    _chatOpen = !_chatOpen;
-    if (_chatOpen) {
-      if (!iframe.getAttribute('data-loaded')) {
-        iframe.src = 'parish_chatbot.html';
-        iframe.setAttribute('data-loaded','1');
-      }
-      modal.classList.add('open');
-      if (badge) badge.style.display = 'none';
-      document.getElementById('chat-fab').style.display = 'none';
-    } else {
-      modal.classList.remove('open');
-      document.getElementById('chat-fab').style.display = 'flex';
-    }
-  }
-  document.addEventListener('click', function(e) {
-    const modal = document.getElementById('chat-modal');
-    const fab = document.getElementById('chat-fab');
-    if (_chatOpen && !modal.contains(e.target) && !fab.contains(e.target)) {
-      modal.classList.remove('open');
-      _chatOpen = false;
-      fab.style.display = 'flex';
-    }
-  });
-</script>
-<!-- ✝ 챗봇 위젯 끝 -->
-
 </body>
 </html>
