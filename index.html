@@ -132,7 +132,7 @@ header{
 }
 .nav-panel-logo span{
   font-family:'Noto Serif KR',serif;font-weight:900;
-  font-size:.9rem;color:var(--text);
+  font-size:1.05rem;color:var(--text);
 }
 .nav-close-btn{
   background:none;border:none;cursor:pointer;
@@ -744,7 +744,7 @@ footer a:hover{color:var(--accent)}
 <div class="nav-panel" id="navPanel">
   <div class="nav-panel-head">
     <div class="nav-panel-logo">
-      <div class="cross-badge-sm">✝</div>
+      <img src="logo.png" alt="로고" style="width:40px;height:40px;border-radius:50%;object-fit:cover;flex-shrink:0">
       <span>성 유대철 한인성당</span>
     </div>
     <button class="nav-close-btn" onclick="closeNav()">✕</button>
@@ -759,7 +759,6 @@ footer a:hover{color:var(--accent)}
     <button          data-p="contact"   onclick="go('contact');closeNav()">연락처</button>
     <button          data-p="jubo"      onclick="go('jubo');closeNav()">주보</button>
     <button          data-p="dailymass" onclick="go('dailymass');closeNav()">매일미사</button>
-    <button          data-p="gallery"   onclick="go('gallery');closeNav()">사진 갤러리</button>
   </div>
 </div>
   </div>
