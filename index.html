@@ -211,14 +211,17 @@ header{
   position:relative;z-index:1;
 }
 .hero-top{
-  position:absolute;top:28px;left:36px;
+  position:absolute;top:28px;left:0;right:0;
+  display:flex;justify-content:center;
 }
 .hero-bottom{}
 .eyebrow{
   display:inline-flex;align-items:center;gap:8px;
-  padding:7px 14px;border-radius:999px;margin-bottom:0;
-  background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);
-  font-size:.84rem;font-weight:700;letter-spacing:.04em;
+  padding:8px 18px;border-radius:999px;margin-bottom:0;
+  background:rgba(255,255,255,.15);
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  border:1px solid rgba(255,255,255,.3);
+  font-size:.84rem;font-weight:700;letter-spacing:.04em;color:#fff;
 }
 .hero-content h1{
   font-family:'Noto Serif KR',serif;font-weight:900;
