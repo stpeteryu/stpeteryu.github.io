@@ -1255,7 +1255,7 @@ document.getElementById('yr').textContent = new Date().getFullYear();
 (function(){
   const v = document.getElementById('hero-vid');
   if (!v) return;
-  function setSpeed(){ v.playbackRate = 0.6; }
+  function setSpeed(){ v.playbackRate = 0.75; }
   setSpeed();
   v.addEventListener('play', setSpeed);
 })();
