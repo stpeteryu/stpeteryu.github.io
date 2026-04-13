@@ -298,24 +298,24 @@ header{
 .quick-section{padding:6px 0 0}
 .quick-grid{
   display:grid;grid-template-columns:repeat(4,1fr);
-  gap:14px;padding:18px 0 0;
+  gap:10px;padding:14px 0 0;
 }
 .quick-card{
   background:var(--surface);border:1px solid var(--line);
-  border-radius:18px;padding:20px 18px;
+  border-radius:14px;padding:14px 16px;
   box-shadow:var(--shadow);
   transition:transform .18s,border-color .18s;
   cursor:pointer;
+  display:flex;align-items:center;gap:12px;
 }
-.quick-card:hover{transform:translateY(-3px);border-color:var(--accent)}
+.quick-card:hover{transform:translateY(-2px);border-color:var(--accent)}
 .quick-icon{
-  width:46px;height:46px;border-radius:14px;
-  display:grid;place-items:center;
-  background:var(--surface-2);font-size:1.2rem;
-  margin-bottom:12px;
+  width:38px;height:38px;border-radius:10px;
+  display:grid;place-items:center;flex-shrink:0;
+  background:var(--surface-2);color:var(--accent-dk);
 }
-.quick-card h3{font-size:.97rem;font-weight:800;margin-bottom:5px}
-.quick-card p{color:var(--text-2);font-size:.86rem;margin:0;line-height:1.55}
+.quick-card h3{font-size:.88rem;font-weight:800;margin-bottom:0}
+.quick-card p{display:none}
 
 /* news section on home */
 .news-section{padding:28px 0 0}
@@ -603,6 +603,81 @@ header{
   background:var(--surface-2);
 }
 
+/* ─── GALLERY ─── */
+.album-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
+  gap:16px;
+}
+.album-card{
+  background:var(--surface);border:1px solid var(--line);
+  border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow);
+  cursor:pointer;transition:transform .18s,border-color .18s;
+}
+.album-card:hover{transform:translateY(-3px);border-color:var(--accent)}
+.album-cover{
+  width:100%;aspect-ratio:4/3;object-fit:cover;display:block;
+  background:var(--surface-2);
+}
+.album-cover-ph{
+  width:100%;aspect-ratio:4/3;background:var(--surface-2);
+  display:flex;align-items:center;justify-content:center;
+  font-size:2rem;
+}
+.album-info{padding:14px 16px}
+.album-title{font-family:'Noto Serif KR',serif;font-weight:700;font-size:.97rem;margin-bottom:4px}
+.album-meta{font-size:.8rem;color:var(--text-3)}
+
+/* 라이트박스 */
+.lightbox{
+  display:none;position:fixed;inset:0;z-index:2000;
+  background:rgba(0,0,0,.92);
+  flex-direction:column;
+}
+.lightbox.open{display:flex}
+.lb-header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:16px 20px;flex-shrink:0;
+}
+.lb-title{font-family:'Noto Serif KR',serif;font-size:1rem;font-weight:700;color:#fff}
+.lb-close{
+  background:rgba(255,255,255,.1);border:none;cursor:pointer;
+  color:#fff;font-size:1.2rem;width:38px;height:38px;
+  border-radius:50%;display:grid;place-items:center;
+  transition:background .15s;
+}
+.lb-close:hover{background:rgba(255,255,255,.25)}
+.lb-body{flex:1;overflow-y:auto;padding:0 16px 24px}
+.lb-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));
+  gap:8px;
+}
+.lb-thumb{
+  width:100%;aspect-ratio:1;object-fit:cover;display:block;
+  border-radius:8px;cursor:zoom-in;
+  transition:opacity .15s,transform .15s;
+  background:rgba(255,255,255,.06);
+}
+.lb-thumb:hover{opacity:.85;transform:scale(1.02)}
+
+/* 전체화면 사진 뷰어 */
+.photo-viewer{
+  display:none;position:fixed;inset:0;z-index:3000;
+  background:rgba(0,0,0,.97);
+  align-items:center;justify-content:center;
+}
+.photo-viewer.open{display:flex}
+.photo-viewer img{
+  max-width:94vw;max-height:90vh;
+  object-fit:contain;border-radius:6px;
+}
+.pv-close{
+  position:absolute;top:16px;right:16px;
+  background:rgba(255,255,255,.1);border:none;cursor:pointer;
+  color:#fff;font-size:1.2rem;width:40px;height:40px;
+  border-radius:50%;display:grid;place-items:center;z-index:1;
+}
+.pv-close:hover{background:rgba(255,255,255,.25)}
+
 /* ─── FOOTER ─── */
 footer{
   background:var(--primary);color:rgba(255,255,255,.55);
@@ -674,6 +749,7 @@ footer a:hover{color:var(--accent)}
     <button          data-p="contact"   onclick="go('contact');closeNav()">연락처</button>
     <button          data-p="jubo"      onclick="go('jubo');closeNav()">주보</button>
     <button          data-p="dailymass" onclick="go('dailymass');closeNav()">매일미사</button>
+    <button          data-p="gallery"   onclick="go('gallery');closeNav()">사진 갤러리</button>
   </div>
 </div>
   </div>
@@ -715,7 +791,14 @@ footer a:hover{color:var(--accent)}
       <aside class="hero-side">
         <div class="notice-board" style="flex:1">
           <div class="notice-board-head">
-            <span>📋 공지사항</span>
+            <span style="display:flex;align-items:center;gap:7px">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="16" height="16" style="color:var(--accent-dk)">
+                <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/>
+                <rect x="9" y="3" width="6" height="4" rx="2"/>
+                <line x1="9" y1="12" x2="15" y2="12"/><line x1="9" y1="16" x2="13" y2="16"/>
+              </svg>
+              공지사항
+            </span>
             <a onclick="go('notice');closeNav()">전체보기 →</a>
           </div>
           <div id="notice-hero-list">
@@ -740,7 +823,13 @@ footer a:hover{color:var(--accent)}
 
         <!-- 기도 공지 -->
         <div class="notice-chip">
-          <strong>🙏 2026년 함께 드리는 기도</strong>
+          <strong style="display:flex;align-items:center;gap:7px">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="15" height="15">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/>
+              <path d="M12 6v6l4 2"/>
+            </svg>
+            2026년 함께 드리는 기도
+          </strong>
           <span>"본당 공동체를 위하여" 매일 밤 9시 주모경 바치기</span>
         </div>
       </aside>
@@ -752,24 +841,37 @@ footer a:hover{color:var(--accent)}
     <div class="container">
       <div class="quick-grid">
         <div class="quick-card" onclick="go('jubo')">
-          <div class="quick-icon">📄</div>
+          <div class="quick-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="20" height="20">
+              <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/>
+              <line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/>
+            </svg>
+          </div>
           <h3>이번 주 주보</h3>
-          <p>매주 자동 업데이트되는 주보 바로 확인</p>
         </div>
         <div class="quick-card" onclick="go('mass')">
-          <div class="quick-icon">🕐</div>
+          <div class="quick-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="20" height="20">
+              <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+            </svg>
+          </div>
           <h3>미사 시간표</h3>
-          <p>주일·평일·특별 미사 및 성사 일정 안내</p>
         </div>
         <div class="quick-card" onclick="go('dailymass')">
-          <div class="quick-icon">📖</div>
+          <div class="quick-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="20" height="20">
+              <path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/>
+            </svg>
+          </div>
           <h3>매일미사</h3>
-          <p>오늘의 독서와 복음 말씀 전체 보기</p>
         </div>
         <div class="quick-card" onclick="window.open('http://cafe.daum.net/stpeteryu','_blank')">
-          <div class="quick-icon">☕</div>
+          <div class="quick-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="20" height="20">
+              <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>
+            </svg>
+          </div>
           <h3>다음카페</h3>
-          <p>공지사항·소식·교우 소통 공간 바로가기</p>
         </div>
       </div>
     </div>
@@ -1190,9 +1292,80 @@ footer a:hover{color:var(--accent)}
 
     </div>
   </div>
+<!-- ═══════════════════════════════════════
+     사진 갤러리
+════════════════════════════════════════ -->
+<section class="pg" id="pg-gallery">
+  <div class="pg-wrap">
+    <div class="container">
+      <div class="pg-header">
+        <div class="pg-eyebrow">Gallery</div>
+        <h1>사진 갤러리</h1>
+        <p>성 유대철 한인성당의 소중한 순간들을 담았습니다.</p>
+      </div>
+
+      <!-- 스켈레톤 -->
+      <div id="gallery-skel" class="album-grid">
+        <div class="album-card" style="pointer-events:none">
+          <div class="album-cover-ph"><div style="width:50%;height:12px;background:var(--line);border-radius:4px;animation:sk 1.5s ease-in-out infinite"></div></div>
+          <div class="album-info">
+            <div style="height:13px;width:70%;background:var(--surface-2);border-radius:4px;margin-bottom:8px;animation:sk 1.5s ease-in-out infinite"></div>
+            <div style="height:10px;width:45%;background:var(--surface-2);border-radius:4px;animation:sk 1.5s ease-in-out infinite .1s"></div>
+          </div>
+        </div>
+        <div class="album-card" style="pointer-events:none">
+          <div class="album-cover-ph"><div style="width:50%;height:12px;background:var(--line);border-radius:4px;animation:sk 1.5s ease-in-out infinite .1s"></div></div>
+          <div class="album-info">
+            <div style="height:13px;width:60%;background:var(--surface-2);border-radius:4px;margin-bottom:8px;animation:sk 1.5s ease-in-out infinite .1s"></div>
+            <div style="height:10px;width:40%;background:var(--surface-2);border-radius:4px;animation:sk 1.5s ease-in-out infinite .2s"></div>
+          </div>
+        </div>
+        <div class="album-card" style="pointer-events:none">
+          <div class="album-cover-ph"><div style="width:50%;height:12px;background:var(--line);border-radius:4px;animation:sk 1.5s ease-in-out infinite .2s"></div></div>
+          <div class="album-info">
+            <div style="height:13px;width:75%;background:var(--surface-2);border-radius:4px;margin-bottom:8px;animation:sk 1.5s ease-in-out infinite .2s"></div>
+            <div style="height:10px;width:50%;background:var(--surface-2);border-radius:4px;animation:sk 1.5s ease-in-out infinite .3s"></div>
+          </div>
+        </div>
+      </div>
+
+      <div id="gallery-list" class="album-grid" style="display:none"></div>
+
+      <div id="gallery-empty" style="display:none;padding:48px;text-align:center;
+        background:var(--surface);border:1px solid var(--line);border-radius:var(--r);
+        color:var(--text-3)">
+        <div style="font-size:2.5rem;margin-bottom:12px">📷</div>
+        <p style="font-size:.95rem">등록된 앨범이 없습니다.</p>
+      </div>
+
+      <div id="gallery-error" style="display:none;padding:48px;text-align:center;
+        background:var(--surface);border:1px solid var(--line);border-radius:var(--r);
+        color:var(--text-3)">
+        <div style="font-size:2.5rem;margin-bottom:12px">⚠️</div>
+        <p style="font-size:.95rem">갤러리를 불러오지 못했습니다.<br>잠시 후 다시 시도해 주세요.</p>
+      </div>
+    </div>
+  </div>
 </section>
 
 </main>
+
+<!-- 앨범 라이트박스 -->
+<div class="lightbox" id="lightbox">
+  <div class="lb-header">
+    <span class="lb-title" id="lb-title"></span>
+    <button class="lb-close" onclick="closeLightbox()">✕</button>
+  </div>
+  <div class="lb-body">
+    <div class="lb-grid" id="lb-grid"></div>
+  </div>
+</div>
+
+<!-- 전체화면 사진 뷰어 -->
+<div class="photo-viewer" id="photo-viewer" onclick="closePhotoViewer()">
+  <button class="pv-close" onclick="closePhotoViewer()">✕</button>
+  <img id="pv-img" src="" alt="">
+</div>
 
 <!-- ═══ FOOTER ═══ -->
 <footer>
@@ -1207,7 +1380,7 @@ footer a:hover{color:var(--accent)}
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
 <script>
 // ── 탭 네비게이션 ──
-const PAGES = ['home','notice','mass','about','groups','contact','jubo','dailymass'];
+const PAGES = ['home','notice','mass','about','groups','contact','jubo','dailymass','gallery'];
 
 function go(id, pushHistory) {
   if (!PAGES.includes(id)) id = 'home';
@@ -1220,6 +1393,7 @@ function go(id, pushHistory) {
   window.scrollTo({ top: 0, behavior: 'smooth' });
   if (id === 'dailymass') loadDailyMass();
   if (id === 'notice')    loadNotice(true);
+  if (id === 'gallery')   loadGallery();
   // 6: 뒤로가기 처리 — 히스토리에 상태 추가
   if (pushHistory !== false) {
     history.pushState({ page: id }, '', '#' + id);
