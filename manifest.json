@@ -1,0 +1,22 @@
+{
+  "name": "해밀턴 성 유대철 한인성당",
+  "short_name": "성 유대철 성당",
+  "description": "St. Peter Yu Roman Catholic Church · Hamilton, Ontario",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f7f5f2",
+  "theme_color": "#f7f5f2",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "logo.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "logo.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
