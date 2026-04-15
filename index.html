@@ -19,21 +19,52 @@
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800&family=Noto+Serif+KR:wght@600;700;900&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg:        #f7f5f2;
-  --surface:   #ffffff;
-  --surface-2: #f0ece5;
-  --surface-3: #e8e2d8;
-  --text:      #232323;
-  --text-2:    #5e574f;
-  --text-3:    #9a9088;
-  --line:      #dfd7cc;
-  --primary:   #232323;
-  --accent:    #c6a86b;
-  --accent-dk: #9a7a42;
-  --gold-chip: #e8c97a;
-  --shadow-lg: 0 16px 40px rgba(35,35,35,.12);
-  --r:         20px;
-  --max:       1100px;
+  --bg:          #f7f5f2;
+  --surface:     #ffffff;
+  --surface-2:   #f0ece5;
+  --surface-3:   #e8e2d8;
+  --text:        #232323;
+  --text-2:      #5e574f;
+  --text-3:      #9a9088;
+  --line:        #dfd7cc;
+  --primary:     #232323;
+  --accent:      #c6a86b;
+  --accent-dk:   #9a7a42;
+  --gold-chip:   #e8c97a;
+  --shadow-lg:   0 16px 40px rgba(35,35,35,.12);
+  --r:           20px;
+  --max:         1100px;
+  --header-bg:   rgba(247,245,242,.92);
+  --chip-bg:     #c8b99a;
+  --chip-border: #b0a080;
+  --chip-text:   #3a2c1a;
+  --chip-text-2: rgba(58,44,26,.72);
+  --hero-from:   #3a3028;
+  --hero-to:     #1e1a14;
+}
+
+/* ── 초록 테마 ── */
+[data-theme="green"] {
+  --bg:          #f2f6f3;
+  --surface:     #ffffff;
+  --surface-2:   #e5efe8;
+  --surface-3:   #cfe0d5;
+  --text:        #182a1e;
+  --text-2:      #3e5f4a;
+  --text-3:      #7a9984;
+  --line:        #c0d9c9;
+  --primary:     #1a4731;
+  --accent:      #2e7d52;
+  --accent-dk:   #1a4731;
+  --gold-chip:   #52b788;
+  --shadow-lg:   0 16px 40px rgba(26,71,49,.13);
+  --header-bg:   rgba(242,246,243,.93);
+  --chip-bg:     #b8d4c3;
+  --chip-border: #95bfaa;
+  --chip-text:   #122a1d;
+  --chip-text-2: rgba(18,42,29,.68);
+  --hero-from:   #1a3d28;
+  --hero-to:     #0d2218;
 }
 
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -53,7 +84,7 @@ a{color:inherit;text-decoration:none}
 header{
   position:sticky;top:0;z-index:50;
   backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
-  background:rgba(247,245,242,.92);
+  background:var(--header-bg);
   border-bottom:1px solid rgba(35,35,35,.07);
 }
 .header-inner{
@@ -173,6 +204,42 @@ header{
   border:none;border-top:1px solid var(--line);
   margin:8px 24px;
 }
+
+/* ── 테마 스위처 ── */
+.nav-theme-section{
+  padding:16px 24px 24px;
+  border-top:1px solid var(--line);
+  margin-top:auto;
+}
+.nav-theme-label{
+  font-size:.72rem;font-weight:700;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--text-3);
+  display:flex;align-items:center;gap:6px;
+  margin-bottom:12px;
+}
+.theme-options{display:flex;gap:10px}
+.theme-opt{
+  flex:1;display:flex;flex-direction:column;align-items:center;gap:7px;
+  padding:12px 8px;border-radius:14px;cursor:pointer;
+  border:2px solid var(--line);
+  background:var(--surface-2);
+  transition:border-color .18s,background .18s,transform .18s;
+  font-family:'Noto Sans KR',sans-serif;font-size:.72rem;font-weight:700;
+  color:var(--text-2);
+}
+.theme-opt:hover{transform:translateY(-2px)}
+.theme-opt.active{
+  border-color:var(--accent);
+  background:var(--surface);
+  color:var(--accent-dk);
+}
+.theme-swatch{
+  width:32px;height:32px;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1rem;
+}
+.theme-swatch-warm{background:linear-gradient(135deg,#f7f5f2 50%,#c6a86b 50%);border:1px solid #dfd7cc}
+.theme-swatch-green{background:linear-gradient(135deg,#f2f6f3 50%,#2e7d52 50%);border:1px solid #c0d9c9}
 .nav-wrap{flex-shrink:0;margin-left:auto}
 
 /* ───── PAGES ───── */
@@ -189,7 +256,7 @@ header{
 .hero-main{
   position:relative;overflow:hidden;border-radius:28px;
   min-height:336px;
-  background:linear-gradient(135deg,#3a3028,#1e1a14);
+  background:linear-gradient(135deg,var(--hero-from),var(--hero-to));
   box-shadow:var(--shadow-lg);
   align-items:stretch;
 }
@@ -297,15 +364,15 @@ header{
 /* notice chip */
 .notice-chip{
   padding:16px 18px;
-  background:#c8b99a;
+  background:var(--chip-bg);
   border-radius:16px;
-  border:1px solid #b0a080;
+  border:1px solid var(--chip-border);
 }
 .notice-chip strong{
-  display:block;color:#3a2c1a;font-size:1rem;
+  display:block;color:var(--chip-text);font-size:1rem;
   font-weight:700;margin-bottom:4px;
 }
-.notice-chip span{color:rgba(58,44,26,.72);font-size:.95rem;line-height:1.7}
+.notice-chip span{color:var(--chip-text-2);font-size:.95rem;line-height:1.7}
 
 /* quick grid — modern redesign */
 .quick-section{padding:6px 0 0}
@@ -732,7 +799,24 @@ footer a:hover{color:var(--accent)}
     <button          data-p="jubo"      onclick="go('jubo');closeNav()">주보</button>
     <button          data-p="dailymass" onclick="go('dailymass');closeNav()">매일미사</button>
   </div>
-</div>
+
+  <!-- 테마 스위처 -->
+  <div class="nav-theme-section">
+    <div class="nav-theme-label">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="13" height="13"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+      테마 선택
+    </div>
+    <div class="theme-options">
+      <button class="theme-opt active" id="theme-btn-warm" onclick="setTheme('warm')">
+        <div class="theme-swatch theme-swatch-warm"></div>
+        황금빛 온기
+      </button>
+      <button class="theme-opt" id="theme-btn-green" onclick="setTheme('green')">
+        <div class="theme-swatch theme-swatch-green"></div>
+        초록 숲
+      </button>
+    </div>
+  </div></div>
   </div>
 </header>
 
@@ -1826,6 +1910,39 @@ function loadDailyMass() {
   });
 </script>
 <!-- ✝ 챗봇 위젯 끝 -->
+
+<!-- ✝ 테마 스위처 스크립트 -->
+<script>
+(function(){
+  const saved = localStorage.getItem('site-theme') || 'warm';
+  applyTheme(saved, false);
+})();
+
+function setTheme(t) {
+  applyTheme(t, true);
+  localStorage.setItem('site-theme', t);
+  // 패널 닫기
+  closeNav();
+}
+
+function applyTheme(t, animate) {
+  const html = document.documentElement;
+  if (animate) {
+    html.style.transition = 'background .35s, color .35s';
+    setTimeout(() => html.style.transition = '', 400);
+  }
+  if (t === 'green') {
+    html.setAttribute('data-theme', 'green');
+  } else {
+    html.removeAttribute('data-theme');
+  }
+  // 버튼 active 상태 업데이트
+  const bw = document.getElementById('theme-btn-warm');
+  const bg = document.getElementById('theme-btn-green');
+  if (bw) bw.classList.toggle('active', t !== 'green');
+  if (bg) bg.classList.toggle('active', t === 'green');
+}
+</script>
 
 </body>
 </html>
