@@ -579,6 +579,7 @@ header{
 .notice-board{
   background:var(--surface);border:1px solid var(--line);
   border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow);
+  width:100%;min-width:0;max-width:100%;
 }
 .notice-board-head{
   display:flex;align-items:center;justify-content:space-between;
@@ -595,7 +596,7 @@ header{
 .notice-row{
   display:flex;align-items:center;gap:6px;
   padding:10px 14px;border-top:1px solid var(--surface-2);
-  cursor:pointer;transition:background .15s;min-width:0;
+  cursor:pointer;transition:background .15s;min-width:0;overflow:hidden;
 }
 .notice-row:first-child{border-top:0}
 .notice-row:hover{background:var(--surface-2)}
@@ -635,10 +636,12 @@ header{
   margin-top:8px;
 }
 /* 홈 히어로 공지사항 카드 고정 크기 */
+.hero-side{min-width:0;overflow:hidden;width:100%}
 .hero-side .notice-board{
   overflow:hidden;
   max-height:300px;
   flex:1;
+  width:100%;min-width:0;
 }
 #notice-hero-list{
   overflow-y:auto;
@@ -683,7 +686,6 @@ footer a:hover{color:var(--accent)}
   .quick-card{padding:16px 12px 28px}
   .news-grid{grid-template-columns:1fr}
   .about-hero{flex-direction:column;gap:12px}
-  .notice-board{min-width:0;overflow:hidden}
 }
 </style>
 </head>
