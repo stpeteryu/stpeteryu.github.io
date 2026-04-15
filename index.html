@@ -302,32 +302,60 @@ header{
   border:1px solid #b0a080;
 }
 .notice-chip strong{
-  display:block;color:#3a2c1a;font-size:.88rem;
+  display:block;color:#3a2c1a;font-size:1rem;
   font-weight:700;margin-bottom:4px;
 }
-.notice-chip span{color:rgba(58,44,26,.72);font-size:.84rem;line-height:1.7}
+.notice-chip span{color:rgba(58,44,26,.72);font-size:.95rem;line-height:1.7}
 
-/* quick grid */
+/* quick grid — modern redesign */
 .quick-section{padding:6px 0 0}
 .quick-grid{
   display:grid;grid-template-columns:repeat(4,1fr);
-  gap:10px;padding:14px 0 0;
+  gap:12px;padding:16px 0 0;
 }
 .quick-card{
-  background:var(--surface);border:1px solid var(--line);
-  border-radius:14px;padding:14px 16px;
-  box-shadow:var(--shadow);
-  transition:transform .18s,border-color .18s;
+  background:var(--surface);
+  border:1.5px solid var(--line);
+  border-radius:20px;
+  padding:20px 16px 32px;
+  box-shadow:0 2px 10px rgba(35,35,35,.05),0 1px 3px rgba(35,35,35,.03);
+  transition:transform .22s cubic-bezier(.34,1.4,.64,1),box-shadow .22s,border-color .22s,background .18s;
   cursor:pointer;
-  display:flex;align-items:center;gap:12px;
+  display:flex;flex-direction:column;
+  align-items:flex-start;gap:12px;
+  position:relative;overflow:hidden;
+  text-align:left;
 }
-.quick-card:hover{transform:translateY(-2px);border-color:var(--accent)}
+.quick-card::after{
+  content:'→';
+  position:absolute;bottom:14px;right:16px;
+  font-size:.82rem;color:var(--text-3);
+  font-weight:700;
+  transition:color .18s,transform .18s;
+}
+.quick-card:hover{
+  transform:translateY(-5px);
+  box-shadow:0 18px 36px rgba(35,35,35,.13),0 4px 8px rgba(35,35,35,.05);
+  border-color:var(--accent);
+  background:linear-gradient(160deg,#fff 70%,rgba(198,168,107,.06));
+}
+.quick-card:hover::after{
+  color:var(--accent-dk);
+  transform:translateX(4px);
+}
 .quick-icon{
-  width:38px;height:38px;border-radius:10px;
+  width:46px;height:46px;border-radius:14px;
   display:grid;place-items:center;flex-shrink:0;
-  background:var(--surface-2);color:var(--accent-dk);
+  background:linear-gradient(135deg,rgba(198,168,107,.16) 0%,rgba(198,168,107,.06) 100%);
+  color:var(--accent-dk);
+  border:1px solid rgba(198,168,107,.25);
+  transition:background .18s,transform .18s;
 }
-.quick-card h3{font-size:.88rem;font-weight:800;margin-bottom:0}
+.quick-card:hover .quick-icon{
+  background:linear-gradient(135deg,rgba(198,168,107,.28) 0%,rgba(198,168,107,.12) 100%);
+  transform:scale(1.05);
+}
+.quick-card h3{font-size:.97rem;font-weight:800;margin-bottom:0;color:var(--text);line-height:1.3}
 .quick-card p{display:none}
 
 /* news section on home */
@@ -606,6 +634,18 @@ header{
   white-space:pre-wrap;border-top:1px solid var(--surface-2);
   margin-top:8px;
 }
+/* 홈 히어로 공지사항 카드 고정 크기 */
+.hero-side .notice-board{
+  overflow:hidden;
+  max-height:300px;
+  flex:1;
+}
+#notice-hero-list{
+  overflow-y:auto;
+  max-height:240px;
+}
+#notice-hero-list::-webkit-scrollbar{width:3px}
+#notice-hero-list::-webkit-scrollbar-track{background:transparent}
 /* 메인 공지 인라인 펼침 */
 .notice-inline-body{
   display:none;
@@ -615,81 +655,6 @@ header{
   border-top:1px solid var(--surface-2);
   background:var(--surface-2);
 }
-
-/* ─── GALLERY ─── */
-.album-grid{
-  display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
-  gap:16px;
-}
-.album-card{
-  background:var(--surface);border:1px solid var(--line);
-  border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow);
-  cursor:pointer;transition:transform .18s,border-color .18s;
-}
-.album-card:hover{transform:translateY(-3px);border-color:var(--accent)}
-.album-cover{
-  width:100%;aspect-ratio:4/3;object-fit:cover;display:block;
-  background:var(--surface-2);
-}
-.album-cover-ph{
-  width:100%;aspect-ratio:4/3;background:var(--surface-2);
-  display:flex;align-items:center;justify-content:center;
-  font-size:2rem;
-}
-.album-info{padding:14px 16px}
-.album-title{font-family:'Noto Serif KR',serif;font-weight:700;font-size:.97rem;margin-bottom:4px}
-.album-meta{font-size:.8rem;color:var(--text-3)}
-
-/* 라이트박스 */
-.lightbox{
-  display:none;position:fixed;inset:0;z-index:2000;
-  background:rgba(0,0,0,.92);
-  flex-direction:column;
-}
-.lightbox.open{display:flex}
-.lb-header{
-  display:flex;align-items:center;justify-content:space-between;
-  padding:16px 20px;flex-shrink:0;
-}
-.lb-title{font-family:'Noto Serif KR',serif;font-size:1rem;font-weight:700;color:#fff}
-.lb-close{
-  background:rgba(255,255,255,.1);border:none;cursor:pointer;
-  color:#fff;font-size:1.2rem;width:38px;height:38px;
-  border-radius:50%;display:grid;place-items:center;
-  transition:background .15s;
-}
-.lb-close:hover{background:rgba(255,255,255,.25)}
-.lb-body{flex:1;overflow-y:auto;padding:0 16px 24px}
-.lb-grid{
-  display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));
-  gap:8px;
-}
-.lb-thumb{
-  width:100%;aspect-ratio:1;object-fit:cover;display:block;
-  border-radius:8px;cursor:zoom-in;
-  transition:opacity .15s,transform .15s;
-  background:rgba(255,255,255,.06);
-}
-.lb-thumb:hover{opacity:.85;transform:scale(1.02)}
-
-/* 전체화면 사진 뷰어 */
-.photo-viewer{
-  display:none;position:fixed;inset:0;z-index:3000;
-  background:rgba(0,0,0,.97);
-  align-items:center;justify-content:center;
-}
-.photo-viewer.open{display:flex}
-.photo-viewer img{
-  max-width:94vw;max-height:90vh;
-  object-fit:contain;border-radius:6px;
-}
-.pv-close{
-  position:absolute;top:16px;right:16px;
-  background:rgba(255,255,255,.1);border:none;cursor:pointer;
-  color:#fff;font-size:1.2rem;width:40px;height:40px;
-  border-radius:50%;display:grid;place-items:center;z-index:1;
-}
-.pv-close:hover{background:rgba(255,255,255,.25)}
 
 /* ─── FOOTER ─── */
 footer{
@@ -709,11 +674,13 @@ footer a:hover{color:var(--accent)}
 @media(max-width:760px){
   .header-inner{flex-direction:row;align-items:center;padding:0}
   .quick-grid{grid-template-columns:repeat(2,1fr)}
+  .quick-card{padding:18px 14px 30px}
   .news-grid{grid-template-columns:1fr 1fr}
   .hero-content{padding:22px 24px}
 }
 @media(max-width:520px){
   .quick-grid{grid-template-columns:repeat(2,1fr)}
+  .quick-card{padding:16px 12px 28px}
   .news-grid{grid-template-columns:1fr}
   .about-hero{flex-direction:column;gap:12px}
   .notice-board{min-width:0;overflow:hidden}
@@ -801,7 +768,7 @@ footer a:hover{color:var(--accent)}
 
       <!-- 오른쪽: 공지사항 게시판 -->
       <aside class="hero-side">
-        <div class="notice-board" style="flex:1">
+        <div class="notice-board">
           <div class="notice-board-head">
             <span style="display:flex;align-items:center;gap:7px">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="16" height="16" style="color:var(--accent-dk)">
@@ -1098,7 +1065,7 @@ footer a:hover{color:var(--accent)}
         <div class="group-card">
           <div class="group-badge" style="font-size:.72rem">기도</div>
           <div class="group-body">
-            <h3>바뇨 성모 기도회</h3>
+            <h3>바뇌 성모 기도회</h3>
             <p>성모님께 대한 신심을 바탕으로 함께 기도하는 모임입니다.</p>
             <p class="ct">매월 1·3주 토요일 10:00</p>
           </div>
@@ -1209,6 +1176,10 @@ footer a:hover{color:var(--accent)}
               <span class="ci-val">6 Heath St., Hamilton, ON L8H 5Y5, Canada</span>
             </li>
             <li>
+              <span class="ci-label">공소 주소</span>
+              <span class="ci-val">나이아가라 공소 — 6028 Valley Way, Niagara Falls, ON L2E 1Y7, Canada</span>
+            </li>
+            <li>
               <span class="ci-label">전화</span>
               <span class="ci-val"><a href="tel:+19055453004">(905) 545-3004</a></span>
             </li>
@@ -1304,80 +1275,9 @@ footer a:hover{color:var(--accent)}
 
     </div>
   </div>
-<!-- ═══════════════════════════════════════
-     사진 갤러리
-════════════════════════════════════════ -->
-<section class="pg" id="pg-gallery">
-  <div class="pg-wrap">
-    <div class="container">
-      <div class="pg-header">
-        <div class="pg-eyebrow">Gallery</div>
-        <h1>사진 갤러리</h1>
-        <p>성 유대철 한인성당의 소중한 순간들을 담았습니다.</p>
-      </div>
-
-      <!-- 스켈레톤 -->
-      <div id="gallery-skel" class="album-grid">
-        <div class="album-card" style="pointer-events:none">
-          <div class="album-cover-ph"><div style="width:50%;height:12px;background:var(--line);border-radius:4px;animation:sk 1.5s ease-in-out infinite"></div></div>
-          <div class="album-info">
-            <div style="height:13px;width:70%;background:var(--surface-2);border-radius:4px;margin-bottom:8px;animation:sk 1.5s ease-in-out infinite"></div>
-            <div style="height:10px;width:45%;background:var(--surface-2);border-radius:4px;animation:sk 1.5s ease-in-out infinite .1s"></div>
-          </div>
-        </div>
-        <div class="album-card" style="pointer-events:none">
-          <div class="album-cover-ph"><div style="width:50%;height:12px;background:var(--line);border-radius:4px;animation:sk 1.5s ease-in-out infinite .1s"></div></div>
-          <div class="album-info">
-            <div style="height:13px;width:60%;background:var(--surface-2);border-radius:4px;margin-bottom:8px;animation:sk 1.5s ease-in-out infinite .1s"></div>
-            <div style="height:10px;width:40%;background:var(--surface-2);border-radius:4px;animation:sk 1.5s ease-in-out infinite .2s"></div>
-          </div>
-        </div>
-        <div class="album-card" style="pointer-events:none">
-          <div class="album-cover-ph"><div style="width:50%;height:12px;background:var(--line);border-radius:4px;animation:sk 1.5s ease-in-out infinite .2s"></div></div>
-          <div class="album-info">
-            <div style="height:13px;width:75%;background:var(--surface-2);border-radius:4px;margin-bottom:8px;animation:sk 1.5s ease-in-out infinite .2s"></div>
-            <div style="height:10px;width:50%;background:var(--surface-2);border-radius:4px;animation:sk 1.5s ease-in-out infinite .3s"></div>
-          </div>
-        </div>
-      </div>
-
-      <div id="gallery-list" class="album-grid" style="display:none"></div>
-
-      <div id="gallery-empty" style="display:none;padding:48px;text-align:center;
-        background:var(--surface);border:1px solid var(--line);border-radius:var(--r);
-        color:var(--text-3)">
-        <div style="font-size:2.5rem;margin-bottom:12px">📷</div>
-        <p style="font-size:.95rem">등록된 앨범이 없습니다.</p>
-      </div>
-
-      <div id="gallery-error" style="display:none;padding:48px;text-align:center;
-        background:var(--surface);border:1px solid var(--line);border-radius:var(--r);
-        color:var(--text-3)">
-        <div style="font-size:2.5rem;margin-bottom:12px">⚠️</div>
-        <p style="font-size:.95rem">갤러리를 불러오지 못했습니다.<br>잠시 후 다시 시도해 주세요.</p>
-      </div>
-    </div>
-  </div>
 </section>
 
 </main>
-
-<!-- 앨범 라이트박스 -->
-<div class="lightbox" id="lightbox">
-  <div class="lb-header">
-    <span class="lb-title" id="lb-title"></span>
-    <button class="lb-close" onclick="closeLightbox()">✕</button>
-  </div>
-  <div class="lb-body">
-    <div class="lb-grid" id="lb-grid"></div>
-  </div>
-</div>
-
-<!-- 전체화면 사진 뷰어 -->
-<div class="photo-viewer" id="photo-viewer" onclick="closePhotoViewer()">
-  <button class="pv-close" onclick="closePhotoViewer()">✕</button>
-  <img id="pv-img" src="" alt="">
-</div>
 
 <!-- ═══ FOOTER ═══ -->
 <footer>
@@ -1392,7 +1292,7 @@ footer a:hover{color:var(--accent)}
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
 <script>
 // ── 탭 네비게이션 ──
-const PAGES = ['home','notice','mass','about','groups','contact','jubo','dailymass','gallery'];
+const PAGES = ['home','notice','mass','about','groups','contact','jubo','dailymass'];
 
 function go(id, pushHistory) {
   if (!PAGES.includes(id)) id = 'home';
@@ -1405,7 +1305,6 @@ function go(id, pushHistory) {
   window.scrollTo({ top: 0, behavior: 'smooth' });
   if (id === 'dailymass') loadDailyMass();
   if (id === 'notice')    loadNotice(true);
-  if (id === 'gallery')   loadGallery();
   // 6: 뒤로가기 처리 — 히스토리에 상태 추가
   if (pushHistory !== false) {
     history.pushState({ page: id }, '', '#' + id);
