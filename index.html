@@ -43,28 +43,45 @@
   --hero-to:     #1e1a14;
 }
 
-/* ── 초록 테마 ── */
+/* ── 초록 테마 (이미지 색상 기준) ── */
 [data-theme="green"] {
-  --bg:          #f2f6f3;
+  --bg:          #f4f7f5;
   --surface:     #ffffff;
-  --surface-2:   #e5efe8;
-  --surface-3:   #cfe0d5;
-  --text:        #182a1e;
-  --text-2:      #3e5f4a;
-  --text-3:      #7a9984;
-  --line:        #c0d9c9;
-  --primary:     #1a4731;
-  --accent:      #2e7d52;
-  --accent-dk:   #1a4731;
-  --gold-chip:   #52b788;
-  --shadow-lg:   0 16px 40px rgba(26,71,49,.13);
-  --header-bg:   rgba(242,246,243,.93);
-  --chip-bg:     #b8d4c3;
-  --chip-border: #95bfaa;
-  --chip-text:   #122a1d;
-  --chip-text-2: rgba(18,42,29,.68);
+  --surface-2:   #eaf2ed;
+  --surface-3:   #d6e8dd;
+  --text:        #1a2d20;
+  --text-2:      #3d5c47;
+  --text-3:      #7a9a84;
+  --line:        #c8dcd0;
+  --primary:     #1e5233;
+  --accent:      #2d7a50;
+  --accent-dk:   #1e5233;
+  --gold-chip:   #3a9e68;
+  --shadow-lg:   0 16px 40px rgba(30,82,51,.14);
+  --header-bg:   rgba(244,247,245,.94);
+  --chip-bg:     #2d6a47;
+  --chip-border: #1e5233;
+  --chip-text:   #ffffff;
+  --chip-text-2: rgba(255,255,255,.85);
   --hero-from:   #1a3d28;
   --hero-to:     #0d2218;
+}
+/* 초록 테마: 히어로 버튼 */
+[data-theme="green"] .btn-gold{background:#1e5233;color:#fff}
+[data-theme="green"] .btn-gold:hover{background:#16402a}
+[data-theme="green"] .btn-ghost{background:rgba(255,255,255,.18);color:#fff;border-color:rgba(255,255,255,.35)}
+/* 초록 테마: 퀵카드 호버 그라디언트 */
+[data-theme="green"] .quick-card:hover{
+  background:linear-gradient(160deg,#fff 70%,rgba(45,122,80,.06));
+  border-color:var(--accent);
+}
+/* 초록 테마: 퀵 아이콘 */
+[data-theme="green"] .quick-icon{
+  background:linear-gradient(135deg,rgba(45,122,80,.14) 0%,rgba(45,122,80,.05) 100%);
+  border-color:rgba(45,122,80,.28);
+}
+[data-theme="green"] .quick-card:hover .quick-icon{
+  background:linear-gradient(135deg,rgba(45,122,80,.26) 0%,rgba(45,122,80,.12) 100%);
 }
 
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -374,7 +391,7 @@ header{
 }
 .notice-chip span{color:var(--chip-text-2);font-size:.95rem;line-height:1.7}
 
-/* quick grid — modern redesign */
+/* quick grid — 이미지 기준 레이아웃 */
 .quick-section{padding:6px 0 0}
 .quick-grid{
   display:grid;grid-template-columns:repeat(4,1fr);
@@ -383,47 +400,48 @@ header{
 .quick-card{
   background:var(--surface);
   border:1.5px solid var(--line);
-  border-radius:20px;
-  padding:20px 16px 32px;
-  box-shadow:0 2px 10px rgba(35,35,35,.05),0 1px 3px rgba(35,35,35,.03);
+  border-radius:18px;
+  padding:18px 20px;
+  box-shadow:0 2px 8px rgba(35,35,35,.05);
   transition:transform .22s cubic-bezier(.34,1.4,.64,1),box-shadow .22s,border-color .22s,background .18s;
   cursor:pointer;
-  display:flex;flex-direction:column;
-  align-items:flex-start;gap:12px;
-  position:relative;overflow:hidden;
+  display:flex;flex-direction:row;
+  align-items:center;gap:14px;
+  position:relative;
   text-align:left;
 }
-.quick-card::after{
-  content:'→';
-  position:absolute;bottom:14px;right:16px;
-  font-size:.82rem;color:var(--text-3);
-  font-weight:700;
-  transition:color .18s,transform .18s;
-}
 .quick-card:hover{
-  transform:translateY(-5px);
-  box-shadow:0 18px 36px rgba(35,35,35,.13),0 4px 8px rgba(35,35,35,.05);
+  transform:translateY(-4px);
+  box-shadow:0 14px 32px rgba(35,35,35,.11),0 3px 6px rgba(35,35,35,.05);
   border-color:var(--accent);
   background:linear-gradient(160deg,#fff 70%,rgba(198,168,107,.06));
 }
+.quick-card::after{
+  content:'›';
+  position:absolute;right:16px;top:50%;transform:translateY(-50%);
+  font-size:1.1rem;color:var(--text-3);
+  font-weight:700;
+  transition:color .18s,transform .18s;
+}
 .quick-card:hover::after{
   color:var(--accent-dk);
-  transform:translateX(4px);
+  transform:translateY(-50%) translateX(3px);
 }
 .quick-icon{
-  width:46px;height:46px;border-radius:14px;
+  width:48px;height:48px;border-radius:50%;
   display:grid;place-items:center;flex-shrink:0;
   background:linear-gradient(135deg,rgba(198,168,107,.16) 0%,rgba(198,168,107,.06) 100%);
   color:var(--accent-dk);
-  border:1px solid rgba(198,168,107,.25);
+  border:1.5px solid rgba(198,168,107,.3);
   transition:background .18s,transform .18s;
 }
 .quick-card:hover .quick-icon{
   background:linear-gradient(135deg,rgba(198,168,107,.28) 0%,rgba(198,168,107,.12) 100%);
-  transform:scale(1.05);
+  transform:scale(1.06);
 }
-.quick-card h3{font-size:.97rem;font-weight:800;margin-bottom:0;color:var(--text);line-height:1.3}
-.quick-card p{display:none}
+.quick-card-text{display:flex;flex-direction:column;gap:2px;min-width:0;flex:1;padding-right:16px}
+.quick-card h3{font-size:.95rem;font-weight:800;color:var(--text);line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.quick-card p{display:block;font-size:.78rem;color:var(--text-3);font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 
 /* news section on home */
 .news-section{padding:28px 0 0}
@@ -744,13 +762,14 @@ footer a:hover{color:var(--accent)}
 @media(max-width:760px){
   .header-inner{flex-direction:row;align-items:center;padding:0}
   .quick-grid{grid-template-columns:repeat(2,1fr)}
-  .quick-card{padding:18px 14px 30px}
+  .quick-card{padding:14px 14px}
   .news-grid{grid-template-columns:1fr 1fr}
   .hero-content{padding:22px 24px}
 }
 @media(max-width:520px){
   .quick-grid{grid-template-columns:repeat(2,1fr)}
-  .quick-card{padding:16px 12px 28px}
+  .quick-card{padding:13px 12px}
+  .quick-icon{width:40px;height:40px}
   .news-grid{grid-template-columns:1fr}
   .about-hero{flex-direction:column;gap:12px}
 }
@@ -912,7 +931,10 @@ footer a:hover{color:var(--accent)}
               <line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/>
             </svg>
           </div>
-          <h3>이번 주 주보</h3>
+          <div class="quick-card-text">
+            <h3>이번 주 주보</h3>
+            <p>주보 다운로드</p>
+          </div>
         </div>
         <div class="quick-card" onclick="go('mass')">
           <div class="quick-icon">
@@ -920,7 +942,10 @@ footer a:hover{color:var(--accent)}
               <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
             </svg>
           </div>
-          <h3>미사 시간표</h3>
+          <div class="quick-card-text">
+            <h3>미사 시간표</h3>
+            <p>시간 확인하기</p>
+          </div>
         </div>
         <div class="quick-card" onclick="go('dailymass')">
           <div class="quick-icon">
@@ -928,7 +953,10 @@ footer a:hover{color:var(--accent)}
               <path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/>
             </svg>
           </div>
-          <h3>매일미사</h3>
+          <div class="quick-card-text">
+            <h3>매일미사</h3>
+            <p>복음과 묵상</p>
+          </div>
         </div>
         <div class="quick-card" onclick="window.open('http://cafe.daum.net/stpeteryu','_blank')">
           <div class="quick-icon">
@@ -936,7 +964,10 @@ footer a:hover{color:var(--accent)}
               <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>
             </svg>
           </div>
-          <h3>다음카페</h3>
+          <div class="quick-card-text">
+            <h3>다음카페</h3>
+            <p>성당 커뮤니티</p>
+          </div>
         </div>
       </div>
     </div>
